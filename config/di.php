@@ -18,10 +18,10 @@ use PhalApi\Database\NotORMDatabase;
 $di = \PhalApi\DI();
 
 // 配置
-$di->config = new FileConfig(API_ROOT . '/config');
+$di->config = new FileConfig(API_ROOT . '/config/' . API_ENV);
 
 // 调试模式，$_GET['__debug__']可自行改名
-$di->debug = !empty($_GET['__debug__']) ? true : $di->config->get('sys.debug');
+$di->debug = !empty($_GET['__debug__']) ? true : API_ENV=='dev' ? true:false;
 
 // 日记纪录
 $di->logger = new FileLogger(API_ROOT . '/runtime', Logger::LOG_LEVEL_DEBUG | Logger::LOG_LEVEL_INFO | Logger::LOG_LEVEL_ERROR);

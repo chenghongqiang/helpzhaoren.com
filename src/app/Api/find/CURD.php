@@ -1,11 +1,12 @@
 <?php
-namespace App\Api\Examples;
+namespace App\Api\Find;
 
 use PhalApi\Api;
 use App\Domain\Examples\CURD as DomainCURD;
 
 /**
  * 数据库CURD基本操作示例
+ * @ignore
  * @author dogstar 20170612
  */
 

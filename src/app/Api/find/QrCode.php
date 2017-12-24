@@ -1,9 +1,10 @@
 <?php
-namespace App\Examples\Api;
+namespace App\Find\Api;
 
 use PhalApi\Api;
 
 /**
+ * @ignore
  * 生成二维码
  */
 class QrCode extends Api {

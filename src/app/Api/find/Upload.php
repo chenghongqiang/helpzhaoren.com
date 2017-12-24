@@ -1,9 +1,10 @@
 <?php
-namespace App\Api\Examples;
+namespace App\Api\Find;
 
 use PhalApi\Api;
 
 /**
+ * @ignore
  * 文件上传示例
  * 
  * 测试页面： http://localhost/upload.html

@@ -1,5 +1,5 @@
 <?php
-namespace App\Domain\Examples;
+namespace App\Domain\Find;
 
 use App\Model\Examples\CURD as ModelCURD;
 

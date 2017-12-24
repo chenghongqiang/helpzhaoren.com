@@ -1,5 +1,7 @@
 CREATE DATABASE `phalapi`;
 
+use `phalapi`;
+
 #用户表
 CREATE TABLE `phal_user` (
   `id` int(10) NOT NULL AUTO_INCREMENT,

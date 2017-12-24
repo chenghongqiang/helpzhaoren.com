@@ -2,7 +2,7 @@
 namespace App\Api\Find;
 
 use PhalApi\Api;
-use App\Domain\Examples\CURD as DomainCURD;
+use App\Domain\Find\CURD as DomainCURD;
 
 /**
  * 数据库CURD基本操作示例

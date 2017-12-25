@@ -23,4 +23,11 @@ class USER {
         return $model->get($id);
     }
 
+    public function getUserByOpenid($openid){
+
+        $model = new ModelUSER();
+        return $model->getUserByOpenid($openid);
+
+    }
+
 }

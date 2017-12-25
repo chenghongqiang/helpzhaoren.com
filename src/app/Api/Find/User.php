@@ -24,7 +24,7 @@ class User extends Api{
                 'openid' => array('name' => 'openid', 'type' => 'string', 'require' => true)
             ),
             'getUserProfile' => array(
-                'openid' => array('name' => 'openid', 'type' => 'string', 'require' => true)
+                'openid' => array('name' => 'openid', 'type' => 'string', 'require' => true , 'desc' => '用户openid')
             )
         );
     }
@@ -60,8 +60,9 @@ class User extends Api{
     public function getUserProfile(){
         $domainUser = new DomainUSER();
 
-        $id = $domainUser->get($this->openid);
-        $res['id'] = $id;
-        return $res['id'];
+        $user = $domainUser->getUserByOpenid($this->openid);
+        return $user;
     }
+
+
 }

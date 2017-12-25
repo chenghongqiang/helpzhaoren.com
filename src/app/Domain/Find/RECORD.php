@@ -1,0 +1,25 @@
+<?php
+/**
+ * User: kewin.cheng
+ * Date: 2017/12/25
+ * Time: 12:28
+ */
+
+namespace App\Domain\Find;
+
+use App\Model\Find\RECORD as ModelRECORD;
+
+class RECORD {
+
+    public function insert($data){
+
+        $model = new ModelRECORD();
+        return $model->insert($data);
+    }
+
+    public function get($id){
+        $model = new ModelRECORD();
+        return $model->get($id);
+    }
+
+}

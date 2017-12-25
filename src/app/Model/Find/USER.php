@@ -10,14 +10,14 @@ namespace App\Model\Find;
 use PhalApi\Model\NotORMModel as NotORM;
 
 /**
-    #ÓÃ»§±í
+    #ç”¨æˆ·è¡¨
     CREATE TABLE `phal_user` (
         `id` int(10) NOT NULL AUTO_INCREMENT,
-        `openid` VARCHAR(50) NOT NULL COMMENT 'ÓÃ»§openid',
-        `headurl` VARCHAR(128) NOT NULL COMMENT 'Î¢ÐÅÍ¼Ïñ',
-        `nickname` VARCHAR(50) NOT NULL COMMENT 'Î¢ÐÅêÇ³Æ',
-        `wallet` int(10) DEFAULT 0 COMMENT 'ÓÃ»§Ç®°ü£¬³õÊ¼Îª0',
-        `credit` int(10) DEFAULT 0 COMMENT 'ÐÅÓþ»ý·Ö£¬³õÊ¼Îª0',
+        `openid` VARCHAR(50) NOT NULL COMMENT 'ç”¨æˆ·openid',
+        `headurl` VARCHAR(128) NOT NULL COMMENT 'å¾®ä¿¡å›¾åƒ',
+        `nickname` VARCHAR(50) NOT NULL COMMENT 'å¾®ä¿¡æ˜µç§°',
+        `wallet` int(10) DEFAULT 0 COMMENT 'ç”¨æˆ·é’±åŒ…ï¼Œåˆå§‹ä¸º0',
+        `credit` int(10) DEFAULT 0 COMMENT 'ä¿¡èª‰ç§¯åˆ†ï¼Œåˆå§‹ä¸º0',
         `create_time` datetime DEFAULT NULL,
 
         PRIMARY KEY (`id`)
@@ -31,8 +31,11 @@ class USER extends NotORM {
         return 'user';
     }
 
-    public function getUserByOpenid(){
-        
+    public function getUserByOpenid($openid){
+        return $this->getORM()
+            ->select('openid, headurl, nickname', 'wallet')
+            ->where('openid', $openid)
+            ->fetch();
     }
 
 

@@ -29,7 +29,7 @@ return array(
     'tables' => array(
         //通用路由
         '__default__' => array(
-            'prefix' => 'tbl_',
+            'prefix' => 'phal_',
             'key' => 'id',
             'map' => array(
                 array('db' => 'db_master'),

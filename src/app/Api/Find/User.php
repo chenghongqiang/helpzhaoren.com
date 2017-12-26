@@ -21,7 +21,10 @@ class User extends Api{
     public function getRules(){
         return array(
             'addUser' => array(
-                'openid' => array('name' => 'openid', 'type' => 'string', 'require' => true)
+                'openid' => array('name' => 'openid', 'type' => 'string', 'require' => true , 'desc' => '用户openid'),
+                'code' => array('name' => 'code', 'type' => 'string', 'require' => true, 'desc' => '登录凭证code'),
+                'encryptedData' => array('name' => 'encryptedData', 'type' => 'string', 'require' => true, 'desc' => '目标密文'),
+                'iv' => array('name' => 'iv', 'type' => 'string', 'require' => true, 'desc' => '初始向量')
             ),
             'getUserProfile' => array(
                 'openid' => array('name' => 'openid', 'type' => 'string', 'require' => true , 'desc' => '用户openid')
@@ -36,17 +39,22 @@ class User extends Api{
      */
     public function addUser(){
 
-        $data = array(
+        $params = array(
             'openid' => $this->openid,
-            'headurl' => '12',
-            'nickname' => ''
+            'code' => $this->code,
+            'encryptedData' => $this->encryptedData,
+            'iv' => $this->iv
         );
 
         $domainUser = new DomainUSER();
+        $user = $domainUser->getUserByOpenid($this->openid);
+        if(empty($user)){
+            $id = $domainUser->insert($params);
+            $res['id'] = $id;
+            return $res['id'];
+        }
 
-        $id = $domainUser->insert($data);
-        $res['id'] = $id;
-        return $res['id'];
+        return 0;
     }
 
     /**

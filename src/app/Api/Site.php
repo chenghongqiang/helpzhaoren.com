@@ -14,7 +14,7 @@ class Site extends Api {
 	public function getRules() {
         return array(
             'index' => array(
-                'username' 	=> array('name' => 'username', 'default' => 'PhalApi'),
+                'username' 	=> array('name' => 'username', 'default' => 'helpzhaoren.com'),
             ),
         );
 	}

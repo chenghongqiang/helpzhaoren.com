@@ -101,8 +101,8 @@ class NotORMDatabase /** implements Database */ {
      * @param boolean $debug 是否开启调试模式
      */
     public function __construct($configs, $debug = FALSE) {
-        $this->_configs = $configs;
 
+        $this->_configs = $configs;
         $this->debug = $debug;
     }
 

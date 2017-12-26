@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\WxCore;
+namespace App\WxCore\lib;
 
 class WxPayDataBase
 {

@@ -7,7 +7,7 @@
  * @author widyhu
  *
  */
-namespace App\WxCore;
+namespace App\WxCore\lib;
 
 class WxPayApi
 {

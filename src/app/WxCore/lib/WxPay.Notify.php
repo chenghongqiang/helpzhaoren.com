@@ -6,7 +6,7 @@
  *
  */
 
-namespace App\WxCore;
+namespace App\WxCore\lib;
 
 class WxPayNotify extends WxPayNotifyReply
 {

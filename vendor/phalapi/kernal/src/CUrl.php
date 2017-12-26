@@ -157,6 +157,7 @@ class CUrl {
             CURLOPT_HEADER              => 0,
             CURLOPT_CONNECTTIMEOUT_MS   => $timeoutMs,
             CURLOPT_HTTPHEADER          => $this->getHeaders(),
+            CURLOPT_SSL_VERIFYPEER      => FALSE,
         );
 
         if (!empty($data)) {

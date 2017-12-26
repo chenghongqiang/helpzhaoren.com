@@ -23,7 +23,7 @@ class USER {
             'encryptedData' => $this->encryptedData,
             'iv' => $this->iv
         );
-
+        return $userInfo;
         $model = new ModelUSER();
         return $model->insert($data);
     }

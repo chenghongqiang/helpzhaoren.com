@@ -3,7 +3,7 @@
 * 	配置账号信息
 */
 
-namespace App\WxCore;
+namespace App\WxCore\lib;
 
 class WxPayConfig
 {

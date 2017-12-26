@@ -22,12 +22,10 @@
     },
     "autoload": {
         "files": [
-            "src/app/functions.php",
-            "src/app/WxCore/*"
+            "src/app/functions.php"
             ],
         "psr-4": {
-            "App\\": "src/app",
-            "App\\WxCore\\": "src/app/WxCore"
+            "App\\": "src/app"
         }
     }
 

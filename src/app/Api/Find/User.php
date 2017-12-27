@@ -71,7 +71,7 @@ class User extends Api{
      */
     public function getUserProfile(){
         $domainUser = new DomainUSER();
-        $userInfo = $domainUser->getUserInfo();
+        $userInfo = $domainUser->getUserInfo($this->thirdSessionKey, $this->encryptedData, $this->iv);
         //$user = $domainUser->getUserByOpenid($this->openid);
         return $userInfo;
     }

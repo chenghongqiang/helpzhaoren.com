@@ -67,7 +67,7 @@ class WXAuth {
         if ($errCode == 0) {
             return $data;
         } else {
-            print($errCode . "\n");
+            \PhalApi\DI()->logger->error(__CLASS__.__METHOD__ . ' errCode:' . $errCode);
         }
     }
 

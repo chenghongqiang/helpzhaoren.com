@@ -26,6 +26,8 @@ class User extends Api{
             ),
             'getUserProfile' => array(
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
+                'encryptedData' => array('name' => 'encryptedData', 'type' => 'string', 'require' => true, 'desc' => '目标密文'),
+                'iv' => array('name' => 'iv', 'type' => 'string', 'require' => true, 'desc' => '初始向量')
             ),
             'userLogin' => array(
                 'code' => array('name' => 'code', 'type' => 'string', 'require' => true, 'desc' => '登录凭证code'),
@@ -42,7 +44,7 @@ class User extends Api{
         $domainUser = new DomainUSER();
         $thirdSessionKey = $domainUser->userLogin($this->code);
 
-        return $thirdSessionKey;
+        return array('thirdSessionKey' => $thirdSessionKey);
     }
 
     /**
@@ -60,7 +62,7 @@ class User extends Api{
     }
 
     /**
-     * 获取第三方sessionKey获取用户信息
+     * 获取用户信息
      * @desc 获取用户信息
      * @return string openId 用户openid
      * @return string avatarUrl 用户微信图像
@@ -69,9 +71,9 @@ class User extends Api{
      */
     public function getUserProfile(){
         $domainUser = new DomainUSER();
-
-        $user = $domainUser->getUserByOpenid($this->openid);
-        return $user;
+        $userInfo = $domainUser->getUserInfo();
+        //$user = $domainUser->getUserByOpenid($this->openid);
+        return $userInfo;
     }
 
 

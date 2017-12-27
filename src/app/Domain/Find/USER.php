@@ -35,14 +35,14 @@ class USER {
                 //sessionKey有效期1天
                 \PhalApi\DI()->redis->set($sessionKey, $sessionData['session_key'].'_' .$sessionData['openid'], Time::DAY);
 
-                \PhalApi\DI()->logger->info([__CLASS__][__FUNCTION__ ] . ' sessionKey:' . $sessionKey);
+                \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__  . ' sessionKey:' . $sessionKey);
 
                 /*$data['openid'] = $sessionData['openid'];
                 $data['thirdSessionKey'] = $sessionKey;*/
                 return $sessionKey;
             }
         }catch (InternalServerErrorException $ex){
-            \PhalApi\DI()->logger->error([__CLASS__][__FUNCTION__ ] . $ex);
+            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__  . $ex);
             return $sessionKey;
         }
 
@@ -70,11 +70,13 @@ class USER {
             }
         }
      */
-    public function getUserInfo($encryptedData, $iv){
+    public function getUserInfo($thirdSessionKey, $encryptedData, $iv){
         $wxAuth = new WXAuth();
-        $sessionValue = \PhalApi\DI()->redis->get($this->thirdSessionKey);
+        $sessionValue = \PhalApi\DI()->redis->get($thirdSessionKey);
         $list = explode('_', $sessionValue);
         $sessionKey = $list[0];
+
+        \PhalApi\DI()->logger->info(__CLASS__.__METHOD__ . ' sessionKey:' . $sessionKey);
         $userInfo = $wxAuth->getUserInfo($sessionKey, $encryptedData, $iv);
 
         return $userInfo;
@@ -113,7 +115,7 @@ class USER {
             @fclose($fp);
         } else {
             //打开文件失败 仍然手动生成随机数并记录日志
-            \PhalApi\DI()->logger->error([__CLASS__][__FUNCTION__ ] . 'Can not open /dev/urandom');
+            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__  . 'Can not open /dev/urandom');
             return Tool::getRandom(64);
         }
         //convert from binary to string

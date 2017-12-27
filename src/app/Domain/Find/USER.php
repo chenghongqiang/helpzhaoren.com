@@ -8,6 +8,7 @@
 namespace App\Domain\Find;
 
 use App\Common\Utils\Time;
+use App\Common\Utils\Tool;
 use App\Model\Find\USER as ModelUSER;
 use App\WxCore\WXAuth;
 use PhalApi\Exception\InternalServerErrorException;
@@ -23,6 +24,7 @@ class USER {
      */
     public function userLogin($code){
 
+        $data = [];
         try{
             //根据code获取openid和session_key
             $wxAuth = new WXAuth();
@@ -33,14 +35,17 @@ class USER {
                 //sessionKey有效期1天
                 \PhalApi\DI()->redis->set($sessionKey, $sessionData['session_key'].'_' .$sessionData['openid'], Time::DAY);
 
-                \PhalApi\DI()->logger->error($sessionKey);
-                return $sessionKey;
+                \PhalApi\DI()->logger->info([__CLASS__][__FUNCTION__ ] . ' sessionKey:' . $sessionKey);
+
+                $data['openid'] = $sessionData['openid'];
+                $data['thirdSessionKey'] = $sessionKey;
+                return $data;
             }
         }catch (InternalServerErrorException $ex){
-            return null;
+            return $data;
         }
 
-        return null;
+        return $data;
     }
 
     /**
@@ -99,16 +104,17 @@ class USER {
      */
     private function thridSession($len) {
 
-        $fp = @fopen('/dev/urandom','rb');
+        $fp = fopen('/dev/urandom','rb');
         $result = '';
 
         if($fp !== FALSE) {
-            $result .= @fread($fp, $len);
-            @fclose($fp);
+            $result .= fread($fp, $len);
+            fclose($fp);
         } else {
-            trigger_error('Can not open /dev/urandom.');
+            //打开文件失败 仍然手动生成随机数并记录日志
+            \PhalApi\DI()->logger->error([__CLASS__][__FUNCTION__ ] . 'Can not open /dev/urandom');
+            return Tool::getRandom(64);
         }
-
         //convert from binary to string
         $result = base64_encode($result);
         //remove none url chars

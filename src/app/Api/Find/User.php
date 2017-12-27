@@ -20,7 +20,8 @@ class User extends Api{
 
     public function getRules(){
         return array(
-            'addUser' => array(
+            'insertUserInfo' => array(
+                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
                 'encryptedData' => array('name' => 'encryptedData', 'type' => 'string', 'require' => true, 'desc' => '目标密文'),
                 'iv' => array('name' => 'iv', 'type' => 'string', 'require' => true, 'desc' => '初始向量')
             ),
@@ -52,10 +53,10 @@ class User extends Api{
      * @desc 进入小程序判断用户是否已存在，不存在添加新用户
      * @return int id 插入记录id，0表示已存在
      */
-    public function addUser(){
+    public function insertUserInfo(){
 
         $domainUser = new DomainUSER();
-        $id = $domainUser->insertUserInfo($this->encryptedData, $this->iv);
+        $id = $domainUser->insertUserInfo($this->thirdSessionKey, $this->encryptedData, $this->iv);
         $res['id'] = $id;
         return $res['id'];
 
@@ -72,7 +73,7 @@ class User extends Api{
     public function getUserProfile(){
         $domainUser = new DomainUSER();
         $userInfo = $domainUser->getUserInfo($this->thirdSessionKey, $this->encryptedData, $this->iv);
-        //$user = $domainUser->getUserByOpenid($this->openid);
+
         return $userInfo;
     }
 

@@ -54,6 +54,7 @@ class USER {
      * @param $encryptedData
      * @param $iv
      * @return mixed
+     * 解密后用户信息如下：
      * {
             "openId": "OPENID",
             "nickName": "NICKNAME",
@@ -76,15 +77,21 @@ class USER {
         $list = explode('_', $sessionValue);
         $sessionKey = $list[0];
 
-        \PhalApi\DI()->logger->info(__CLASS__.__METHOD__ . ' sessionKey:' . $sessionKey);
+        \PhalApi\DI()->logger->info(__CLASS__.__METHOD__ . 'thirdSessionKey：'.$thirdSessionKey.
+            ' encryptedData:'.$encryptedData.' iv:'.$iv);
         $userInfo = $wxAuth->getUserInfo($sessionKey, $encryptedData, $iv);
+
+        $userInfoDb = $this->getUserByOpenid($userInfo['openId']);
+        if(!empty($userInfoDb)){
+            $userInfo['wallet'] = $userInfoDb['wallet'];
+        }
 
         return $userInfo;
     }
 
-    public function insertUserInfo($encryptedData, $iv){
+    public function insertUserInfo($thirdSessionKey, $encryptedData, $iv){
 
-        $userInfo = $this->getUserInfo($encryptedData, $iv);
+        $userInfo = $this->getUserInfo($thirdSessionKey, $encryptedData, $iv);
         if(empty($userInfo)){
             return -1;
         }
@@ -126,11 +133,21 @@ class USER {
 
     }
 
+    /**
+     * 根据id获取用户信息
+     * @param $id
+     * @return array
+     */
     public function get($id){
         $model = new ModelUSER();
         return $model->get($id);
     }
 
+    /**
+     * 根据openid获取用户信息
+     * @param $openid
+     * @return mixed
+     */
     public function getUserByOpenid($openid){
         $model = new ModelUSER();
         return $model->getUserByOpenid($openid);

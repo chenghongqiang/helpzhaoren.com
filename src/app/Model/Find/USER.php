@@ -33,7 +33,7 @@ class USER extends NotORM {
 
     public function getUserByOpenid($openid){
         return $this->getORM()
-            ->select('openid, headurl, nickname', 'wallet')
+            ->select('openId, avatarUrl, nickName', 'wallet')
             ->where('openid', $openid)
             ->fetch();
     }

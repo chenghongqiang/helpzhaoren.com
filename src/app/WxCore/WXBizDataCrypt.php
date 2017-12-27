@@ -8,7 +8,7 @@
 namespace App\WxCore;
 
 /*
- * ¶ÔÎ¢ĞÅĞ¡³ÌĞòÓÃ»§¼ÓÃÜÊı¾İµÄ½âÃÜ
+ * å¯¹å¾®ä¿¡å°ç¨‹åºç”¨æˆ·åŠ å¯†æ•°æ®çš„è§£å¯†
  */
 class WXBizDataCrypt{
 
@@ -16,9 +16,9 @@ class WXBizDataCrypt{
     private $sessionKey;
 
     /**
-     * ¹¹Ôìº¯Êı
-     * @param $sessionKey string ÓÃ»§ÔÚĞ¡³ÌĞòµÇÂ¼ºó»ñÈ¡µÄ»á»°ÃÜÔ¿
-     * @param $appid string Ğ¡³ÌĞòµÄappid
+     * æ„é€ å‡½æ•°
+     * @param $sessionKey string ç”¨æˆ·åœ¨å°ç¨‹åºç™»å½•åè·å–çš„ä¼šè¯å¯†é’¥
+     * @param $appid string å°ç¨‹åºçš„appid
      */
     public function __construct($appid, $sessionKey){
         $this->sessionKey = $sessionKey;
@@ -27,12 +27,12 @@ class WXBizDataCrypt{
 
 
     /**
-     * ¼ìÑéÊı¾İµÄÕæÊµĞÔ£¬²¢ÇÒ»ñÈ¡½âÃÜºóµÄÃ÷ÎÄ.
-     * @param $encryptedData string ¼ÓÃÜµÄÓÃ»§Êı¾İ
-     * @param $iv string ÓëÓÃ»§Êı¾İÒ»Í¬·µ»ØµÄ³õÊ¼ÏòÁ¿
-     * @param $data string ½âÃÜºóµÄÔ­ÎÄ
+     * æ£€éªŒæ•°æ®çš„çœŸå®æ€§ï¼Œå¹¶ä¸”è·å–è§£å¯†åçš„æ˜æ–‡.
+     * @param $encryptedData string åŠ å¯†çš„ç”¨æˆ·æ•°æ®
+     * @param $iv string ä¸ç”¨æˆ·æ•°æ®ä¸€åŒè¿”å›çš„åˆå§‹å‘é‡
+     * @param $data string è§£å¯†åçš„åŸæ–‡
      *
-     * @return int ³É¹¦0£¬Ê§°Ü·µ»Ø¶ÔÓ¦µÄ´íÎóÂë
+     * @return int æˆåŠŸ0ï¼Œå¤±è´¥è¿”å›å¯¹åº”çš„é”™è¯¯ç 
      */
     public function decryptData( $encryptedData, $iv, &$data ){
         if (strlen($this->sessionKey) != 24) {
@@ -62,14 +62,14 @@ class WXBizDataCrypt{
 }
 
 /**
- * error code ËµÃ÷.
+ * error code è¯´æ˜.
  * <ul>
 
- *    <li>-41001: encodingAesKey ·Ç·¨</li>
- *    <li>-41003: aes ½âÃÜÊ§°Ü</li>
- *    <li>-41004: ½âÃÜºóµÃµ½µÄbuffer·Ç·¨</li>
- *    <li>-41005: base64¼ÓÃÜÊ§°Ü</li>
- *    <li>-41016: base64½âÃÜÊ§°Ü</li>
+ *    <li>-41001: encodingAesKey éæ³•</li>
+ *    <li>-41003: aes è§£å¯†å¤±è´¥</li>
+ *    <li>-41004: è§£å¯†åå¾—åˆ°çš„bufferéæ³•</li>
+ *    <li>-41005: base64åŠ å¯†å¤±è´¥</li>
+ *    <li>-41016: base64è§£å¯†å¤±è´¥</li>
  * </ul>
  */
 class ErrorCode{

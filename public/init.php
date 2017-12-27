@@ -4,7 +4,7 @@
  */
 
 //定义项目环境
-defined('API_ENV') or define('API_ENV', 'dev');
+defined('API_ENV') or define('API_ENV', 'prod');
 
 // 定义项目路径
 defined('API_ROOT') || define('API_ROOT', dirname(__FILE__) . '/..');

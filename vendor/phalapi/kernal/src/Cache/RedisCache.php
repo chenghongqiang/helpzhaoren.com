@@ -71,12 +71,17 @@ class RedisCache implements Cache {
     }
 
     public function get($key) {
+
         $value = $this->redis->get($this->formatKey($key));
         return $value !== FALSE ? $this->unformatValue($value) : NULL;
     }
 
     public function delete($key) {
         return $this->redis->delete($this->formatKey($key));
+    }
+
+    public function ping(){
+        return $this->redis->ping();
     }
 
     /**

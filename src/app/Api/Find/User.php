@@ -21,19 +21,29 @@ class User extends Api{
     public function getRules(){
         return array(
             'addUser' => array(
-                'code' => array('name' => 'code', 'type' => 'string', 'require' => true, 'desc' => '登录凭证code'),
                 'encryptedData' => array('name' => 'encryptedData', 'type' => 'string', 'require' => true, 'desc' => '目标密文'),
                 'iv' => array('name' => 'iv', 'type' => 'string', 'require' => true, 'desc' => '初始向量')
             ),
             'getUserProfile' => array(
-                'openid' => array('name' => 'openid', 'type' => 'string', 'require' => true , 'desc' => '用户openid')
+                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
             ),
-            'checkSession' => array(
-                'auth_session' => array('name' => 'auth_session', 'type' => 'string', 'require' => true, 'desc' => '3rd_session')
+            'userLogin' => array(
+                'code' => array('name' => 'code', 'type' => 'string', 'require' => true, 'desc' => '登录凭证code'),
             )
         );
     }
 
+    /**
+     * 用户登录
+     * @desc 小程序登录态维护
+     * @return mixed
+     */
+    public function userLogin(){
+        $domainUser = new DomainUSER();
+        $sessionKey = $domainUser->userLogin($this->code);
+        $res['thirdSessionKey'] = $sessionKey;
+        return $res;
+    }
 
     /**
      * 添加用户
@@ -42,24 +52,19 @@ class User extends Api{
      */
     public function addUser(){
 
-        $params = array(
-            'code' => $this->code,
-            'encryptedData' => $this->encryptedData,
-            'iv' => $this->iv
-        );
         $domainUser = new DomainUSER();
-        $id = $domainUser->insert($params);
+        $id = $domainUser->insertUserInfo($this->encryptedData, $this->iv);
         $res['id'] = $id;
         return $res['id'];
 
     }
 
     /**
-     * 获取用户信息包括钱包
-     * @desc 根据用户openid获取用户信息
-     * @return string openid 用户openid
-     * @return string headurl 用户微信图像
-     * @return string nickname 用户微信昵称
+     * 获取第三方sessionKey获取用户信息
+     * @desc 获取用户信息
+     * @return string openId 用户openid
+     * @return string avatarUrl 用户微信图像
+     * @return string nickName 用户微信昵称
      * @return int wallet 用户钱包
      */
     public function getUserProfile(){

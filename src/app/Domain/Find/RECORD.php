@@ -12,7 +12,6 @@ use App\Model\Find\RECORD as ModelRECORD;
 class RECORD {
 
     public function insert($data){
-
         $model = new ModelRECORD();
         return $model->insert($data);
     }

@@ -7,8 +7,7 @@
 
 namespace App\Api\Find;
 
-use PhalApi\Api;
-use App\Domain\Find\USER as DomainUSER;
+use App\Component\FindApi;
 use App\Domain\Find\RECORD as DomainRECORD;
 
 /**
@@ -16,23 +15,24 @@ use App\Domain\Find\RECORD as DomainRECORD;
  * Class Record
  * @package App\Api\Find
  */
-class Record extends Api{
+class Record extends FindApi{
 
     public function getRules(){
-        return array(
+
+        return array_merge(parent::getRules(),array(
+
             'create' => array(
-                'openid' => array('name' => 'openid', 'type' => 'string', 'require' => true, 'desc' => '用户openid'),
                 'money' => array('name' => 'money', 'type' => 'int', 'require' => true, 'desc' => '红包金额'),
                 'intro' => array('name' => 'intro', 'type' => 'string', 'require' => true, 'min' => '2','max' => '20' ,'desc' => '找人描述'),
                 'wx_self_code' => array('name' => 'wx_self_code', 'type' => 'string', 'require' => true, 'desc' => '发起人微信号'),
             ),
             'intro' => array(
-                'openid' => array('name' => 'openid', 'type' => 'string', 'require' => true , 'desc' => '用户openid')
+
             ),
             'getOperRecord' => array(
                 'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id')
             )
-        );
+        ));
     }
 
     /**
@@ -42,8 +42,9 @@ class Record extends Api{
      */
     public function create(){
 
+        \PhalApi\DI()->logger->info("openid:" . $this->openID);
         $data = array(
-            'openid' => $this->openid,
+            'openid' => $this->openID,
             'money' => $this->money,
             'intro' => $this->intro,
             'wx_self_code' => $this->wx_self_code,

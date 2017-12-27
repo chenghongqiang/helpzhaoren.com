@@ -33,11 +33,15 @@ $di->notorm = new NotORMDatabase($di->config->get('dbs'), $di->debug);
 
 // 签名验证服务
 // $di->filter = new \PhalApi\Filter\SimpleMD5Filter();
+$di->findFilter = new \App\Component\Filters\FindFilter();
 
 // 缓存 - Memcache/Memcached
 // $di->cache = function () {
 //     return new \PhalApi\Cache\MemcacheCache(DI()->config->get('sys.mc'));
 // };
+
+// redis cache
+$di->redis = new PhalApi\Cache\RedisCache($di->config->get('dbs')['redis']);
 
 // 支持JsonP的返回
 // if (!empty($_GET['callback'])) {

@@ -19,6 +19,9 @@ class Wallet extends Api{
 
     public function getRules(){
         return array(
+            '*' => array(
+                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
+            ),
             'insert' => array(
                 'openid' => array('name' => 'openid', 'type' => 'string', 'require' => true, 'desc' => '用户openid'),
                 'money' => array('name' => 'money', 'type' => 'string', 'require' => true, 'desc' => '提现金额')

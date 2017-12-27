@@ -2,14 +2,14 @@
 /**
  * 
  * 微信支付API异常类
- * @author widyhu
+ * @author kewin.cheng
  *
  */
 namespace App\WxCore\lib;
 
 class WxPayException extends \Exception {
-	public function errorMessage()
-	{
+
+	public function errorMessage(){
 		return $this->getMessage();
 	}
 }

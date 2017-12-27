@@ -14,7 +14,12 @@
 
 namespace App\WxCore;
 
-class JsApiPay
+use App\WxCore\lib\WxPayApi;
+use App\WxCore\lib\WxPayConfig;
+use App\WxCore\lib\WxPayException;
+use App\WxCore\lib\WxPayJsApiPay;
+
+class WxPayJsApi
 {
 	/**
 	 * 

@@ -22,7 +22,17 @@ return array(
             'charset'   => 'UTF8',                  //数据库字符集
         ),
     ),
-
+    /**
+     * redis配置
+     */
+    'redis' => array(
+        'host' => 'r-wz9d153c39f03bd4152.redis.rds.aliyuncs.com',
+        'port' => '6379',
+        'auth' => 'Dfhl9191868788',
+        'db' => 1,
+        'prefix' => 'phal.',
+        'timeout' => 300
+    ),
     /**
      * 自定义路由表
      */

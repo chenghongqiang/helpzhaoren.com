@@ -20,7 +20,16 @@ return array(
             'password'  => 'gwkfznb',	    //数据库密码
             'port'      => 3306,                    //数据库端口
             'charset'   => 'UTF8',                  //数据库字符集
-        ),
+        )
+    ),
+
+    'redis' => array(
+        'host' => '10.1.2.53',
+        'port' => '6379',
+        'auth' => '',
+        'db' => 1,
+        'prefix' => 'phal.',
+        'timeout' => 1000
     ),
 
     /**

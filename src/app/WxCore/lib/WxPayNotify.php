@@ -2,7 +2,7 @@
 /**
  * 
  * 回调基础类
- * @author widyhu
+ * @author kewin.cheng
  *
  */
 

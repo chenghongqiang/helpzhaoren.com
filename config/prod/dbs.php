@@ -31,7 +31,7 @@ return array(
         'auth' => 'Dfhl9191868788',
         'db' => 1,
         'prefix' => 'phal.',
-        'timeout' => 300
+        'timeout' => 1000
     ),
     /**
      * 自定义路由表

@@ -19,7 +19,6 @@ class WXAuth {
     //登录凭证code获取session_key和openid
     const jscode2sessionURL = 'https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code';
 
-
     /**
      * 使用登录凭证code获取session_key和openid
      * @param $code
@@ -43,7 +42,7 @@ class WXAuth {
 
         $url = sprintf(self::jscode2sessionURL, WxPayConfig::APPID, WxPayConfig::APPSECRET, $code);
         try{
-            $curl = new CUrl(2);
+            $curl = new CUrl();
             $rs = $curl->get($url, 1000);
             $data = json_decode($rs, true);
             if(!empty($data['errcode'])){

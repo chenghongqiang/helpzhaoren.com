@@ -36,14 +36,13 @@ class User extends Api{
     /**
      * 用户登录
      * @desc 小程序登录态维护
-     * @return string openid 用户openid
      * @return string thirdSessionKey 第三方sessionKey
      */
     public function userLogin(){
         $domainUser = new DomainUSER();
-        $data = $domainUser->userLogin($this->code);
+        $thirdSessionKey = $domainUser->userLogin($this->code);
 
-        return $data;
+        return $thirdSessionKey;
     }
 
     /**

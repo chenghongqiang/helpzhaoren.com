@@ -19,12 +19,12 @@ class USER {
     /**
      * 用户登录态维护
      * @param $code
-     * @return null|string
+     * @return array
      * @throws \App\WxCore\lib\WxPayException
      */
     public function userLogin($code){
 
-        $data = [];
+        $sessionKey = '';
         try{
             //根据code获取openid和session_key
             $wxAuth = new WXAuth();
@@ -37,15 +37,16 @@ class USER {
 
                 \PhalApi\DI()->logger->info([__CLASS__][__FUNCTION__ ] . ' sessionKey:' . $sessionKey);
 
-                $data['openid'] = $sessionData['openid'];
-                $data['thirdSessionKey'] = $sessionKey;
-                return $data;
+                /*$data['openid'] = $sessionData['openid'];
+                $data['thirdSessionKey'] = $sessionKey;*/
+                return $sessionKey;
             }
         }catch (InternalServerErrorException $ex){
-            return $data;
+            \PhalApi\DI()->logger->error([__CLASS__][__FUNCTION__ ] . $ex);
+            return $sessionKey;
         }
 
-        return $data;
+        return $sessionKey;
     }
 
     /**
@@ -104,12 +105,12 @@ class USER {
      */
     private function thridSession($len) {
 
-        $fp = fopen('/dev/urandom','rb');
+        $fp = @fopen('/dev/urandom','rb');
         $result = '';
 
         if($fp !== FALSE) {
-            $result .= fread($fp, $len);
-            fclose($fp);
+            $result .= @fread($fp, $len);
+            @fclose($fp);
         } else {
             //打开文件失败 仍然手动生成随机数并记录日志
             \PhalApi\DI()->logger->error([__CLASS__][__FUNCTION__ ] . 'Can not open /dev/urandom');

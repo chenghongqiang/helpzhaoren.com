@@ -23,6 +23,8 @@ $di->config = new FileConfig(API_ROOT . '/config/' . API_ENV);
 // 调试模式，$_GET['__debug__']可自行改名
 $di->debug = !empty($_GET['__debug__']) ? true : API_ENV=='dev' ? true:false;
 
+// 中文显示
+$di->response = new \PhalApi\Response\JsonResponse(JSON_UNESCAPED_UNICODE);
 // 日记纪录
 $di->logger = new FileLogger(API_ROOT . '/runtime', Logger::LOG_LEVEL_DEBUG | Logger::LOG_LEVEL_INFO | Logger::LOG_LEVEL_ERROR);
 

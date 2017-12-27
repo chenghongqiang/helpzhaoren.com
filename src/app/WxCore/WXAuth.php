@@ -44,7 +44,6 @@ class WXAuth {
         $url = sprintf(self::jscode2sessionURL, WxPayConfig::APPID, WxPayConfig::APPSECRET, $code);
         try{
             $curl = new CUrl(2);
-
             $rs = $curl->get($url, 1000);
             $data = json_decode($rs, true);
             if(!empty($data['errcode'])){

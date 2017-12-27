@@ -33,6 +33,7 @@ class USER {
                 //sessionKey有效期1天
                 \PhalApi\DI()->redis->set($sessionKey, $sessionData['session_key'].'_' .$sessionData['openid'], Time::DAY);
 
+                \PhalApi\DI()->logger->error($sessionKey);
                 return $sessionKey;
             }
         }catch (InternalServerErrorException $ex){

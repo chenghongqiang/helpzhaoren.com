@@ -8,7 +8,6 @@
 
 namespace App\Api\Find;
 
-use App\Component\FindApi;
 use PhalApi\Api;
 use App\Domain\Find\USER as DomainUSER;
 
@@ -17,7 +16,7 @@ use App\Domain\Find\USER as DomainUSER;
  * Class User
  * @package App\Api\Find
  */
-class User extends FindApi{
+class User extends Api{
 
     public function getRules(){
         return array(
@@ -53,7 +52,7 @@ class User extends FindApi{
      * @return int id 插入记录id，0表示已存在 -1表示插入失败
      */
     public function insertUserInfo(){
-
+        $this->checkSession($this->thirdSessionKey);
         $domainUser = new DomainUSER();
         $id = $domainUser->insertUserInfo($this->thirdSessionKey, $this->encryptedData, $this->iv);
 
@@ -70,11 +69,19 @@ class User extends FindApi{
      * @return int wallet 用户钱包
      */
     public function getUserProfile(){
+        $this->checkSession($this->thirdSessionKey);
         $domainUser = new DomainUSER();
         $userInfo = $domainUser->getUserInfoFromDB($this->openID);
 
         return $userInfo;
     }
 
+    private function checkSession($thirdSessionKey){
+        $sessionValue = \PhalApi\DI()->redis->get($thirdSessionKey);
+        if(empty($sessionValue)){
+            //缓存过期或者不存在
+            throw new Exception('session已过期', -10000);
+        }
+    }
 
 }

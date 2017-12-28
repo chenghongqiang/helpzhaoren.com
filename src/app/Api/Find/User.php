@@ -70,7 +70,7 @@ class User extends Api{
      */
     public function getUserProfile(){
         $sessionValue = $this->checkSession($this->thirdSessionKey);
-        $list = explode('_', $sessionValue);
+        $list = explode('%%', $sessionValue);
         $openID = $list[1];
 
         $domainUser = new DomainUSER();

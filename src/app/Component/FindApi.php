@@ -39,7 +39,7 @@ class FindApi extends Api{
             //缓存过期或者不存在
             throw new Exception('session已过期', -10000);
         }
-        $list = explode('_', $sessionValue);
+        $list = explode('%%', $sessionValue);
         $this->openID = $list[1];
     }
 

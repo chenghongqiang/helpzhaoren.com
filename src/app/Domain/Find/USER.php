@@ -34,7 +34,7 @@ class USER {
                 //以3rd_session为key，session_key+openid为value写入session存储
                 $sessionKey = $this->thridSession(64);
                 //sessionKey有效期1天
-                \PhalApi\DI()->redis->set($sessionKey, $sessionData['session_key'].'_' .$sessionData['openid'], Time::DAY);
+                \PhalApi\DI()->redis->set($sessionKey, $sessionData['session_key'].'%%' .$sessionData['openid'], Time::DAY);
 
                 \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__  . ' sessionKey:' . $sessionKey);
 
@@ -99,7 +99,7 @@ class USER {
     public function getUserInfo($thirdSessionKey, $encryptedData, $iv){
         $wxAuth = new WXAuth();
         $sessionValue = \PhalApi\DI()->redis->get($thirdSessionKey);
-        $list = explode('_', $sessionValue);
+        $list = explode('%%', $sessionValue);
         $sessionKey = $list[0];
 
         \PhalApi\DI()->logger->info(__CLASS__.__METHOD__ . '->thirdSessionKey：'.$thirdSessionKey.

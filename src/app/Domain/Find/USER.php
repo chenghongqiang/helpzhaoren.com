@@ -53,8 +53,11 @@ class USER {
     public function insertUserInfo($thirdSessionKey, $encryptedData, $iv){
 
         $userInfo = $this->getUserInfo($thirdSessionKey, $encryptedData, $iv);
-        if(empty($userInfo)){
-            return -1;
+        $userInfoDB = $this->getUserInfoFromDB($userInfo->openId);
+
+        if(!empty($userInfoDB)){
+            //数据库已存在用户信息
+            return 0;
         }
         $data = array(
             'openId' => $userInfo->openId,
@@ -66,7 +69,7 @@ class USER {
             $model = new ModelUSER();
             return $model->insert($data);
         }catch (\mysqli_sql_exception $e){
-            return -1;
+            throw new Exception($e, 500);
         }
 
     }
@@ -99,17 +102,20 @@ class USER {
         $list = explode('_', $sessionValue);
         $sessionKey = $list[0];
 
-        \PhalApi\DI()->logger->info(__CLASS__.__METHOD__ . 'thirdSessionKey：'.$thirdSessionKey.
+        \PhalApi\DI()->logger->info(__CLASS__.__METHOD__ . '->thirdSessionKey：'.$thirdSessionKey.
             ' encryptedData:'.$encryptedData.' iv:'.$iv);
         $data = $wxAuth->getUserInfo($sessionKey, $encryptedData, $iv);
         $userInfo = json_decode($data);
-        $userInfoDb = $this->getUserByOpenid($userInfo->openId);
-
-        if(!empty($userInfoDb)){
-            $userInfo['wallet'] = $userInfoDb['wallet'];
-        }
 
         return $userInfo;
+    }
+
+    public function getUserInfoFromDB($openId){
+
+        $model = new ModelUSER();
+        $userInfoDb = $model->getUserByOpenid($openId);
+
+        return $userInfoDb;
     }
 
     /**

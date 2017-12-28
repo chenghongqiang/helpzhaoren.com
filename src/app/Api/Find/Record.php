@@ -27,7 +27,8 @@ class Record extends FindApi{
                 'wx_self_code' => array('name' => 'wx_self_code', 'type' => 'string', 'require' => true, 'desc' => '发起人微信号'),
             ),
             'intro' => array(
-
+                'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
+                'wx_introducers_code' => array('name' => 'wx_introducers_code', 'type' => 'string', 'require' => true, 'desc' => '引荐人微信号'),
             ),
             'getOperRecord' => array(
                 'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id')

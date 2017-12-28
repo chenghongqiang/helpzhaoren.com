@@ -8,6 +8,7 @@
 namespace App\Component;
 
 use PhalApi\Api;
+use PhalApi\Exception;
 use PhalApi\Filter;
 
 /**
@@ -34,6 +35,10 @@ class FindApi extends Api{
     protected function userCheck(){
         //根据接口请求thirdSessionKey,从redis中取出thirdSessionKey = $session_key_$openid
         $sessionValue = \PhalApi\DI()->redis->get($this->thirdSessionKey);
+        if(empty($sessionValue)){
+            //缓存过期或者不存在
+            throw new Exception('session已过期', -10000);
+        }
         $list = explode('_', $sessionValue);
         $this->openID = $list[1];
     }

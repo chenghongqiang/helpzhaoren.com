@@ -7,7 +7,7 @@
 
 namespace App\Api\Find;
 
-use PhalApi\Api;
+use App\Component\FindApi;
 use App\Domain\Find\WALLET as DomainWALLET;
 
 /**
@@ -15,7 +15,7 @@ use App\Domain\Find\WALLET as DomainWALLET;
  * Class Wallet
  * @package App\Api\Find
  */
-class Wallet extends Api{
+class Wallet extends FindApi{
 
     public function getRules(){
         return array(

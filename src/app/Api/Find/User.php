@@ -8,6 +8,7 @@
 
 namespace App\Api\Find;
 
+use App\Component\FindApi;
 use PhalApi\Api;
 use App\Domain\Find\USER as DomainUSER;
 
@@ -16,7 +17,7 @@ use App\Domain\Find\USER as DomainUSER;
  * Class User
  * @package App\Api\Find
  */
-class User extends Api{
+class User extends FindApi{
 
     public function getRules(){
         return array(
@@ -27,8 +28,6 @@ class User extends Api{
             ),
             'getUserProfile' => array(
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
-                'encryptedData' => array('name' => 'encryptedData', 'type' => 'string', 'require' => true, 'desc' => '目标密文'),
-                'iv' => array('name' => 'iv', 'type' => 'string', 'require' => true, 'desc' => '初始向量')
             ),
             'userLogin' => array(
                 'code' => array('name' => 'code', 'type' => 'string', 'require' => true, 'desc' => '登录凭证code'),
@@ -72,7 +71,7 @@ class User extends Api{
      */
     public function getUserProfile(){
         $domainUser = new DomainUSER();
-        $userInfo = $domainUser->getUserInfo($this->thirdSessionKey, $this->encryptedData, $this->iv);
+        $userInfo = $domainUser->getUserInfoFromDB($this->openID);
 
         return $userInfo;
     }

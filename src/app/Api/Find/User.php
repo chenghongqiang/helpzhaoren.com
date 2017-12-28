@@ -51,14 +51,14 @@ class User extends Api{
     /**
      * 添加用户
      * @desc 进入小程序判断用户是否已存在，不存在添加新用户
-     * @return int id 插入记录id，0表示已存在
+     * @return int id 插入记录id，0表示已存在 -1表示插入失败
      */
     public function insertUserInfo(){
 
         $domainUser = new DomainUSER();
         $id = $domainUser->insertUserInfo($this->thirdSessionKey, $this->encryptedData, $this->iv);
-        $res['id'] = $id;
-        return $res['id'];
+
+        return $id;
 
     }
 

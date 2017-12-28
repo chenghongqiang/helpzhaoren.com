@@ -68,6 +68,7 @@ class WXAuth {
             return $data;
         } else {
             \PhalApi\DI()->logger->error(__CLASS__.__METHOD__ . ' errCode:' . $errCode);
+            return array();
         }
     }
 

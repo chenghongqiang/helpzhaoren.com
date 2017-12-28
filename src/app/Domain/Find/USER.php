@@ -49,6 +49,28 @@ class USER {
         return $sessionKey;
     }
 
+    public function insertUserInfo($thirdSessionKey, $encryptedData, $iv){
+
+        $userInfo = $this->getUserInfo($thirdSessionKey, $encryptedData, $iv);
+        if(empty($userInfo)){
+            return -1;
+        }
+        $data = array(
+            'openid' => $userInfo['openId'],
+            'nickName' => $userInfo['nickName'],
+            'avatarUrl' => $userInfo['avatarUrl'],
+            'unionId' => $userInfo['unionId'],
+        );
+
+        try{
+            $model = new ModelUSER();
+            return $model->insert($data);
+        }catch (\mysqli_sql_exception $e){
+            return -1;
+        }
+
+    }
+
     /**
      * 解密数据获取用户信息
      * @param $encryptedData
@@ -56,20 +78,20 @@ class USER {
      * @return mixed
      * 解密后用户信息如下：
      * {
-            "openId": "OPENID",
-            "nickName": "NICKNAME",
-            "gender": GENDER,
-            "city": "CITY",
-            "province": "PROVINCE",
-            "country": "COUNTRY",
-            "avatarUrl": "AVATARURL",
-            "unionId": "UNIONID",
-            "watermark":
+        "openId": "OPENID",
+        "nickName": "NICKNAME",
+        "gender": GENDER,
+        "city": "CITY",
+        "province": "PROVINCE",
+        "country": "COUNTRY",
+        "avatarUrl": "AVATARURL",
+        "unionId": "UNIONID",
+        "watermark":
             {
             "appid":"APPID",
             "timestamp":TIMESTAMP
             }
-        }
+    }
      */
     public function getUserInfo($thirdSessionKey, $encryptedData, $iv){
         $wxAuth = new WXAuth();
@@ -87,24 +109,6 @@ class USER {
         }
 
         return $userInfo;
-    }
-
-    public function insertUserInfo($thirdSessionKey, $encryptedData, $iv){
-
-        $userInfo = $this->getUserInfo($thirdSessionKey, $encryptedData, $iv);
-        if(empty($userInfo)){
-            return -1;
-        }
-        $data = array(
-            'openid' => $userInfo['openId'],
-            'nickName' => $userInfo['nickName'],
-            'avatarUrl' => $userInfo['avatarUrl'],
-            'unionId' => $userInfo['unionId'],
-        );
-
-        $model = new ModelUSER();
-        return $model->insert($data);
-
     }
 
     /**

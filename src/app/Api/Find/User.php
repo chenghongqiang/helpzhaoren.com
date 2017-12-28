@@ -69,9 +69,12 @@ class User extends Api{
      * @return int wallet 用户钱包
      */
     public function getUserProfile(){
-        $this->checkSession($this->thirdSessionKey);
+        $sessionValue = $this->checkSession($this->thirdSessionKey);
+        $list = explode('_', $sessionValue);
+        $openID = $list[1];
+
         $domainUser = new DomainUSER();
-        $userInfo = $domainUser->getUserInfoFromDB($this->openID);
+        $userInfo = $domainUser->getUserInfoFromDB($openID);
 
         return $userInfo;
     }
@@ -82,6 +85,8 @@ class User extends Api{
             //缓存过期或者不存在
             throw new Exception('session已过期', -10000);
         }
+
+        return $sessionValue;
     }
 
 }

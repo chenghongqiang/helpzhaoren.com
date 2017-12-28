@@ -10,6 +10,7 @@ namespace App\WxCore;
 use App\WxCore\lib\WxPayConfig;
 use App\WxCore\lib\WxPayException;
 use PhalApi\CUrl;
+use PhalApi\Exception;
 use PhalApi\Exception\InternalServerErrorException;
 use PhalApi\Logger;
 
@@ -68,7 +69,7 @@ class WXAuth {
             return $data;
         } else {
             \PhalApi\DI()->logger->error(__CLASS__.__METHOD__ . ' errCode:' . $errCode);
-            return array();
+            throw new Exception("decryptData failed", $errCode);
         }
     }
 

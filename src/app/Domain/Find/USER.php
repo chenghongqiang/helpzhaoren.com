@@ -101,9 +101,10 @@ class USER {
 
         \PhalApi\DI()->logger->info(__CLASS__.__METHOD__ . 'thirdSessionKey：'.$thirdSessionKey.
             ' encryptedData:'.$encryptedData.' iv:'.$iv);
-        $userInfo = $wxAuth->getUserInfo($sessionKey, $encryptedData, $iv);
+        $data = $wxAuth->getUserInfo($sessionKey, $encryptedData, $iv);
+        $userInfo = json_decode($data);
+        $userInfoDb = $this->getUserByOpenid($userInfo->openId);
 
-        $userInfoDb = $this->getUserByOpenid($userInfo['openId']);
         if(!empty($userInfoDb)){
             $userInfo['wallet'] = $userInfoDb['wallet'];
         }

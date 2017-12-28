@@ -38,7 +38,7 @@ class User extends Api{
 
     /**
      * 用户登录
-     * @desc 小程序登录态维护
+     * @desc 小程序登录态维护，服务器端生成第三方sessionKey，返回第三方sessionKey给客户端
      * @return string thirdSessionKey 第三方sessionKey
      */
     public function userLogin(){

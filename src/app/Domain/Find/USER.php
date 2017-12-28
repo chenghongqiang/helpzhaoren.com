@@ -11,6 +11,7 @@ use App\Common\Utils\Time;
 use App\Common\Utils\Tool;
 use App\Model\Find\USER as ModelUSER;
 use App\WxCore\WXAuth;
+use PhalApi\Exception;
 use PhalApi\Exception\InternalServerErrorException;
 
 
@@ -56,10 +57,9 @@ class USER {
             return -1;
         }
         $data = array(
-            'openid' => $userInfo['openId'],
-            'nickName' => $userInfo['nickName'],
-            'avatarUrl' => $userInfo['avatarUrl'],
-            'unionId' => $userInfo['unionId'],
+            'openId' => $userInfo->openId,
+            'nickName' => $userInfo->nickName,
+            'avatarUrl' => $userInfo->avatarUrl,
         );
 
         try{

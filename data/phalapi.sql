@@ -6,7 +6,6 @@ use `phalapi`;
 CREATE TABLE `phal_user` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `openId` VARCHAR(50) NOT NULL COMMENT '用户openId',
-  `unionId` VARCHAR(50) NOT NULL COMMENT '开放平台唯一标识符unionId',
   `avatarUrl` VARCHAR(256) NOT NULL COMMENT '微信图像',
   `nickName` VARCHAR(50) NOT NULL COMMENT '微信昵称',
   `wallet` DECIMAL(5, 1) DEFAULT 0 COMMENT '用户钱包，初始为0',

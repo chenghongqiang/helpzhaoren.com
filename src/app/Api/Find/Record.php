@@ -66,7 +66,7 @@ class Record extends FindApi{
      * @return boolean false 插入失败
      */
     public function intro(){
-
+        $domainRecord = new DomainRECORD();
     }
 
     /**

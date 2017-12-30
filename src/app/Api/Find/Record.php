@@ -72,6 +72,7 @@ class Record extends FindApi{
      * @return string wx_introducered_code 被引荐人微信号
      * @return int oper_state 记录状态 1.进行中 2.过期失效 3.引荐成功
      * @return string create_time 记录创建时间
+     * @rerurn string current_time 当前时间，根据记录创建时间和服务器当前时间确认此记录是否过期
      */
     public function getOperRecord(){
         //获取找人记录详情

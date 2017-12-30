@@ -9,6 +9,7 @@ namespace App\Api\Find;
 
 use App\Component\FindApi;
 use App\Domain\Find\RECORD as DomainRECORD;
+use App\Domain\Find\IntroRecord as DomainIntroRecord;
 
 /**
  * 找人记录
@@ -31,7 +32,8 @@ class Record extends FindApi{
                 'wx_introducers_code' => array('name' => 'wx_introducers_code', 'type' => 'string', 'require' => true, 'desc' => '引荐人微信号'),
             ),
             'getOperRecord' => array(
-                'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id')
+                'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
+                'intro_user_id' => array('name' => 'id', 'type' => 'int', 'desc' => '引荐人id')
             )
         ));
     }
@@ -60,30 +62,28 @@ class Record extends FindApi{
     }
 
     /**
-     * 引荐人
-     * @desc 引荐人填入微信号，引荐找人
-     * @return boolean true 插入成功
-     * @return boolean false 插入失败
-     */
-    public function intro(){
-        $domainRecord = new DomainRECORD();
-    }
-
-    /**
      * 找人记录详情
      * @desc 根据找人记录id获取详情
      * @return int id 找人记录id
      * @return int money 红包金额
      * @return string code 找人码 6位字符
      * @return string intro 找人推荐描述
-     * @return string wx_introducers_code 引荐人微信号
+     * @return string wx_introducer_code 引荐人微信号
      * @return string wx_introducered_code 被引荐人微信号
      * @return int oper_state 记录状态 1.进行中 2.过期失效 3.引荐成功
      * @return string create_time 记录创建时间
      */
     public function getOperRecord(){
+        //获取找人记录详情
         $domainRecord = new DomainRECORD();
         $ret = $domainRecord->get($this->id);
+
+        //获取引荐人信息
+        $domainIntroRecord = new DomainIntroRecord();
+        $introUserRet = $domainIntroRecord->get($this->intro_user_id);
+
+        $ret['wx_introducer_code'] = $introUserRet->wx_introducer_code;
+
         return $ret;
     }
 }

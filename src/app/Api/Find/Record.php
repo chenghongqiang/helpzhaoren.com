@@ -8,6 +8,7 @@
 namespace App\Api\Find;
 
 use App\Component\FindApi;
+use App\Domain\Find\USER as DomainUSER;
 use App\Domain\Find\RECORD as DomainRECORD;
 use App\Domain\Find\IntroRecord as DomainIntroRecord;
 
@@ -33,7 +34,7 @@ class Record extends FindApi{
             ),
             'getOperRecord' => array(
                 'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
-                'intro_user_id' => array('name' => 'id', 'type' => 'int', 'desc' => '引荐人id')
+                'intro_user_id' => array('name' => 'intro_user_id', 'type' => 'int', 'desc' => '引荐人id')
             )
         ));
     }
@@ -65,6 +66,7 @@ class Record extends FindApi{
      * 找人记录详情
      * @desc 根据找人记录id获取详情
      * @return int id 找人记录id
+     * @return string wx_creator_avatarUrl 发起人微信图像
      * @return int money 红包金额
      * @return string code 找人码 6位字符
      * @return string intro 找人推荐描述
@@ -79,11 +81,14 @@ class Record extends FindApi{
         $domainRecord = new DomainRECORD();
         $ret = $domainRecord->get($this->id);
 
+        $domainUser = new DomainUSER();
+        $ret['wx_creator_avatarUrl'] = $domainUser->getUserByOpenid($ret['openId']);
+
         //获取引荐人信息
         $domainIntroRecord = new DomainIntroRecord();
         $introUserRet = $domainIntroRecord->get($this->intro_user_id);
 
-        $ret['wx_introducer_code'] = $introUserRet->wx_introducer_code;
+        $ret['wx_introducer_code'] = $introUserRet['wx_introducer_code'];
 
         return $ret;
     }

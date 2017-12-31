@@ -57,6 +57,7 @@ class Pay extends FindApi{
 
     /**
      * 下单通知
+     * @desc 支付成功后回调地址
      */
     public function notify(){
 

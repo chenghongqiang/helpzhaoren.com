@@ -30,6 +30,9 @@ class User extends Api{
             ),
             'userLogin' => array(
                 'code' => array('name' => 'code', 'type' => 'string', 'require' => true, 'desc' => '登录凭证code'),
+            ),
+            'test' => array(
+                array('name' => 'params', 'type' => 'array', 'format' => 'json')
             )
         );
     }
@@ -87,6 +90,14 @@ class User extends Api{
         }
 
         return $sessionValue;
+    }
+
+    /**
+     * 测试
+     * @return mixed
+     */
+    public function test(){
+        return $this->params;
     }
 
 }

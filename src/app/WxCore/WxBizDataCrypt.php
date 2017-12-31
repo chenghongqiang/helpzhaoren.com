@@ -10,7 +10,7 @@ namespace App\WxCore;
 /*
  * 对微信小程序用户加密数据的解密
  */
-class WXBizDataCrypt{
+class WxBizDataCrypt{
 
     private $appid;
     private $sessionKey;

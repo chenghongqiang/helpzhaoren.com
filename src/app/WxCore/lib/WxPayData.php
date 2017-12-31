@@ -6,6 +6,8 @@
  * @author kewin.cheng
  *
  */
+namespace App\WxCore\lib;
+
 class WxPayCloseOrder extends WxPayDataBase
 {
 	/**

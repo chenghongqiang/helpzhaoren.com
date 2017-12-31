@@ -38,7 +38,7 @@ class Wallet extends FindApi{
     public function insert(){
 
         $data = array(
-            'openid' => $this->openid,
+            'openid' => $this->openID,
             'money' => $this->money
         );
 
@@ -59,7 +59,7 @@ class Wallet extends FindApi{
 
         $domainWallet = new DomainWALLET();
 
-        $walletRecord = $domainWallet->getWalletRecord($this->openid);
+        $walletRecord = $domainWallet->getWalletRecord($this->openID);
         return $walletRecord;
     }
 

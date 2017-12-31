@@ -56,7 +56,7 @@ class WxPayApi
 		//签名
 		$inputObj->SetSign();
 		$xml = $inputObj->ToXml();
-		
+
 		$startTimeStamp = self::getMillisecond();//请求开始时间
 		$response = self::postXmlCurl($xml, $url, false, $timeOut);
 		$result = WxPayResults::Init($response);
@@ -520,7 +520,7 @@ class WxPayApi
 	 * @param int $second   url执行超时时间，默认30s
 	 * @throws WxPayException
 	 */
-	private static function postXmlCurl($xml, $url, $useCert = false, $second = 30)
+	public static function postXmlCurl($xml, $url, $useCert = false, $second = 30)
 	{		
 		$ch = curl_init();
 		//设置超时

@@ -58,4 +58,30 @@ class IntroSuccessRecord extends FindApi{
         return $ret;
     }
 
+    /**
+     * 发送模板消息
+     * @desc 被推荐人提交数据城后，给发起人、引荐人、被引荐人发送模板消息
+     * @return boolean flag 1.成功 0.失败
+     */
+    public function sendModuleMsg($params){
+        $data = array(
+            'touser' => $params['touser'],
+            'template_id' => $params['template_id'],
+            'page' => $params['page'],
+            'form_id' => $params['form_id'],
+            'data' => array(
+                'keyword1' => array('value' => '', 'color' => ''),
+                'keyword2' => array('value' => '', 'color' => ''),
+                'keyword3' => array('value' => '', 'color' => ''),
+                'keyword4' => array('value' => '', 'color' => ''),
+            ),
+            'emphasis_keyword' => ''
+
+        );
+
+        $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
+        $domainIntroSuccessRecord->sendModuleMsg($data);
+    }
+
+
 }

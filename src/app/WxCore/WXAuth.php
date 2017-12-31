@@ -44,25 +44,33 @@ class WXAuth {
         $url = sprintf(self::jscode2sessionURL, WxPayConfig::APPID, WxPayConfig::APPSECRET, $code);
         try{
             $curl = new CUrl();
-            $rs = $curl->get($url, 1000);
+            $rs = $curl->get($url, 6000);
             $data = json_decode($rs, true);
             if(!empty($data['errcode'])){
                 //记录错误
                 \PhalApi\DI()->logger->error(json_encode($rs));
-                throw new WxPayException("jscode2session exception:" . $rs);
+                throw new Exception("jscode2session exception:" . $rs, $data['errcode']);
             }
 
             return $data;
 
         }catch (InternalServerErrorException $ex){
-            throw new WxPayException("curl exception: :" . $ex, 500);
+            throw new Exception("curl exception: :" . $ex, 500);
         }
 
     }
 
+    /**
+     * 解密数据获取用户信息
+     * @param $sessionKey
+     * @param $encryptedData
+     * @param $iv
+     * @return mixed
+     * @throws Exception
+     */
     public function getUserInfo($sessionKey, $encryptedData, $iv){
 
-        $pc = new WXBizDataCrypt(WxPayConfig::APPID, $sessionKey);
+        $pc = new WxBizDataCrypt(WxPayConfig::APPID, $sessionKey);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
         if ($errCode == 0) {
@@ -72,5 +80,6 @@ class WXAuth {
             throw new Exception("decryptData failed", $errCode);
         }
     }
+
 
 }

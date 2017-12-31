@@ -94,10 +94,11 @@ class User extends Api{
 
     /**
      * 测试
-     * @return mixed
+     * @return string username
+     * @return string password
      */
     public function test(){
-        return $this->params;
+        return $this->username;
     }
 
 }

@@ -98,7 +98,7 @@ class User extends Api{
      * @return string password
      */
     public function test(){
-        return $this->username;
+        return $this->params;
     }
 
 }

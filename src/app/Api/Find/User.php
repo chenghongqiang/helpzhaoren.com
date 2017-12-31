@@ -32,7 +32,7 @@ class User extends Api{
                 'code' => array('name' => 'code', 'type' => 'string', 'require' => true, 'desc' => '登录凭证code'),
             ),
             'test' => array(
-                array('name' => 'params', 'type' => 'array', 'format' => 'json')
+                'params' => array('name' => 'params', 'type' => 'array', 'require' => true, 'format' => 'json')
             )
         );
     }

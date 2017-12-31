@@ -32,7 +32,8 @@ class User extends Api{
                 'code' => array('name' => 'code', 'type' => 'string', 'require' => true, 'desc' => '登录凭证code'),
             ),
             'test' => array(
-                'params' => array('name' => 'params', 'type' => 'array', 'require' => true, 'format' => 'json')
+                'params' => array('name' => 'params', 'type' => 'array', 'default' => '{"username":"dogstar","password":"xxxxxx"}',
+                    'require' => true, 'format' => 'json')
             )
         );
     }
@@ -94,6 +95,7 @@ class User extends Api{
 
     /**
      * 测试
+     * @ignore
      * @return string username
      * @return string password
      */

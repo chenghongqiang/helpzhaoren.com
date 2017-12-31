@@ -14,6 +14,12 @@ class IntroRecord extends NotORM{
         return 'intro_record';
     }
 
+    public function getIntroRecord($recordId, $openId){
+        return $this->getORM()
+            ->select('id, recordId, wx_introducer_code')
+            ->where(array('recordId' => $recordId, 'openId' => $openId))
+            ->fetchRow();
+    }
 
 
 }

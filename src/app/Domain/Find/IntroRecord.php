@@ -25,4 +25,9 @@ class IntroRecord {
         $model = new ModelIntroRecord();
         return $model->update($id, $newData);
     }
+
+    public function getIntroRecord($recordId, $openId){
+        $model = new ModelIntroRecord();
+        return $model->getIntroRecord($recordId, $openId);
+    }
 }

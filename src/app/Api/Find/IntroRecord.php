@@ -16,7 +16,7 @@ class IntroRecord extends FindApi{
         return array_merge(parent::getRules(),array(
 
             'intro' => array(
-                'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
+                'record_id' => array('name' => 'record_id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
                 'wx_introducer_code' => array('name' => 'wx_introducer_code', 'type' => 'string', 'require' => true, 'desc' => '引荐人微信号'),
 
             )
@@ -26,17 +26,24 @@ class IntroRecord extends FindApi{
     /**
      * 引荐人提交数据
      * @desc 引荐人填入微信号，引荐找人
-     * @return int id 引荐成功后引荐人id，方便分享后查找对应引荐人记录
-     * @return boolean false 插入失败
+     * @return int intro_user_id 引荐成功后引荐人记录id，方便分享后查找对应引荐人记录
      */
     public function intro(){
         $domainIntroRecord = new DomainIntroRecord();
 
         $data = array(
-            'id' =>$this->id,
+            'recordId' =>$this->record_id,
             'openId' => $this->openID,
             'wx_introducer_code' => $this->wx_introducer_code
         );
+
+        //引荐人下次重新提交数据，根据openId覆盖以前提交的数据
+        $introRecord = $domainIntroRecord->getIntroRecord($this->record_id, $this->openID);
+        if(!empty($introRecord)){
+            return $domainIntroRecord->update(
+                array('id' => $this->id, 'openId' => $this->openID), $data
+            );
+        }
 
         $ret = $domainIntroRecord->insert($data);
         return $ret;

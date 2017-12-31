@@ -28,13 +28,12 @@ class Record extends FindApi{
                 'intro' => array('name' => 'intro', 'type' => 'string', 'require' => true, 'min' => '2','max' => '20' ,'desc' => '找人描述'),
                 'wx_self_code' => array('name' => 'wx_self_code', 'type' => 'string', 'require' => true, 'desc' => '发起人微信号'),
             ),
-            'intro' => array(
-                'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
-                'wx_introducers_code' => array('name' => 'wx_introducers_code', 'type' => 'string', 'require' => true, 'desc' => '引荐人微信号'),
-            ),
-            'getOperRecord' => array(
+            'getIntroRecord' => array(
                 'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
                 'intro_user_id' => array('name' => 'intro_user_id', 'type' => 'int', 'desc' => '引荐人id')
+            ),
+            'getOperRecord' => array(
+                'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id')
             )
         ));
     }
@@ -53,7 +52,7 @@ class Record extends FindApi{
             'intro' => $this->intro,
             'wx_self_code' => $this->wx_self_code,
             'oper_state' => 1,
-            'code' => rand(pow(10,(6-1)), pow(10,6)-1)
+            'code' => rand(pow(10,(6-1)), pow(10,6)-1) //随机生成六位找人码
         );
 
         $domainRecord = new DomainRECORD();
@@ -63,7 +62,7 @@ class Record extends FindApi{
     }
 
     /**
-     * 找人记录详情
+     * 引荐找人记录详情【被引荐人录入信息页面详情】
      * @desc 根据找人记录id获取详情
      * @return int id 找人记录id
      * @return string wx_creator_avatarUrl 发起人微信图像
@@ -71,18 +70,19 @@ class Record extends FindApi{
      * @return string code 找人码 6位字符
      * @return string intro 找人推荐描述
      * @return string wx_introducer_code 引荐人微信号
-     * @return string wx_introducered_code 被引荐人微信号
+     * @return string wx_introducer_avatarUrl 引荐人微信图像
      * @return int oper_state 记录状态 1.进行中 2.过期失效 3.引荐成功
      * @return string create_time 记录创建时间
      * @rerurn string current_time 当前时间，根据记录创建时间和服务器当前时间确认此记录是否过期
      */
-    public function getOperRecord(){
+    public function getIntroRecord(){
         //获取找人记录详情
         $domainRecord = new DomainRECORD();
         $ret = $domainRecord->get($this->id);
 
         $domainUser = new DomainUSER();
-        $ret['wx_creator_avatarUrl'] = $domainUser->getUserByOpenid($ret['openId']);
+        $creatorInfo = $domainUser->getUserByOpenid($ret['openId']);
+        $ret['wx_creator_avatarUrl'] = $creatorInfo['avatarUrl'];
 
         //获取引荐人信息
         $domainIntroRecord = new DomainIntroRecord();
@@ -91,5 +91,52 @@ class Record extends FindApi{
         $ret['wx_introducer_code'] = $introUserRet['wx_introducer_code'];
 
         return $ret;
+    }
+
+    /**
+     * 引荐找人成功记录详情【引荐成功后信息页面详情】
+     * @desc 根据找人记录id获取详情
+     * @return int id 找人记录id
+     * @return string wx_creator_avatarUrl 发起人微信图像
+     * @return int money 红包金额
+     * @return string code 找人码 6位字符
+     * @return string intro 找人推荐描述
+     * @return string wx_introducer_code 引荐人微信号
+     * @return string wx_introducer_avatarUrl 引荐人微信图像
+     * @return string wx_introducered_code 被引荐人微信号
+     * @return string wx_introducered_avatarUrl 被引荐人微信图像
+     * @return string create_time 记录创建时间
+     */
+    public function getOperRecord(){
+        //获取找人记录详情
+        $domainRecord = new DomainRECORD();
+        $ret = $domainRecord->get($this->id);
+
+        $domainUser = new DomainUSER();
+        $creatorInfo = $domainUser->getUserByOpenid($ret['openId']);
+        $ret['wx_creator_avatarUrl'] = $creatorInfo['avatarUrl'];
+
+        //获取引荐人信息
+        $domainIntroRecord = new DomainIntroRecord();
+        $introUserRet = $domainIntroRecord->get($this->intro_user_id);
+
+        $ret['wx_introducer_code'] = $introUserRet['wx_introducer_code'];
+
+        return $ret;
+    }
+
+    /**
+     * 获取当前用户找人记录 —— 找人记录页面找人tab
+     * @desc 获取当前用户所有相关找人记录
+     * @return string intro 找人描述
+     * @return string money 红包金额
+     * @return int oper_state 1.进行中 2.过期失效 3.引荐成功
+     * @return string create_time 创建时间
+     */
+    public function getFindRecord(){
+        $domainRecord = new DomainRECORD();
+        $records = $domainRecord->getRecordsByOpenId($this->openID);
+
+        return $records;
     }
 }

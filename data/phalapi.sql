@@ -37,14 +37,15 @@ CREATE TABLE `phal_oper_record` (
   `money` DECIMAL(5, 1) NOT NULL COMMENT '红包金额',
   `intro` VARCHAR(200) NOT NULL COMMENT '找人描述',
   `code` VARCHAR(6) NOT NULL COMMENT '找人码 限定6位字符',
-  `oper_state` tinyint(4) DEFAULT NULL COMMENT '记录状态  -1.删除 1.进行中 2.过期失效 3.引荐成功',
+  `oper_state` tinyint(4) DEFAULT NULL COMMENT '记录状态  -1.删除 1.进行中 2.过期失效 3.引荐成功 4.引荐失败(被申诉)',
   `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 #引荐人记录表
 CREATE TABLE `phal_intro_record` (
-  `id` int(10) NOT NULL COMMENT '找人记录表id',
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `recordId` int(10) NOT NULL COMMENT '找人记录表id',
   `openId` VARCHAR(50) NOT NULL COMMENT '用户openid',
   `wx_introducer_code` VARCHAR(50) NOT NULL COMMENT '引荐人微信号',
   `intro_state` tinyint(4) DEFAULT 1 COMMENT '引荐者所属人  1.引荐人',
@@ -55,7 +56,8 @@ CREATE TABLE `phal_intro_record` (
 #引荐被引荐成功表 引荐人、被引荐人只会有一个
 #考虑引荐人很多，后期数量大，加了一个引荐人记录表和引荐成功表
 CREATE TABLE `phal_intro_success_record` (
-  `id` int(10) NOT NULL COMMENT '找人记录表id',
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `recordId` int(10) NOT NULL COMMENT '找人记录表id',
   `openId` VARCHAR(50) NOT NULL COMMENT '用户openid',
   `wx_introducer_code` VARCHAR(50) NOT NULL COMMENT '引荐人微信号',
   `intro_state` tinyint(4) DEFAULT NULL COMMENT '引荐者所属人  1.引荐人 2.被引荐人',

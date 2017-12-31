@@ -21,4 +21,11 @@ class RECORD {
         return $model->get($id);
     }
 
+    public function getRecordsByOpenId($openId){
+        $model = new ModelRECORD();
+        $records = $model->getRecordsByOpenId($openId);
+
+        return $records;
+    }
+
 }

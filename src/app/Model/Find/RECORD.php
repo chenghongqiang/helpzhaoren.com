@@ -45,11 +45,18 @@ class RECORD extends NotORM {
     public function getOperRecord($id){
         $rs = \PhalApi\DI()->notorm->oper_record
             ->select('wx_self_code, money, intro, code, oper_state,
-                intro_record.wx_introducers_code, intro_record.intro_state')
+                intro_record.wx_introducer_code, intro_record.intro_state')
             ->where('id', $id)
             ->fetchAll();
 
         return $rs;
+    }
+
+    public function getRecordsByOpenId($openId){
+        return $this->getORM()
+            ->select('id, intro, money', 'oper_state', 'create_time')
+            ->where('openId', $openId)
+            ->fetchAll();
     }
 
 }

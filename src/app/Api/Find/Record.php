@@ -25,7 +25,7 @@ class Record extends FindApi{
 
             'create' => array(
                 'money' => array('name' => 'money', 'type' => 'int', 'require' => true, 'desc' => '红包金额'),
-                'intro' => array('name' => 'intro', 'type' => 'string', 'require' => true, 'min' => '2','max' => '20' ,'desc' => '找人描述'),
+                'intro' => array('name' => 'intro', 'type' => 'string', 'require' => true, 'min' => '6','max' => '90' ,'desc' => '找人描述'),
                 'wx_self_code' => array('name' => 'wx_self_code', 'type' => 'string', 'require' => true, 'desc' => '发起人微信号'),
             ),
             'getIntroRecord' => array(
@@ -62,7 +62,7 @@ class Record extends FindApi{
     }
 
     /**
-     * 引荐找人记录详情【被引荐人录入信息页面详情】
+     * 引荐找人记录详情【引荐人提交数据后页面详情】
      * @desc 根据找人记录id获取详情
      * @return int id 找人记录id
      * @return string wx_creator_avatarUrl 发起人微信图像
@@ -94,7 +94,7 @@ class Record extends FindApi{
     }
 
     /**
-     * 引荐找人成功记录详情【引荐成功后信息页面详情】
+     * 引荐找人成功记录详情【被推荐人提交数据后引荐成功信息页面详情】
      * @desc 根据找人记录id获取详情
      * @return int id 找人记录id
      * @return string wx_creator_avatarUrl 发起人微信图像
@@ -126,7 +126,7 @@ class Record extends FindApi{
     }
 
     /**
-     * 获取当前用户找人记录 —— 找人记录页面找人tab
+     * 获取当前用户找人记录【找人记录页面找人tab】
      * @desc 获取当前用户所有相关找人记录
      * @return string intro 找人描述
      * @return string money 红包金额
@@ -134,6 +134,21 @@ class Record extends FindApi{
      * @return string create_time 创建时间
      */
     public function getFindRecord(){
+        $domainRecord = new DomainRECORD();
+        $records = $domainRecord->getRecordsByOpenId($this->openID);
+
+        return $records;
+    }
+
+    /**
+     * 获取当前用户引荐被引荐记录【找人记录页面引荐tab】
+     * @desc 获取当前用户所有相关找人记录
+     * @return string intro 找人描述
+     * @return string money 红包金额
+     * @return int oper_state 1.进行中 2.过期失效 3.引荐成功
+     * @return string create_time 创建时间
+     */
+    public function getFindIntroRecord(){
         $domainRecord = new DomainRECORD();
         $records = $domainRecord->getRecordsByOpenId($this->openID);
 

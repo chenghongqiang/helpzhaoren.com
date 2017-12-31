@@ -49,7 +49,9 @@ CREATE TABLE `phal_intro_record` (
   `openId` VARCHAR(50) NOT NULL COMMENT '用户openid',
   `wx_introducer_code` VARCHAR(50) NOT NULL COMMENT '引荐人微信号',
   `intro_state` tinyint(4) DEFAULT 1 COMMENT '引荐者所属人  1.引荐人',
-  `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
+  `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+
+  PRIMARY KEY (`id`)
 
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -61,8 +63,9 @@ CREATE TABLE `phal_intro_success_record` (
   `openId` VARCHAR(50) NOT NULL COMMENT '用户openid',
   `wx_introducer_code` VARCHAR(50) NOT NULL COMMENT '引荐人微信号',
   `intro_state` tinyint(4) DEFAULT NULL COMMENT '引荐者所属人  1.引荐人 2.被引荐人',
-  `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
+  `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 #交易记录

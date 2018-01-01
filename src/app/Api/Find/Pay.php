@@ -38,13 +38,11 @@ class Pay extends FindApi{
         //统一下单
         $input = new WxPayUnifiedOrder();
         $input->SetBody("发起找人红包");
-        $input->SetAttach("test");
         $input->SetOut_trade_no(WxPayConfig::MCHID.date("YmdHis"));
         $input->SetTotal_fee($this->total_fee);
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 600));
         $input->SetGoods_tag("HONGBAO");
-        $input->SetNotify_url(WxPayConfig::NOTIFY_URL);
         $input->SetTrade_type("JSAPI");
         $input->SetOpenid($this->openID);
         $order = WxPayApi::unifiedOrder($input);

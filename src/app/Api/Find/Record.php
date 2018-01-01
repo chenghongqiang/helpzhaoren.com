@@ -36,7 +36,7 @@ class Record extends FindApi{
                 'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id')
             ),
             'checkCode' => array(
-                'intro' => array('name' => 'code', 'type' => 'string', 'require' => true, 'min' => '6','max' => '6' ,'desc' => '找人code'),
+                'code' => array('name' => 'code', 'type' => 'string', 'require' => true, 'min' => '6','max' => '6' ,'desc' => '找人code'),
             )
         ));
     }

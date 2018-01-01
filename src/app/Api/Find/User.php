@@ -9,6 +9,7 @@
 namespace App\Api\Find;
 
 use App\Component\FindApi;
+use App\Domain\Common;
 use PhalApi\Api;
 use App\Domain\Find\USER as DomainUSER;
 
@@ -41,7 +42,6 @@ class User extends FindApi {
      * @return string thirdSessionKey 第三方sessionKey
      */
     public function userLogin(){
-        $this->noNeedSessionKey = 1;
         $domainUser = new DomainUSER();
         $thirdSessionKey = $domainUser->userLogin($this->code);
 
@@ -54,7 +54,8 @@ class User extends FindApi {
      * @return int id 插入记录id，0表示已存在 -1表示插入失败
      */
     public function insertUserInfo(){
-        self::getOpenId($this->thirdSessionKey);
+        $commonDomain = new Common();
+        $commonDomain->getOpenId($this->thirdSessionKey);
         $domainUser = new DomainUSER();
         $id = $domainUser->insertUserInfo($this->thirdSessionKey, $this->encryptedData, $this->iv);
 
@@ -72,7 +73,8 @@ class User extends FindApi {
      */
     public function getUserProfile(){
 
-        $openId = self::getOpenId($this->thirdSessionKey);
+        $commonDomain = new Common();
+        $openId = $commonDomain->getOpenId($this->thirdSessionKey);
         $domainUser = new DomainUSER();
         $userInfo = $domainUser->getUserInfoFromDB($openId);
 

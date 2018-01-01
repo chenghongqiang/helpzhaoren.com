@@ -8,6 +8,7 @@
 namespace App\Api\Find;
 
 use App\Component\FindApi;
+use App\Domain\Common;
 use App\WxCore\lib\WxPayApi;
 use App\WxCore\lib\WxPayConfig;
 use App\WxCore\lib\WxPayOrderQuery;
@@ -35,7 +36,8 @@ class Pay extends FindApi{
      * @desc 统一下单
      */
     public function prePay(){
-        $openId = self::getOpenId($this->thirdSessionKey);
+        $commonDomain = new Common();
+        $openId = $commonDomain->getOpenId($this->thirdSessionKey);
 
         //统一下单
         $input = new WxPayUnifiedOrder();

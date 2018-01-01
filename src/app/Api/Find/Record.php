@@ -62,7 +62,7 @@ class Record extends FindApi{
     }
 
     /**
-     * 引荐找人记录详情【引荐人提交数据后页面详情】
+     * 引荐找人记录详情【引荐人提交数据页面和提交数据后页面详情】
      * @desc 根据找人记录id和引荐人id获取详情
      * @return int id 找人记录id
      * @return string wx_creator_avatarUrl 发起人微信图像
@@ -84,11 +84,13 @@ class Record extends FindApi{
         $creatorInfo = $domainUser->getUserByOpenid($ret['openId']);
         $ret['wx_creator_avatarUrl'] = $creatorInfo['avatarUrl'];
 
-        //获取引荐人信息
-        $domainIntroRecord = new DomainIntroRecord();
-        $introUserRet = $domainIntroRecord->get($this->intro_user_id);
+        if(!empty($this->intro_user_id)){
+            //获取引荐人信息
+            $domainIntroRecord = new DomainIntroRecord();
+            $introUserRet = $domainIntroRecord->get($this->intro_user_id);
 
-        $ret['wx_introducer_code'] = $introUserRet['wx_introducer_code'];
+            $ret['wx_introducer_code'] = $introUserRet['wx_introducer_code'];
+        }
 
         return $ret;
     }

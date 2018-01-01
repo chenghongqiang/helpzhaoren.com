@@ -8,6 +8,7 @@
 
 namespace App\Api\Find;
 
+use App\Component\FindApi;
 use PhalApi\Api;
 use App\Domain\Find\USER as DomainUSER;
 
@@ -16,7 +17,7 @@ use App\Domain\Find\USER as DomainUSER;
  * Class User
  * @package App\Api\Find
  */
-class User extends Api{
+class User extends FindApi {
 
     public function getRules(){
         return array(
@@ -30,10 +31,6 @@ class User extends Api{
             ),
             'userLogin' => array(
                 'code' => array('name' => 'code', 'type' => 'string', 'require' => true, 'desc' => '登录凭证code'),
-            ),
-            'test' => array(
-                'params' => array('name' => 'params', 'type' => 'array', 'default' => '{"username":"dogstar","password":"xxxxxx"}',
-                    'require' => true, 'format' => 'json')
             )
         );
     }
@@ -56,7 +53,7 @@ class User extends Api{
      * @return int id 插入记录id，0表示已存在 -1表示插入失败
      */
     public function insertUserInfo(){
-        $this->checkSession($this->thirdSessionKey);
+        self::getOpenId($this->thirdSessionKey);
         $domainUser = new DomainUSER();
         $id = $domainUser->insertUserInfo($this->thirdSessionKey, $this->encryptedData, $this->iv);
 
@@ -73,34 +70,12 @@ class User extends Api{
      * @return int wallet 用户钱包
      */
     public function getUserProfile(){
-        $sessionValue = $this->checkSession($this->thirdSessionKey);
-        $list = explode('%%', $sessionValue);
-        $openID = $list[1];
 
+        $openId = self::getOpenId($this->thirdSessionKey);
         $domainUser = new DomainUSER();
-        $userInfo = $domainUser->getUserInfoFromDB($openID);
+        $userInfo = $domainUser->getUserInfoFromDB($openId);
 
         return $userInfo;
-    }
-
-    private function checkSession($thirdSessionKey){
-        $sessionValue = \PhalApi\DI()->redis->get($thirdSessionKey);
-        if(empty($sessionValue)){
-            //缓存过期或者不存在
-            throw new Exception('session已过期', -10000);
-        }
-
-        return $sessionValue;
-    }
-
-    /**
-     * 测试
-     * @ignore
-     * @return string username
-     * @return string password
-     */
-    public function test(){
-        return $this->params;
     }
 
 }

@@ -130,6 +130,7 @@ class Record extends FindApi{
      * @desc 获取当前用户所有相关找人记录
      * @return string intro 找人描述
      * @return string money 红包金额
+     * @return string code 找人码
      * @return int oper_state 1.进行中 2.过期失效 3.引荐成功
      * @return string create_time 创建时间
      */
@@ -144,6 +145,8 @@ class Record extends FindApi{
      * 获取当前用户引荐被引荐记录【找人记录页面引荐tab】
      * @desc 获取当前用户所有引荐被引荐找人相关记录
      * @return string intro 找人描述
+     * @return string wx_creator_avatarUrl 发起人微信图像
+     * @return string wx_creator_nickName 发起人昵称
      * @return string money 红包金额
      * @return int oper_state 1.进行中 2.过期失效 3.引荐成功
      * @return string create_time 创建时间

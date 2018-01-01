@@ -34,6 +34,9 @@ class Record extends FindApi{
             ),
             'getOperRecord' => array(
                 'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id')
+            ),
+            'checkCode' => array(
+                'intro' => array('name' => 'code', 'type' => 'string', 'require' => true, 'min' => '6','max' => '6' ,'desc' => '找人code'),
             )
         ));
     }
@@ -158,5 +161,18 @@ class Record extends FindApi{
         $records = $domainRecord->getRecordsByOpenId($this->openID);
 
         return $records;
+    }
+
+    /**
+     * 验证找人码
+     * @desc 通过找人码进入找人页面
+     * @return int id 找人记录id
+     * @return string desc 找人描述
+     */
+    public function checkCode(){
+        $domainRecord = new DomainRECORD();
+        $record = $domainRecord->getRecordByCode($this->code);
+
+        return $record;
     }
 }

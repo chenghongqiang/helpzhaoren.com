@@ -38,6 +38,10 @@ use PhalApi\Model\NotORMModel as NotORM;
  */
 class RECORD extends NotORM {
 
+    const PROGRESS = 1;
+    const TIMEOUT = 2;
+    const SUCCESS = 3;
+
     protected function getTableName($id) {
         return 'oper_record';
     }
@@ -57,6 +61,17 @@ class RECORD extends NotORM {
             ->select('id, intro, money', 'oper_state', 'create_time')
             ->where('openId', $openId)
             ->fetchAll();
+    }
+
+    /**
+     * 通过找人码查找找人记录
+     * @param $code
+     */
+    public function getRecordByCode($code){
+        return $this->getORM()
+            ->select('id, intro, money', 'create_time')
+            ->where(array('code' => $code, 'oper_state'=> self::PROGRESS))
+            ->fetchRow();
     }
 
 }

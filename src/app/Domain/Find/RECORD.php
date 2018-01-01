@@ -28,4 +28,11 @@ class RECORD {
         return $records;
     }
 
+    public function getRecordByCode($code){
+        $model = new ModelRECORD();
+        $records = $model->getRecordByCode($code);
+
+        return $records;
+    }
+
 }

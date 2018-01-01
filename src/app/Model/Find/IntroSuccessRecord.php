@@ -10,7 +10,7 @@ namespace App\Model\Find;
 use PhalApi\Model\NotORMModel as NotORM;
 
 /**
- * Òı¼ö±»Òı¼ö³É¹¦¼ÇÂ¼
+ * è¢«æ¨èäººæäº¤æ•°æ®æ‰¾äººæˆåŠŸè®°å½•è¡¨
  * Class IntroSuccessRecord
  * @package App\Model\Find
  */

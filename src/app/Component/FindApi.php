@@ -19,6 +19,7 @@ use PhalApi\Filter;
 class FindApi extends Api{
 
     public $openID;
+    public $noNeedSessionKey = 0;
 
     public function init(){
         parent::init();
@@ -36,8 +37,10 @@ class FindApi extends Api{
      * 默认自动调用
      */
     protected function userCheck(){
+        if($this->noNeedSessionKey == 0){
+            $this->openID = $this->getOpenId($this->thirdSessionKey);
+        }
 
-        $this->openID = $this->getOpenId($this->thirdSessionKey);
     }
 
     protected function getOpenId($thirdSessionKey){

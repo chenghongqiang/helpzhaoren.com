@@ -41,6 +41,7 @@ class User extends FindApi {
      * @return string thirdSessionKey 第三方sessionKey
      */
     public function userLogin(){
+        $this->noNeedSessionKey = 1;
         $domainUser = new DomainUSER();
         $thirdSessionKey = $domainUser->userLogin($this->code);
 

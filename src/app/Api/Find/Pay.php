@@ -46,8 +46,7 @@ class Pay extends FindApi{
         $input->SetGoods_tag("HONGBAO");
         $input->SetNotify_url(WxPayConfig::NOTIFY_URL);
         $input->SetTrade_type("JSAPI");
-        //$input->SetOpenid($this->openID);
-        $input->SetOpenid($this->openId);
+        $input->SetOpenid($this->openID);
         $order = WxPayApi::unifiedOrder($input);
         \PhalApi\DI()->logger->info(json_encode($order));
         $tools = new WxPayJsApi();

@@ -18,7 +18,7 @@ use App\Domain\Find\USER as DomainUSER;
  * Class User
  * @package App\Api\Find
  */
-class User extends FindApi {
+class User extends Api {
 
     public function getRules(){
         return array(

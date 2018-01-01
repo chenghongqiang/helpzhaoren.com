@@ -7,20 +7,20 @@
 
 namespace App\Api\Find;
 
-use App\Component\FindApi;
 use App\Domain\Common;
 use App\WxCore\lib\WxPayApi;
 use App\WxCore\lib\WxPayConfig;
 use App\WxCore\lib\WxPayOrderQuery;
 use App\WxCore\lib\WxPayUnifiedOrder;
 use App\WxCore\WxPayJsApi;
+use PhalApi\Api;
 
 /**
  * 支付相关接口
  * Class Pay
  * @package App\Api\Find
  */
-class Pay extends FindApi{
+class Pay extends Api {
 
     public function getRules(){
         return array(

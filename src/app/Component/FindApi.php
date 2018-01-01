@@ -40,7 +40,7 @@ class FindApi extends Api{
         $this->openID = $this->getOpenId($this->thirdSessionKey);
     }
 
-    public function getOpenId($thirdSessionKey){
+    protected function getOpenId($thirdSessionKey){
         //根据接口请求thirdSessionKey,从redis中取出thirdSessionKey = $session_key_$openid
         $sessionValue = \PhalApi\DI()->redis->get($thirdSessionKey);
         if(empty($sessionValue)){

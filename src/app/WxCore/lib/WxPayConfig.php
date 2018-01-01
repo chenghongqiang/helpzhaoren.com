@@ -62,5 +62,5 @@ class WxPayConfig
 	/**
 	 * 异步通知URL
 	 */
-	const NOTIFY_URL = '';
+	const NOTIFY_URL = '?service=App.Find_Pay.Notify&detail=1';
 }

@@ -22,11 +22,12 @@ use App\WxCore\WxPayJsApi;
 class Pay extends FindApi{
 
     public function getRules(){
-        return array_merge(parent::getRules(),array(
+        return array(
             'prePay' => array(
+                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
                 'total_fee' => array('name' => 'total_fee', 'type' => 'int', 'require' => true , 'desc' => '订单金额'),
             )
-        ));
+        );
     }
 
     /**
@@ -34,6 +35,7 @@ class Pay extends FindApi{
      * @desc 统一下单
      */
     public function prePay(){
+        $openId = self::getOpenId($this->thirdSessionKey);
 
         //统一下单
         $input = new WxPayUnifiedOrder();
@@ -44,7 +46,7 @@ class Pay extends FindApi{
         $input->SetTime_expire(date("YmdHis", time() + 600));
         $input->SetGoods_tag("HONGBAO");
         $input->SetTrade_type("JSAPI");
-        $input->SetOpenid($this->openID);
+        $input->SetOpenid($openId);
         $order = WxPayApi::unifiedOrder($input);
         \PhalApi\DI()->logger->info(json_encode($order));
         $tools = new WxPayJsApi();

@@ -9,6 +9,11 @@ namespace App\Api\Find;
 use App\Component\FindApi;
 use App\Domain\Find\IntroRecord as DomainIntroRecord;
 
+/**
+ * 引荐人提交数据接口
+ * Class IntroRecord
+ * @package App\Api\Find
+ */
 class IntroRecord extends FindApi{
 
     public function getRules(){
@@ -40,9 +45,11 @@ class IntroRecord extends FindApi{
         //引荐人下次重新提交数据，根据openId覆盖以前提交的数据
         $introRecord = $domainIntroRecord->getIntroRecord($this->record_id, $this->openID);
         if(!empty($introRecord)){
-            return $domainIntroRecord->update(
+            $ret = $domainIntroRecord->update(
                 array('id' => $introRecord['id'], 'openId' => $this->openID), $data
             );
+            //更新成功返回仍然返回intro_user_id出去
+            return $ret? $introRecord['id']: $ret;
         }
 
         $ret = $domainIntroRecord->insert($data);

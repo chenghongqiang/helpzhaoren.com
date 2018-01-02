@@ -12,6 +12,11 @@ use App\Component\FindApi;
 use App\Domain\Find\IntroRecord as DomainIntroRecord;
 use App\Domain\Find\IntroSuccessRecord as DomainIntroSuccessRecord;
 
+/**
+ * 被引荐人提交数据接口
+ * Class IntroSuccessRecord
+ * @package App\Api\Find
+ */
 class IntroSuccessRecord extends FindApi{
 
     public function getRules(){

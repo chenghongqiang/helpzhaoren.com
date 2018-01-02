@@ -132,7 +132,7 @@ class Record extends FindApi{
         $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
         $introRecord = $domainIntroSuccessRecord->getRecordByRecordId($this->id);
 
-        if(!empty($record)){
+        if(!empty($introRecord)){
             $ret['wx_introducer_code'] = $introRecord['wx_introducer_code'];
             $ret['wx_introducered_code'] = $introRecord['wx_introducered_code'];
         }

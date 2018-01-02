@@ -19,4 +19,11 @@ class IntroSuccessRecord extends NotORM{
     protected function getTableName() {
         return 'intro_success_record';
     }
+
+    public function getRecordByRecordId($recordId){
+        return $this->getORM()
+            ->select('*')
+            ->where('recordId', $recordId)
+            ->fetchRow();
+    }
 }

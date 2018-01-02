@@ -130,15 +130,15 @@ class Record extends FindApi{
 
         //获取引荐人被引荐人信息
         $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-        $introRecord = $domainIntroSuccessRecord->get($this->id);
+        $introRecord = $domainIntroSuccessRecord->getRecordByRecordId($this->id);
 
         if(!empty($record)){
             $ret['wx_introducer_code'] = $introRecord['wx_introducer_code'];
             $ret['wx_introducered_code'] = $introRecord['wx_introducered_code'];
         }
-        array_push($openIdArr, $ret['openId'], $introRecord['introducererOpenId'], $introRecord['introduceredOpenId']);
+        array_push($openIdArr, $introRecord['introducererOpenId'], $introRecord['introduceredOpenId']);
 
-        $avatarUrlKey = array('wx_creator_avatarUrl', 'wx_introducer_avatarUrl', 'wx_introducered_avatarUrl');
+        $avatarUrlKey = array('wx_introducer_avatarUrl', 'wx_introducered_avatarUrl');
 
         //获取三方用户的数据
         $userInfoList = $domainUser->getUserByOpenid($openIdArr);

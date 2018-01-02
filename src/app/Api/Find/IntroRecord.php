@@ -41,7 +41,7 @@ class IntroRecord extends FindApi{
         $introRecord = $domainIntroRecord->getIntroRecord($this->record_id, $this->openID);
         if(!empty($introRecord)){
             return $domainIntroRecord->update(
-                array('id' => $this->id, 'openId' => $this->openID), $data
+                array('id' => $introRecord['id'], 'openId' => $this->openID), $data
             );
         }
 

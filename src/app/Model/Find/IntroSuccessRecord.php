@@ -16,5 +16,7 @@ use PhalApi\Model\NotORMModel as NotORM;
  */
 class IntroSuccessRecord extends NotORM{
 
-
+    protected function getTableName() {
+        return 'intro_success_record';
+    }
 }

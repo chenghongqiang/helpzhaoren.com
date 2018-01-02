@@ -60,12 +60,16 @@ CREATE TABLE `phal_intro_record` (
 CREATE TABLE `phal_intro_success_record` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `recordId` int(10) NOT NULL COMMENT '找人记录表id',
-  `openId` VARCHAR(50) NOT NULL COMMENT '用户openid',
+  `introducererOpenId` VARCHAR(50) NOT NULL COMMENT '引荐人openid',
+  `introduceredOpenId` VARCHAR(50) NOT NULL COMMENT '被引荐人openid',
   `wx_introducer_code` VARCHAR(50) NOT NULL COMMENT '引荐人微信号',
-  `intro_state` tinyint(4) DEFAULT NULL COMMENT '引荐者所属人  1.引荐人 2.被引荐人',
+  `wx_introducered_code` VARCHAR(50) NOT NULL COMMENT '被引荐人微信号',
+
+  `state` tinyint(4) NOT NULL DEFAULT 1 COMMENT '记录状态，预留字段',
   `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE(`recordId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 #交易记录

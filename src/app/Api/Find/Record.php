@@ -132,18 +132,23 @@ class Record extends FindApi{
         $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
         $introRecord = $domainIntroSuccessRecord->getRecordByRecordId($this->id);
 
+        $avatarUrlKey = array('wx_introducer_avatarUrl', 'wx_introducered_avatarUrl');
+
         if(!empty($introRecord)){
             $ret['wx_introducer_code'] = $introRecord['wx_introducer_code'];
             $ret['wx_introducered_code'] = $introRecord['wx_introducered_code'];
-        }
-        array_push($openIdArr, $introRecord['introducererOpenId'], $introRecord['introduceredOpenId']);
+            array_push($openIdArr, $introRecord['introducererOpenId'], $introRecord['introduceredOpenId']);
 
-        $avatarUrlKey = array('wx_introducer_avatarUrl', 'wx_introducered_avatarUrl');
+            //获取三方用户的数据
+            $userInfoList = $domainUser->getUserByOpenid($openIdArr);
+            foreach ($userInfoList as $k => $value){
+                $ret[$avatarUrlKey[$k]] = $value['avatarUrl'];
+            }
 
-        //获取三方用户的数据
-        $userInfoList = $domainUser->getUserByOpenid($openIdArr);
-        foreach ($userInfoList as $k => $value){
-            $ret[$avatarUrlKey[$k]] = $value['avatarUrl'];
+            if($introRecord['introducererOpenId'] == $introRecord['introduceredOpenId']){
+                //如果引荐人和被引荐人是同一个人
+                $ret[$avatarUrlKey[1]] = $ret[$avatarUrlKey[0]];
+            }
         }
 
         return $ret;

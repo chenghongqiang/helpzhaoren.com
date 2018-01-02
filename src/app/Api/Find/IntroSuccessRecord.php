@@ -47,17 +47,11 @@ class IntroSuccessRecord extends FindApi{
 
         $data = array(
             'recordId' => $this->id,
-            'openId' => $this->openID,
-            'wx_introducer_code' => $this->wx_introducer_code
+            'introducererOpenId' => $introRecord['openId'],
+            'wx_introducer_code' => $introRecord['wx_introducer_code'],
+            'introduceredOpenId' => $this->openID,
+            'wx_introducered_code' => $this->wx_introducered_code
         );
-
-        //引荐人下次重新提交数据，根据openId覆盖以前提交的数据
-        $introRecord = $domainIntroSuccessRecord->get($this->id);
-        if(!empty($introRecord)){
-            return $domainIntroSuccessRecord->update(
-                array('id' => $this->id, 'openId' => $this->openID), $data
-            );
-        }
 
         $ret = $domainIntroSuccessRecord->insert($data);
         return $ret;

@@ -11,6 +11,7 @@ use App\Component\FindApi;
 use App\Domain\Find\USER as DomainUSER;
 use App\Domain\Find\RECORD as DomainRECORD;
 use App\Domain\Find\IntroRecord as DomainIntroRecord;
+use App\Domain\Find\IntroSuccessRecord as DomainIntroSuccessRecord;
 
 /**
  * 找人记录
@@ -91,8 +92,13 @@ class Record extends FindApi{
             //获取引荐人信息
             $domainIntroRecord = new DomainIntroRecord();
             $introUserRet = $domainIntroRecord->get($this->intro_user_id);
-
             $ret['wx_introducer_code'] = $introUserRet['wx_introducer_code'];
+
+            $introUserInfo = $domainUser->getUserByOpenid($introUserRet['openId']);
+            if(!empty($introUserInfo)){
+                $ret['wx_introducer_avatarUrl'] = $introUserInfo['avatarUrl'];
+            }
+
         }
 
         return $ret;
@@ -113,6 +119,7 @@ class Record extends FindApi{
      * @return string create_time 记录创建时间
      */
     public function getOperRecord(){
+        $openIdArr = array();
         //获取找人记录详情
         $domainRecord = new DomainRECORD();
         $ret = $domainRecord->get($this->id);
@@ -121,11 +128,23 @@ class Record extends FindApi{
         $creatorInfo = $domainUser->getUserByOpenid($ret['openId']);
         $ret['wx_creator_avatarUrl'] = $creatorInfo['avatarUrl'];
 
-        //获取引荐人信息
-        $domainIntroRecord = new DomainIntroRecord();
-        $introUserRet = $domainIntroRecord->get($this->intro_user_id);
+        //获取引荐人被引荐人信息
+        $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
+        $introRecord = $domainIntroSuccessRecord->get($this->id);
 
-        $ret['wx_introducer_code'] = $introUserRet['wx_introducer_code'];
+        if(!empty($record)){
+            $ret['wx_introducer_code'] = $introRecord['wx_introducer_code'];
+            $ret['wx_introducered_code'] = $introRecord['wx_introducered_code'];
+        }
+        array_push($openIdArr, $ret['openId'], $introRecord['introducererOpenId'], $introRecord['introduceredOpenId']);
+
+        $avatarUrlKey = array('wx_creator_avatarUrl', 'wx_introducer_avatarUrl', 'wx_introducered_avatarUrl');
+
+        //获取三方用户的数据
+        $userInfoList = $domainUser->getUserByOpenid($openIdArr);
+        foreach ($userInfoList as $k => $value){
+            $ret[$avatarUrlKey[$k]] = $value['avatarUrl'];
+        }
 
         return $ret;
     }

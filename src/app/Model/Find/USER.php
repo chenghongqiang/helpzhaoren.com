@@ -32,11 +32,21 @@ class USER extends NotORM {
     }
 
     public function getUserByOpenid($openid){
-        return $this->getORM()
+
+        $conn = $this->getORM()
             ->select('openId, avatarUrl, nickName', 'wallet')
-            ->where('openId', $openid)
-            ->fetch();
+            ->where('openId', $openid);
+
+        if(is_array($openid)){
+            return $conn->fetchAll();
+        }else{
+            return $conn->fetch();
+
+        }
+
     }
+
+
 
 
 }

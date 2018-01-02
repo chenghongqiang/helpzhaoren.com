@@ -110,6 +110,11 @@ class USER {
         return $userInfo;
     }
 
+    /**
+     * 根据openId从数据库获取用户信息
+     * @param $openId
+     * @return mixed
+     */
     public function getUserInfoFromDB($openId){
 
         $model = new ModelUSER();

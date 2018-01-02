@@ -46,7 +46,7 @@ class IntroSuccessRecord extends FindApi{
         $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
 
         $data = array(
-            'recordId' => $this->id,
+            'recordId' => $this->record_id,
             'introducererOpenId' => $introRecord['openId'],
             'wx_introducer_code' => $introRecord['wx_introducer_code'],
             'introduceredOpenId' => $this->openID,

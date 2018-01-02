@@ -28,6 +28,11 @@ class IntroSuccessRecord {
         return $model->getRecordByRecordId($recordId);
     }
 
+    public function getRecordIdByOpenId($openId){
+        $model = new ModelIntroSuccessRecord();
+        return $model->getRecordIdByOpenId($openId);
+    }
+
     public function sendModuleMsg($data){
         $accessToken = \PhalApi\DI()->redis->get("accessToken");
         if(empty($accessToken)){

@@ -26,4 +26,16 @@ class IntroSuccessRecord extends NotORM{
             ->where('recordId', $recordId)
             ->fetchRow();
     }
+
+    /**
+     * 根据引荐人或被引荐人微信号查找记录
+     * @param $openId
+     */
+    public function getRecordIdByOpenId($openId){
+        return $this->getORM()
+            ->select('recordId')
+            ->or('introducererOpenId', $openId)
+            ->or('introduceredOpenId', $openId)
+            ->fetchAll();
+    }
 }

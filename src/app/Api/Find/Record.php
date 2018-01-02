@@ -181,10 +181,19 @@ class Record extends FindApi{
      * @return string create_time 创建时间
      */
     public function getFindIntroRecord(){
-        $domainRecord = new DomainRECORD();
-        $records = $domainRecord->getRecordsByOpenId($this->openID);
 
-        return $records;
+        $ret = array();
+
+        $domainRecord = new DomainRECORD();
+        $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
+        $introSuccessRecords = $domainIntroSuccessRecord->getRecordIdByOpenId($this->openID);
+        foreach ($introSuccessRecords as $k => $value) {
+
+            $record = $domainRecord->get($value['recordId']);
+            $ret[$k] = $record;
+        }
+
+        return $ret;
     }
 
     /**

@@ -48,8 +48,13 @@ class IntroRecord extends FindApi{
             $ret = $domainIntroRecord->update(
                 array('id' => $introRecord['id'], 'openId' => $this->openID), $data
             );
-            //更新成功返回仍然返回intro_user_id出去
-            return $ret? $introRecord['id']: $ret;
+
+            if($ret === false){
+                return -1;
+            }else if($ret >=0 ){
+                //更新成功返回仍然返回intro_user_id出去 更新数据是跟原数据一样时也返回0
+                return $introRecord['id'];
+            }
         }
 
         $ret = $domainIntroRecord->insert($data);

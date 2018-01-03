@@ -27,7 +27,9 @@ class IntroSuccessRecord extends FindApi{
                 'record_id' => array('name' => 'record_id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
                 'intro_user_id' => array('name' => 'intro_user_id', 'type' => 'int', 'require' => true , 'desc' => '引荐人id'),
                 'wx_introducered_code' => array('name' => 'wx_introducered_code', 'type' => 'string', 'require' => true, 'desc' => '被引荐人微信号'),
-
+            ),
+            'sendModuleMsg' => array(
+                'formId' => array('name' => 'formId', 'type' => 'string', 'require' => true , 'desc' => 'formId'),
             )
         ));
     }
@@ -62,17 +64,17 @@ class IntroSuccessRecord extends FindApi{
      * @desc 被推荐人提交数据城后，给发起人、引荐人、被引荐人发送模板消息
      * @return boolean flag 1.成功 0.失败
      */
-    public function sendModuleMsg($params){
+    public function sendModuleMsg(){
+
         $data = array(
-            'touser' => $params['touser'],
-            'template_id' => $params['template_id'],
-            'page' => $params['page'],
-            'form_id' => $params['form_id'],
+            'touser' => $this->openID,
+            'template_id' => '2TyJ-pzj0k5QaYE3mlaMOB_93KgyIRkP8JQ7Nk6DV5A',
+            'page' => 'index',
+            'form_id' => $this->formId,
             'data' => array(
-                'keyword1' => array('value' => '', 'color' => ''),
-                'keyword2' => array('value' => '', 'color' => ''),
-                'keyword3' => array('value' => '', 'color' => ''),
-                'keyword4' => array('value' => '', 'color' => ''),
+                'keyword1' => array('value' => '3'),
+                'keyword2' => array('value' => 'kewin'),
+                'keyword3' => array('value' => '找人红包'),
             ),
             'emphasis_keyword' => ''
 

@@ -49,7 +49,7 @@ class Record extends FindApi{
      */
     public function create(){
 
-        \PhalApi\DI()->logger->info("openid:" . $this->openID);
+        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__. " openid:" . $this->openID);
         $data = array(
             'openid' => $this->openID,
             'money' => $this->money,

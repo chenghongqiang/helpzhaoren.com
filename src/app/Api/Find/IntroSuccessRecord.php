@@ -30,6 +30,10 @@ class IntroSuccessRecord extends FindApi{
             ),
             'sendModuleMsg' => array(
                 'formId' => array('name' => 'formId', 'type' => 'string', 'require' => true , 'desc' => 'formId'),
+            ),
+            'getWxQrcode' => array(
+                'page' => array('name' => 'page', 'type' => 'string', 'require' => true , 'desc' => '已经发布的小程序页面'),
+                'width' => array('name' => 'width', 'type' => 'string', 'desc' => '二维码宽度', 'default' => '430'),
             )
         ));
     }
@@ -84,6 +88,23 @@ class IntroSuccessRecord extends FindApi{
 
         $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
         return $domainIntroSuccessRecord->sendModuleMsg($data);
+    }
+
+    /**
+     * 获取小程序二维码
+     * @desc 获取小程序二维码
+     * @return mixed
+     * @throws \PhalApi\Exception
+     */
+    public function getWxQrcode(){
+        $data = array(
+            'scene' => '',
+            'page' => $this->page,
+            'width' => $this->width
+        );
+
+        $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
+        return $domainIntroSuccessRecord->getWXQrcode($data);
     }
 
 

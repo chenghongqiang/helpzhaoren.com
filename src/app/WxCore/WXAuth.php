@@ -7,6 +7,7 @@
 
 namespace App\WxCore;
 
+use App\WxCore\lib\WxPayApi;
 use App\WxCore\lib\WxPayConfig;
 use App\WxCore\lib\WxPayException;
 use PhalApi\CUrl;
@@ -81,5 +82,51 @@ class WXAuth {
         }
     }
 
+    /**
+     * 获取小程序access_token
+     * 正常情况 返回{"access_token": "ACCESS_TOKEN", "expires_in": 7200}
+     * 错误情况 返回{"errcode": 40013, "errmsg": "invalid appid"}
+     */
+    public static function getAccessToken(){
+        $accessToken = \PhalApi\DI()->redis->get("accessToken");
+
+        if(empty($accessToken)){
+            //获取access_token
+            $getAccessTokenURL = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s';
+            $url = sprintf($getAccessTokenURL, WxPayConfig::APPID, WxPayConfig::APPSECRET);
+
+            $curl = new CUrl();
+            $rs = $curl->get($url, 6000);
+            $data = json_decode($rs, true);
+            if(!empty($data['errcode'])){
+                //记录错误
+                \PhalApi\DI()->logger->error(json_encode($rs));
+                throw new Exception("getAccessToken exception:" . $rs, $data['errcode']);
+            }
+
+            $accessToken = $data['access_token'];
+            //存储acessToken 7000s过期
+            \PhalApi\DI()->redis->set("accessToken", $accessToken, intval($data['expires_in'])-200);
+        }
+
+        return $accessToken;
+
+    }
+
+    /**
+     * 获取小程序二维码
+     * @param $accessToken
+     * @param $data
+     * @return mixed
+     */
+    public static function getWxQrcode($accessToken, $data){
+        //使用永久有效、数量极多生成二维码接口
+        $getWxQrcodeURL = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=%s';
+        $url = sprintf($getWxQrcodeURL, $accessToken);
+
+        $response = WxPayApi::postXmlCurl($data, $url, false, 6);
+
+        return $response;
+    }
 
 }

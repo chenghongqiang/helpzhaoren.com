@@ -8,6 +8,7 @@
 namespace App\Domain\Find;
 
 use App\Model\Find\IntroSuccessRecord as ModelIntroSuccessRecord;
+use App\WxCore\WXAuth;
 use App\WxCore\WxModuleMsgApi;
 use PhalApi\Exception;
 
@@ -34,13 +35,7 @@ class IntroSuccessRecord {
     }
 
     public function sendModuleMsg($data){
-        $accessToken = \PhalApi\DI()->redis->get("accessToken");
-        if(empty($accessToken)){
-            $accessData = WxModuleMsgApi::getAccessToken();
-            $accessToken = $accessData['access_token'];
-            //存储acessToken 7000s过期
-            \PhalApi\DI()->redis->set("accessToken", $accessToken, intval($accessData['expires_in'])-200);
-        }
+        $accessToken = WXAuth::getAccessToken();
 
         //{"errcode": 0, "errmsg": "ok"}
         $data = WxModuleMsgApi::sendModuleMsg($accessToken, $data);
@@ -50,6 +45,20 @@ class IntroSuccessRecord {
         }else{
             throw new Exception($data['errmsg'], $data['errcode']);
         }
+
+    }
+
+    public function getWXQrcode($data){
+        $accessToken = WXAuth::getAccessToken();
+        $data = WXAuth::getWxQrcode($accessToken, $data);
+        return $data;
+        if($data['errcode']==0){
+
+            return $data;
+        }else{
+            throw new Exception($data['errmsg'], $data['errcode']);
+        }
+
 
     }
 }

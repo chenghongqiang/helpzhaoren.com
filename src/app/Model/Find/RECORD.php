@@ -58,7 +58,7 @@ class RECORD extends NotORM {
 
     public function getRecordsByOpenId($openId){
         return $this->getORM()
-            ->select('id, intro, money', 'oper_state', 'create_time')
+            ->select('id, intro, money', 'code', 'oper_state', 'create_time')
             ->where('openId', $openId)
             ->fetchAll();
     }

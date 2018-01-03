@@ -100,7 +100,7 @@ class WXAuth {
             $data = json_decode($rs, true);
             if(!empty($data['errcode'])){
                 //记录错误
-                \PhalApi\DI()->logger->error(json_encode($rs));
+                \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__ . json_encode($rs));
                 throw new Exception("getAccessToken exception:" . $rs, $data['errcode']);
             }
 
@@ -125,6 +125,7 @@ class WXAuth {
         $url = sprintf($getWxQrcodeURL, $accessToken);
 
         $response = WxPayApi::postXmlCurl($data, $url, false, 6);
+        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__ . json_encode($response));
 
         return $response;
     }

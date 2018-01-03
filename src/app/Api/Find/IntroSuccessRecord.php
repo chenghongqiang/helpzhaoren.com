@@ -90,22 +90,4 @@ class IntroSuccessRecord extends FindApi{
         return $domainIntroSuccessRecord->sendModuleMsg($data);
     }
 
-    /**
-     * 获取小程序二维码
-     * @desc 获取小程序二维码
-     * @return mixed
-     * @throws \PhalApi\Exception
-     */
-    public function getWxQrcode(){
-        $data = array(
-            'scene' => '',
-            'page' => $this->page,
-            'width' => $this->width
-        );
-
-        $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-        return $domainIntroSuccessRecord->getWXQrcode($data);
-    }
-
-
 }

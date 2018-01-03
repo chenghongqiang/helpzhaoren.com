@@ -113,23 +113,4 @@ class WXAuth {
 
     }
 
-    /**
-     * 获取小程序二维码
-     * @param $accessToken
-     * @param $data
-     * @return mixed
-     */
-    public static function getWxQrcode($accessToken, $data){
-        //使用永久有效、数量极多生成二维码接口
-        $getWxQrcodeURL = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=%s';
-        $url = sprintf($getWxQrcodeURL, $accessToken);
-
-        $curl = new CUrl();
-        $rs = $curl->post($url, $data, 6000);
-
-        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__ . json_encode($rs));
-
-        return $rs;
-    }
-
 }

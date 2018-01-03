@@ -81,7 +81,7 @@ class IntroSuccessRecord extends FindApi{
         );
 
         $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-        $domainIntroSuccessRecord->sendModuleMsg($data);
+        return $domainIntroSuccessRecord->sendModuleMsg($data);
     }
 
 

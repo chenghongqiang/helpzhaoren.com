@@ -124,10 +124,12 @@ class WXAuth {
         $getWxQrcodeURL = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=%s';
         $url = sprintf($getWxQrcodeURL, $accessToken);
 
-        $response = WxPayApi::postXmlCurl($data, $url, false, 6);
-        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__ . json_encode($response));
+        $curl = new CUrl();
+        $rs = $curl->post($url, $data, 6000);
 
-        return $response;
+        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__ . json_encode($rs));
+
+        return $rs;
     }
 
 }

@@ -66,6 +66,8 @@ class IntroSuccessRecord extends FindApi{
      */
     public function sendModuleMsg(){
 
+        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__  . ' openID:' . $this->openID .' formId:' . $this->formId);
+
         $data = array(
             'touser' => $this->openID,
             'template_id' => '2TyJ-pzj0k5QaYE3mlaMOB_93KgyIRkP8JQ7Nk6DV5A',

@@ -26,7 +26,7 @@ class Pay extends Api {
         return array(
             'prePay' => array(
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
-                'total_fee' => array('name' => 'total_fee', 'type' => 'int', 'require' => true , 'desc' => '订单金额'),
+                'total_fee' => array('name' => 'total_fee', 'type' => 'int', 'min' => '1', 'require' => true , 'desc' => '订单金额'),
             )
         );
     }
@@ -54,7 +54,7 @@ class Pay extends Api {
         $tools = new WxPayJsApi();
         $jsApiParameters = $tools->GetJsApiParameters($order);
 
-        \PhalApi\DI()->logger->info('order:' . json_encode($order). ' jsApiParams:' . $jsApiParameters);
+        \PhalApi\DI()->logger->info('order:' . json_encode($order). ' jsApiParams:' . json_encode($jsApiParameters));
         return $jsApiParameters;
     }
 

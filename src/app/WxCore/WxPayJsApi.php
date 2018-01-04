@@ -87,8 +87,8 @@ class WxPayJsApi
 		$jsapi->SetPackage("prepay_id=" . $UnifiedOrderResult['prepay_id']);
 		$jsapi->SetSignType("MD5");
 		$jsapi->SetPaySign($jsapi->MakeSign());
-		$parameters = json_encode($jsapi->GetValues());
-		return $parameters;
+
+		return $jsapi->GetValues();
 	}
 	
 	/**

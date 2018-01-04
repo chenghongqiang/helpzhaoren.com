@@ -50,9 +50,11 @@ class Pay extends Api {
         $input->SetTrade_type("JSAPI");
         $input->SetOpenid($openId);
         $order = WxPayApi::unifiedOrder($input);
-        \PhalApi\DI()->logger->info(json_encode($order));
+
         $tools = new WxPayJsApi();
         $jsApiParameters = $tools->GetJsApiParameters($order);
+
+        \PhalApi\DI()->logger->info('order:' . json_encode($order). ' jsApiParams:' . $jsApiParameters);
         return $jsApiParameters;
     }
 

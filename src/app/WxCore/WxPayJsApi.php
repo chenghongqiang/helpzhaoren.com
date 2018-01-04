@@ -16,6 +16,7 @@ namespace App\WxCore;
 
 use App\WxCore\lib\WxPayApi;
 use App\WxCore\lib\WxPayConfig;
+use App\WxCore\lib\WxPayDataBase;
 use App\WxCore\lib\WxPayException;
 
 class WxPayJsApi
@@ -219,7 +220,7 @@ class WxPayJsApi
  * @author widyhu
  *
  */
-class WxPayJsApiPay
+class WxPayJsApiPay extends WxPayDataBase
 {
 	/**
 	 * 设置微信分配的公众账号ID

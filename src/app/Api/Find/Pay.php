@@ -12,6 +12,7 @@ use App\WxCore\lib\WxPayApi;
 use App\WxCore\lib\WxPayConfig;
 use App\WxCore\lib\WxPayOrderQuery;
 use App\WxCore\lib\WxPayUnifiedOrder;
+use App\WxCore\PayNotifyCallBack;
 use App\WxCore\WxPayJsApi;
 use PhalApi\Api;
 
@@ -60,13 +61,14 @@ class Pay extends Api {
 
     /**
      * 下单通知
+     * @ignore
      * @desc 支付成功后回调地址
      */
     public function notify(){
-        $allParams = \PhalApi\DI()->request->getAll();
-        \PhalApi\DI()->logger->info(json_encode($allParams));
 
-        return $allParams;
+        $notify = new PayNotifyCallBack();
+        $notify->Handle(false);
+
     }
 
     /**

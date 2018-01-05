@@ -47,18 +47,4 @@ class IntroSuccessRecord {
         }
 
     }
-
-    public function getWXQrcode($data){
-        $accessToken = WXAuth::getAccessToken();
-        $data = WXAuth::getWxQrcode($accessToken, $data);
-        return $data;
-        if($data['errcode']==0){
-
-            return $data;
-        }else{
-            throw new Exception($data['errmsg'], $data['errcode']);
-        }
-
-
-    }
 }

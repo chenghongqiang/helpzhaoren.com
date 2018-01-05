@@ -9,8 +9,10 @@
 namespace App\Api\Find;
 
 use App\Component\FindApi;
+use App\Domain\Find\RECORD as DomainRECORD;
 use App\Domain\Find\IntroRecord as DomainIntroRecord;
 use App\Domain\Find\IntroSuccessRecord as DomainIntroSuccessRecord;
+use PhalApi\Exception;
 
 /**
  * 被引荐人提交数据接口
@@ -59,8 +61,18 @@ class IntroSuccessRecord extends FindApi{
             'wx_introducered_code' => $this->wx_introducered_code
         );
 
-        $ret = $domainIntroSuccessRecord->insert($data);
-        return $ret;
+        try{
+            $ret = $domainIntroSuccessRecord->insert($data);
+            if($ret){
+                $domainRecord = new DomainRECORD();
+                $domainRecord->upate($this->record_id, array('oper_state' => 3));
+            }
+
+            return $ret;
+        }catch (\Exception $e){
+            throw new Exception($e->getMessage(), 500);
+        }
+
     }
 
     /**
@@ -85,6 +97,29 @@ class IntroSuccessRecord extends FindApi{
             'emphasis_keyword' => ''
 
         );
+        //发送模板消息给发起人
+        $this->sendModuleMsgFunc($data);
+
+        $dataParam = array(
+            'touser' => $this->openID,
+            'template_id' => '2TyJ-pzj0k5QaYE3mlaMOB_93KgyIRkP8JQ7Nk6DV5A',
+            'page' => 'index',
+            'form_id' => $this->formId,
+            'data' => array(
+                'keyword1' => array('value' => '3'),
+                'keyword2' => array('value' => 'kewin'),
+                'keyword3' => array('value' => '找人红包'),
+            ),
+            'emphasis_keyword' => ''
+
+        );
+        //发送模板消息给引荐人和被引荐人
+        $this->sendModuleMsgFunc($dataParam);
+
+    }
+
+    private function sendModuleMsgFunc($data){
+
 
         $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
         return $domainIntroSuccessRecord->sendModuleMsg($data);

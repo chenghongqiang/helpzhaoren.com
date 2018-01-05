@@ -101,6 +101,14 @@ class Record extends FindApi{
 
         }
 
+        //过期失效更新下状态
+        if(( $ret['oper_state']!=2 ) && (strtotime("now") - strtotime($ret['create_time']))>=24*3600){
+            $flag = $domainRecord->upate($this->id, array('oper_state' => 2));
+            if($flag) {
+                $ret['oper_state'] = 2;
+            }
+        }
+
         return $ret;
     }
 

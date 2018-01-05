@@ -21,6 +21,11 @@ class RECORD {
         return $model->get($id);
     }
 
+    public function upate($id, $data){
+        $model = new ModelRECORD();
+        return $model->update($id, $data);
+    }
+
     public function getRecordsByOpenId($openId){
         $model = new ModelRECORD();
         $records = $model->getRecordsByOpenId($openId);

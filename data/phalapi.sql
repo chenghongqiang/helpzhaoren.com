@@ -74,7 +74,8 @@ CREATE TABLE `phal_intro_success_record` (
 
 #交易记录
 CREATE TABLE `phal_trade_record` (
-  `id` int(10) NOT NULL COMMENT '交易记录表id',
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '交易记录表id',
+  `recordId` int(10) NOT NULL COMMENT '找人记录表id',
   `openId` VARCHAR(50) NOT NULL COMMENT '用户openid',
   `out_trade_no` VARCHAR(32) NOT NULL COMMENT '商户订单号',
   `transaction_id` VARCHAR(32) NOT NULL COMMENT '微信支付订单号',

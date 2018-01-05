@@ -69,6 +69,9 @@ class Pay extends Api {
         $notify = new PayNotifyCallBack();
         $notify->Handle(false);
 
+        //用户付款成功后创建本地订单记录
+
+
     }
 
     /**

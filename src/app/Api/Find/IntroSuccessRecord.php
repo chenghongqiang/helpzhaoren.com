@@ -51,8 +51,6 @@ class IntroSuccessRecord extends FindApi{
         $domainIntroRecord = new DomainIntroRecord();
         $introRecord = $domainIntroRecord->get($this->intro_user_id);
 
-        $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-
         $data = array(
             'recordId' => $this->record_id,
             'introducererOpenId' => $introRecord['openId'],
@@ -62,10 +60,19 @@ class IntroSuccessRecord extends FindApi{
         );
 
         try{
-            $ret = $domainIntroSuccessRecord->insert($data);
+            //开启事务，当成功推荐记录表数据写入成功后更新找人记录状态失败时回滚
+            \PhalApi\DI()->notorm->beginTransaction('db_master');
+
+            $ret = \PhalApi\DI()->notorm->intro_success_record->insert($data);
             if($ret){
                 $domainRecord = new DomainRECORD();
-                $domainRecord->upate($this->record_id, array('oper_state' => 3));
+                $flag = $domainRecord->upate($this->record_id, array('oper_state' => 3));
+                if($flag){
+                    \PhalApi\DI()->notorm->commit('db_master');
+                }else{
+                    \PhalApi\DI()->notorm->rollback('db_master');
+                    throw new Exception('更新记录状态失败', 500);
+                }
             }
 
             return $ret;

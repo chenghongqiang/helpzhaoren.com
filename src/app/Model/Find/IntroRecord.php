@@ -10,7 +10,7 @@ use PhalApi\Model\NotORMModel as NotORM;
 
 class IntroRecord extends NotORM{
 
-    protected function getTableName() {
+    protected function getTableName($id) {
         return 'intro_record';
     }
 

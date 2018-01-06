@@ -25,7 +25,9 @@ class User extends Api {
             'insertUserInfo' => array(
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
                 'encryptedData' => array('name' => 'encryptedData', 'type' => 'string', 'require' => true, 'desc' => '目标密文'),
-                'iv' => array('name' => 'iv', 'type' => 'string', 'require' => true, 'desc' => '初始向量')
+                'iv' => array('name' => 'iv', 'type' => 'string', 'require' => true, 'desc' => '初始向量'),
+                'rawData' => array('name' => 'rawData', 'type' => 'string', 'require' => true, 'desc' => '签名用的用户信息串'),
+                'signature' => array('name' => 'signature', 'type' => 'string', 'require' => true, 'desc' => '签名'),
             ),
             'getUserProfile' => array(
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),

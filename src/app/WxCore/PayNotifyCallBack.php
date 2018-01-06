@@ -13,7 +13,7 @@ use App\WxCore\lib\WxPayOrderQuery;
 
 class PayNotifyCallBack extends WxPayNotify{
 
-    //²éÑ¯¶©µ¥
+    //è®¢å•æŸ¥è¯¢
     public function QueryOrder($transaction_id){
         $input = new WxPayOrderQuery();
         $input->SetTransaction_id($transaction_id);
@@ -29,16 +29,16 @@ class PayNotifyCallBack extends WxPayNotify{
         return false;
     }
 
-    //ÖØĞ´»Øµ÷´¦Àíº¯Êı
+    //é€šçŸ¥å¤„ç†
     public function NotifyProcess($data, &$msg){
 
         if(!array_key_exists("transaction_id", $data)){
-            $msg = "ÊäÈë²ÎÊı²»ÕıÈ·";
+            $msg = "ç¼ºå°‘è®¢å•å·";
             return false;
         }
-        //²éÑ¯¶©µ¥£¬ÅĞ¶Ï¶©µ¥ÕæÊµĞÔ
+        //æŸ¥è¯¢è®¢å•æ˜¯å¦å­˜åœ¨
         if(!$this->QueryOrder($data["transaction_id"])){
-            $msg = "¶©µ¥²éÑ¯Ê§°Ü";
+            $msg = "è®¢å•ä¸å­˜åœ¨";
             return false;
         }
         return true;

@@ -199,6 +199,12 @@ class Record extends FindApi{
 
             $record = $domainRecord->get($value['recordId']);
             $ret[$k] = $record;
+
+            //获取发起人图像
+            $domainUser = new DomainUSER();
+            $userInfoList = $domainUser->getUserByOpenid($record['openId']);
+            $ret[$k]['wx_creator_avatarUrl'] = $userInfoList['avatarUrl'];
+            $ret[$k]['wx_creator_nickName'] = $userInfoList['nickName'];
         }
 
         return $ret;

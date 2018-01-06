@@ -27,6 +27,7 @@ class Pay extends Api {
         return array(
             'prePay' => array(
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
+                'recordId' => array('name' => 'recordId', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
                 'total_fee' => array('name' => 'total_fee', 'type' => 'int', 'min' => '1', 'require' => true , 'desc' => '订单金额'),
             )
         );
@@ -71,6 +72,14 @@ class Pay extends Api {
 
         //用户付款成功后创建本地订单记录
 
+
+    }
+
+    /**
+     * 是否支付成功结果通知
+     * @
+     */
+    public function payCheck(){
 
     }
 

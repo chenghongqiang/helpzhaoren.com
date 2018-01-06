@@ -82,6 +82,6 @@ class WxPayNotify extends WxPayNotifyReply
 		{
 			$this->SetSign();
 		}
-		WxpayApi::replyNotify($this->ToXml());
+		WxPayApi::replyNotify($this->ToXml());
 	}
 }

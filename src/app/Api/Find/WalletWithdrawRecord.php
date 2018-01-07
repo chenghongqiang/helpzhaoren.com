@@ -28,9 +28,10 @@ class WalletWithdrawRecord extends Api {
     /**
      * 获取用户提现待打款记录，临时供打款用
      * @desc 根据openid获取提现明细，根据时间倒序排列
-     * @return
+     * @return int id 提现记录id
      * @return string create_time 提现时间
      * @return int money 本次提现金额
+     * @return string wx_code 用户微信号
      */
     public function getWithdrawRecord(){
 

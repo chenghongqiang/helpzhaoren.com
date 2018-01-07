@@ -29,7 +29,7 @@ class Record extends FindApi{
             'create' => array(
                 'money' => array('name' => 'money', 'type' => 'int', 'require' => true, 'desc' => '红包金额'),
                 'intro' => array('name' => 'intro', 'type' => 'string', 'require' => true, 'min' => '6','max' => '90' ,'desc' => '找人描述'),
-                'out_trade_no' => array('name' => 'out_trade_no', 'type' => 'int', 'require' => true , 'desc' => '商户订单号'),
+                'out_trade_no' => array('name' => 'out_trade_no', 'type' => 'string', 'require' => true , 'desc' => '商户订单号'),
                 'wx_self_code' => array('name' => 'wx_self_code', 'type' => 'string', 'require' => true, 'desc' => '发起人微信号'),
             ),
             'getIntroRecord' => array(

@@ -111,7 +111,7 @@ class Pay extends Api {
         if(!$ret){
             //从数据库订单记录中检测订单是否成功，本地检测失败，容错考虑查询微信订单数据
             $record = $domainOrderRecord->getRecordByTradeNo($this->out_trade_no, $openID);
-            if(!empty($record)){
+            if(empty($record)){
                 \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 数据库订单记录丢失,out_trade_no:" . $this->out_trade_no);
             }else{
                 $input = new WxPayOrderQuery();

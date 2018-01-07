@@ -46,6 +46,7 @@ class PayNotifyCallBack extends WxPayNotify{
 
         $domainOrderRecord = new DomainOrderRecord();
         $record = $domainOrderRecord->getRecordByTradeNo($data["out_trade_no"], $data["openid"]);
+        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__. " 获取订单数据,out_trade_no:" . json_encode($record));
         if(empty($record)){
             \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 数据库订单记录丢失,out_trade_no:" . $data["out_trade_no"]);
             return false;
@@ -62,6 +63,8 @@ class PayNotifyCallBack extends WxPayNotify{
             $flag = $domainOrderRecord->upate($record['id'], array('state' => 2));
             if($flag){
                 return true;
+            }else{
+                \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 更新数据库订单状态失败,out_trade_no:" . $data["out_trade_no"]);
             }
         }
 

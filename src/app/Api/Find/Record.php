@@ -55,7 +55,7 @@ class Record extends FindApi{
      */
     public function create(){
 
-        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__. " openid:" . $this->openID);
+        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__. " openid:" . $this->openID." out_trade_no:" . $this->out_trade_no);
         $code = rand(pow(10,(6-1)), pow(10,6)-1);
         $data = array(
             'openid' => $this->openID,
@@ -77,6 +77,7 @@ class Record extends FindApi{
         $domainRecord = new DomainRECORD();
         $id = $domainRecord->insert($data);
         if($id < 1){
+            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. "找人记录创建失败，openid:" . $this->openID." out_trade_no:" . $this->out_trade_no);
             throw new Exception('找人记录创建失败', 500);
         }
 

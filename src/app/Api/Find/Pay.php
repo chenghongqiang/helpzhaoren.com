@@ -33,7 +33,7 @@ class Pay extends Api {
             ),
             'payCheck' => array(
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
-                'recordId' => array('name' => 'recordId', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
+                'out_trade_no' => array('name' => 'out_trade_no', 'type' => 'int', 'require' => true , 'desc' => '商户订单号，预支付接口返回'),
             )
         );
     }

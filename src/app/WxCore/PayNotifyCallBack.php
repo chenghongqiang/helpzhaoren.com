@@ -11,7 +11,6 @@ use App\WxCore\lib\WxPayApi;
 use App\WxCore\lib\WxPayNotify;
 use App\WxCore\lib\WxPayOrderQuery;
 use App\Domain\Find\OrderRecord as DomainOrderRecord;
-use PhalApi\Exception;
 
 class PayNotifyCallBack extends WxPayNotify{
 
@@ -34,6 +33,7 @@ class PayNotifyCallBack extends WxPayNotify{
     //通知处理
     public function NotifyProcess($data, &$msg){
 
+        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__. " 通知回调,transaction_id:" . $data["transaction_id"]);
         if(!array_key_exists("transaction_id", $data)){
             $msg = "缺少订单号";
             return false;

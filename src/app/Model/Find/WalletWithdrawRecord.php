@@ -9,7 +9,7 @@ namespace App\Model\Find;
 
 use PhalApi\Model\NotORMModel as NotORM;
 
-class WallWithdrawRecord extends NotORM{
+class WalletWithdrawRecord extends NotORM{
 
     protected function getTableName($id) {
         return 'wallet_withdraw_record';

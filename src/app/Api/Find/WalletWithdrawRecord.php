@@ -20,7 +20,7 @@ class WalletWithdrawRecord extends Api {
             ),
             'updateState' => array(
                 'id' => array('name' => 'id', 'type' => 'int', 'require' => true, 'desc' => '提现记录id'),
-                'openId' => array('name' => 'openId', 'type' => 'string', 'require' => true,'desc' => '用户openId'),
+                'secret' => array('name' => 'secret', 'type' => 'string', 'require' => true,'desc' => '密钥'),
             )
         );
     }
@@ -46,6 +46,11 @@ class WalletWithdrawRecord extends Api {
      * @desc 根据提现记录id和用户openId
      */
     public function updateState(){
+
+        if($this->secret != 'zhaoren'){
+            throw new Exception('secret错误', 500);
+        }
+
         $domainWalletWithdrawRecord = new DomainWalletWithdrawRecord();
 
         $record = $domainWalletWithdrawRecord->get($this->id);

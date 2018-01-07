@@ -106,13 +106,13 @@ class Pay extends Api {
         $openID = $commonDomain->getOpenId($this->thirdSessionKey);
 
         $domainOrderRecord = new DomainOrderRecord();
-        $ret = $domainOrderRecord->checkOrderState($this->recordId, $openID);
+        $ret = $domainOrderRecord->checkOrderState($this->out_trade_no, $openID);
 
         if(!$ret){
             //从数据库订单记录中检测订单是否成功，本地检测失败，容错考虑查询微信订单数据
-            $record = $domainOrderRecord->getRecordByRecordId($this->recordId, $openID);
+            $record = $domainOrderRecord->getRecordByTradeNo($this->out_trade_no, $openID);
             if(!empty($record)){
-                \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 数据库订单记录丢失,recordId:" . $this->recordId);
+                \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 数据库订单记录丢失,out_trade_no:" . $this->out_trade_no);
             }else{
                 $input = new WxPayOrderQuery();
                 $input->SetOut_trade_no($record['out_trade_no']);

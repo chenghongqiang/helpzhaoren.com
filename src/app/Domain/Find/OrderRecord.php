@@ -41,9 +41,9 @@ class OrderRecord  {
         return $model->getRecordByTradeNo($outTradeNo, $openId);
     }
 
-    public function checkOrderState($recordId, $openId){
+    public function checkOrderState($outTradeNo, $openId){
         $model = new ModelOrderRecord();
-        $record = $model->getOrderRecord($recordId, $openId);
+        $record = $model->getRecordByTradeNo($outTradeNo, $openId);
 
         if(!empty($record) && $record['state']== ModelOrderRecord::SUCCESS){
             return true;

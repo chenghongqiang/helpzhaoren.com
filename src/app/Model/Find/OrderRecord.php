@@ -23,25 +23,10 @@ class OrderRecord extends NotORM {
         return 'order_record';
     }
 
-    public function getOrderRecord($recordId, $openId){
-        return $this->getORM()
-            ->select('id, state')
-            ->where(array('recordId' => $recordId, 'openId' => $openId))
-            ->fetchRow();
-
-    }
-
     public function getRecordByTradeNo($outTradeNo, $openId){
         return $this->getORM()
             ->select('id, state')
             ->where(array('out_trade_no' => $outTradeNo, 'openId' => $openId))
-            ->fetchRow();
-    }
-
-    public function getRecordByRecordId($recordId, $openId){
-        return $this->getORM()
-            ->select('id, state', 'out_trade_no')
-            ->where(array('recordId' => $recordId, 'openId' => $openId))
             ->fetchRow();
     }
 

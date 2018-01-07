@@ -58,7 +58,7 @@ class RECORD extends NotORM {
 
     public function getRecordsByOpenId($openId){
         return $this->getORM()
-            ->select('id, intro, money', 'code', 'oper_state', 'create_time')
+            ->select('id, intro, money, code, oper_state, create_time')
             ->where('openId', $openId)
             ->order('create_time desc')
             ->fetchAll();
@@ -70,7 +70,7 @@ class RECORD extends NotORM {
      */
     public function getRecordByCode($code){
         return $this->getORM()
-            ->select('id, intro, money', 'create_time')
+            ->select('id, intro, money, create_time')
             ->where(array('code' => $code, 'oper_state'=> self::PROGRESS))
             ->fetchRow();
     }

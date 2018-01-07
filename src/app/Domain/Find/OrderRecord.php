@@ -31,11 +31,6 @@ class OrderRecord  {
         return $model->update($id, $data);
     }
 
-    public function getRecordByRecordId($recordId, $openId){
-        $model = new ModelOrderRecord();
-        return $model->getRecordByRecordId($recordId, $openId);
-    }
-
     public function getRecordByTradeNo($outTradeNo, $openId){
         $model = new ModelOrderRecord();
         return $model->getRecordByTradeNo($outTradeNo, $openId);

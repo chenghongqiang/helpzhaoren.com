@@ -48,6 +48,7 @@ CREATE TABLE `phal_oper_record` (
   `money` int NOT NULL COMMENT '红包金额(整数以元为单位)',
   `intro` VARCHAR(200) NOT NULL COMMENT '找人描述',
   `code` VARCHAR(6) NOT NULL COMMENT '找人码 限定6位字符',
+  `out_trade_no` VARCHAR(32) NOT NULL COMMENT '商户订单号',
   `oper_state` tinyint(4) DEFAULT NULL COMMENT '记录状态  -1.删除 1.进行中 2.过期失效 3.引荐成功 4.引荐失败(被申诉)',
   `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)

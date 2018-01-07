@@ -10,8 +10,10 @@ namespace App\Api\Find;
 use App\Component\FindApi;
 use App\Domain\Find\USER as DomainUSER;
 use App\Domain\Find\RECORD as DomainRECORD;
+use App\Domain\Find\OrderRecord as DomainOrderRecord;
 use App\Domain\Find\IntroRecord as DomainIntroRecord;
 use App\Domain\Find\IntroSuccessRecord as DomainIntroSuccessRecord;
+use PhalApi\Exception;
 
 /**
  * 找人记录
@@ -60,6 +62,13 @@ class Record extends FindApi{
             'code' => rand(pow(10,(6-1)), pow(10,6)-1), //随机生成六位找人码
             'out_trade_no' => $this->out_trade_no
         );
+
+        //通过商户订单号去检测是否发起找人记录中的商户订单号是有效的
+        $domainOrderRecord = new DomainOrderRecord();
+        $ret = $domainOrderRecord->checkOrderState($this->out_trade_no, $this->openID);
+        if(!$ret){
+            throw new Exception("商户订单号不存在或未支付成功", 400);
+        }
 
         $domainRecord = new DomainRECORD();
         $id = $domainRecord->insert($data);

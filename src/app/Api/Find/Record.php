@@ -49,17 +49,20 @@ class Record extends FindApi{
      * 发起找人
      * @desc 填入红包金额、找人描述、微信号发起找人
      * @return int id 发起找人记录id
+     * @return string code 找人码
+     * @exception 500 创建找人记录失败
      */
     public function create(){
 
         \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__. " openid:" . $this->openID);
+        $code = rand(pow(10,(6-1)), pow(10,6)-1);
         $data = array(
             'openid' => $this->openID,
             'money' => $this->money,
             'intro' => $this->intro,
             'wx_self_code' => $this->wx_self_code,
             'oper_state' => 1,
-            'code' => rand(pow(10,(6-1)), pow(10,6)-1), //随机生成六位找人码
+            'code' => $code, //随机生成六位找人码
             'out_trade_no' => $this->out_trade_no
         );
 
@@ -72,7 +75,14 @@ class Record extends FindApi{
 
         $domainRecord = new DomainRECORD();
         $id = $domainRecord->insert($data);
-        return $id;
+        if($id < 1){
+            throw new Exception('找人记录创建失败', 500);
+        }
+
+        $ret['id'] = $id;
+        $ret['code'] = $code;
+
+        return $ret;
 
     }
 

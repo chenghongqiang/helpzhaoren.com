@@ -72,6 +72,7 @@ class Pay extends Api {
 
             $tools = new WxPayJsApi();
             $jsApiParameters = $tools->GetJsApiParameters($order);
+            $jsApiParameters['out_trade_no'] = $data['out_trade_no'];
 
             \PhalApi\DI()->logger->info('order:' . json_encode($order). ' jsApiParams:' . json_encode($jsApiParameters));
             return $jsApiParameters;

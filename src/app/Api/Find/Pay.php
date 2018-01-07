@@ -117,12 +117,14 @@ class Pay extends Api {
                 $input = new WxPayOrderQuery();
                 $input->SetOut_trade_no($record['out_trade_no']);
                 $result = WxPayApi::orderQuery($input);
+
+                \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__. " 查询订单状态,out_trade_no:" . $record['out_trade_no'].
+                    "queryOrder:" . json_encode($result));
                 if(array_key_exists("return_code", $result)
                     && array_key_exists("result_code", $result)
                     && $result["return_code"] == "SUCCESS"
-                    && $result["result_code"] == "SUCCESS")
-                {
-                    return true;
+                    && $result["result_code"] == "SUCCESS") {
+                        return true;
                 }
                 return false;
             }

@@ -29,7 +29,6 @@ class Pay extends Api {
         return array(
             'prePay' => array(
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
-                'recordId' => array('name' => 'recordId', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
                 'total_fee' => array('name' => 'total_fee', 'type' => 'int', 'min' => '1', 'require' => true , 'desc' => '订单金额'),
             ),
             'payCheck' => array(
@@ -50,7 +49,6 @@ class Pay extends Api {
         $openId = $commonDomain->getOpenId($this->thirdSessionKey);
 
         $data = array(
-            'recordId' => $this->recordId,
             'total_fee' => $this->total_fee * 100, //转换为分
             'openId' => $openId,
             'out_trade_no' => WxPayConfig::MCHID.date("YmdHis").rand(4),

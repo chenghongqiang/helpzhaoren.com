@@ -86,7 +86,6 @@ CREATE TABLE `phal_intro_success_record` (
 #订单记录
 CREATE TABLE `phal_order_record` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '交易记录表id',
-  `recordId` int(10) NOT NULL COMMENT '找人记录表id',
   `openId` VARCHAR(50) NOT NULL COMMENT '用户openid',
   `out_trade_no` VARCHAR(32) NOT NULL COMMENT '商户订单号',
   `total_fee` int NOT NULL COMMENT '订单总金额，单位为分',
@@ -94,14 +93,12 @@ CREATE TABLE `phal_order_record` (
   `time_start` VARCHAR(14) NOT NULL COMMENT '支付完成时间 yyyyMMddHHmmss',
   `state` tinyint(4) NOT NULL DEFAULT 1 COMMENT '订单状态，默认为1 预支付 2 支付成功',
 
-  PRIMARY KEY (`id`),
-  UNIQUE(`recordId`, `openId`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 #交易记录
 CREATE TABLE `phal_trade_record` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '交易记录表id',
-  `recordId` int(10) NOT NULL COMMENT '找人记录表id',
   `openid` VARCHAR(128) NOT NULL COMMENT '用户openid',
   `mch_id` VARCHAR(32) NOT NULL COMMENT '商户号',
   `nonce_str` VARCHAR(32) NOT NULL COMMENT '随机字符串',

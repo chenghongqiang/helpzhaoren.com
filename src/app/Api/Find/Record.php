@@ -50,6 +50,7 @@ class Record extends FindApi{
      * @desc 填入红包金额、找人描述、微信号发起找人
      * @return int id 发起找人记录id
      * @return string code 找人码
+     * @exception 400 商户订单号不存在或未支付成功
      * @exception 500 创建找人记录失败
      */
     public function create(){

@@ -36,6 +36,7 @@ class IntroSuccessRecord extends NotORM{
             ->select('recordId')
             ->or('introducererOpenId', $openId)
             ->or('introduceredOpenId', $openId)
+            ->order('create_time desc')
             ->fetchAll();
     }
 }

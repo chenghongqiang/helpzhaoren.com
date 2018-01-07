@@ -9,6 +9,7 @@ namespace App\Api\Find;
 
 use App\Component\FindApi;
 use App\Domain\Find\WALLET as DomainWALLET;
+use App\Domain\Find\WalletWithdrawRecord as DomainWalletWithdrawRecord;
 
 /**
  * 用户钱包
@@ -51,16 +52,16 @@ class Wallet extends FindApi{
 
     /**
      * 获取提现记录
-     * @desc 根据openid获取提现明细
+     * @desc 根据openid获取提现明细，根据时间倒序排列
      * @return string create_time 提现时间
      * @return int money 本次提现金额
      */
-    public function walletRecord(){
+    public function getWalletWithdrawRecord(){
 
-        $domainWallet = new DomainWALLET();
+        $domainWalletWithdrawRecord = new DomainWalletWithdrawRecord();
 
-        $walletRecord = $domainWallet->getWalletRecord($this->openID);
-        return $walletRecord;
+        $walletWithdrawRecord = $domainWalletWithdrawRecord->getRecordByOpenid($this->openID);
+        return $walletWithdrawRecord;
     }
 
 }

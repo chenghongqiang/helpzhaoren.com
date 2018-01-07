@@ -60,6 +60,7 @@ class RECORD extends NotORM {
         return $this->getORM()
             ->select('id, intro, money', 'code', 'oper_state', 'create_time')
             ->where('openId', $openId)
+            ->order('create_time desc')
             ->fetchAll();
     }
 

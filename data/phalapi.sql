@@ -19,11 +19,22 @@ CREATE TABLE `phal_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 #用户钱包提现记录表
-CREATE TABLE `phal_user_wallet_record` (
+CREATE TABLE `phal_wallet_withdraw_record` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `openId` VARCHAR(50) NOT NULL COMMENT '用户openid',
-
   `money` DECIMAL(7, 2) DEFAULT 0 COMMENT '本次提现金额(以元为单位)',
+  `state` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1.提现中 2.提现成功 -1.提现失败',
+  `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+#用户进账记录表
+CREATE TABLE `phal_wallet_income_record` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `openId` VARCHAR(50) NOT NULL COMMENT '用户openid',
+  `money` DECIMAL(7, 2) DEFAULT 0 COMMENT '本次进账金额(以元为单位)',
+  `state` tinyint(4) NOT NULL DEFAULT 1 COMMENT '状态，预留字段',
   `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 
   PRIMARY KEY (`id`)

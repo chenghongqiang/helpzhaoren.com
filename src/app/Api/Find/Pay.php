@@ -51,7 +51,7 @@ class Pay extends Api {
         $data = array(
             'total_fee' => $this->total_fee * 100, //转换为分
             'openId' => $openId,
-            'out_trade_no' => WxPayConfig::MCHID.date("YmdHis").rand(4),
+            'out_trade_no' => WxPayConfig::MCHID.date("YmdHis").rand(1000,9999),
             'trade_type' => 'JSAPI',
             'time_start' => date("YmdHis")
         );

@@ -81,10 +81,12 @@ class Record extends FindApi{
             throw new Exception('找人记录创建失败', 500);
         }
 
-        $ret['id'] = $id;
-        $ret['code'] = $code;
+        $result = array(
+            'id' => $id,
+            'code' => $code
+        );
 
-        return $ret;
+        return $result;
 
     }
 

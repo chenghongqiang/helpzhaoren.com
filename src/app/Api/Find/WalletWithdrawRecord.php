@@ -67,7 +67,7 @@ class WalletWithdrawRecord extends Api {
     }
 
     /**
-     * 获取用户提现待打款记录，临时供打款用
+     * 获取用户提现待打款记录 —— 临时供打款用
      * @desc 根据openid获取提现明细，根据时间倒序排列
      * @return int id 提现记录id
      * @return string create_time 提现时间
@@ -84,7 +84,7 @@ class WalletWithdrawRecord extends Api {
     }
 
     /**
-     * 更新提现记录状态为提现成功
+     * 更新提现记录状态为提现成功 —— 临时供打款用
      * @desc 根据提现记录id和用户openId
      */
     public function updateState(){

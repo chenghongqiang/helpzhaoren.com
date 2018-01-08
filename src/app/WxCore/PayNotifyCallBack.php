@@ -39,8 +39,8 @@ class PayNotifyCallBack extends WxPayNotify{
             return false;
         }
         //查询订单是否存在
-        if(!$this->QueryOrder($data["transaction_id"])){
-            $msg = "订单不存在";
+        if(!$this->QueryOrder($data["transaction_id"], $data["out_trade_no"])){
+            $msg = "订单查询失败";
             return false;
         }
 

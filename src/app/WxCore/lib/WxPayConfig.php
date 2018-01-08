@@ -62,5 +62,5 @@ class WxPayConfig
 	/**
 	 * 异步通知URL
 	 */
-	const NOTIFY_URL = '?service=App.Find_Pay.Notify&detail=1';
+	const NOTIFY_URL = 'https://www.helpzhaoren.com?service=App.Find_Pay.Notify&detail=1';
 }

@@ -90,6 +90,7 @@ class Pay extends Api {
      */
     public function notify(){
 
+        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__);
         $notify = new PayNotifyCallBack();
         $notify->Handle(false);
     }

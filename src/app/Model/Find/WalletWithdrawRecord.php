@@ -23,7 +23,7 @@ class WalletWithdrawRecord extends NotORM{
     public function getRecordByOpenid($openId){
         return $this->getORM()
             ->select('*')
-            ->where('openid', $openId)
+            ->where('openId', $openId)
             ->order('create_time desc')
             ->fetchAll();
     }

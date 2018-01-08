@@ -7,6 +7,7 @@
  */
 namespace App\Api\Find;
 
+use App\Domain\Common;
 use App\Domain\Find\WalletWithdrawRecord as DomainWalletWithdrawRecord;
 use PhalApi\Api;
 use PhalApi\Exception;
@@ -15,7 +16,14 @@ class WalletWithdrawRecord extends Api {
 
     public function getRules(){
         return array(
+            'withdraw' => array(
+                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
+                'money' => array('name' => 'money', 'type' => 'float', 'require' => true, 'desc' => '提现金额数'),
+            ),
             'getWithdrawRecord' => array(
+                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
+            ),
+            'getRecord' => array(
 
             ),
             'updateState' => array(
@@ -26,6 +34,39 @@ class WalletWithdrawRecord extends Api {
     }
 
     /**
+     * 用户提现
+     * @desc 提取钱包金额
+     * @return int id 记录创建成功
+     */
+    public function withdraw(){
+        $commonDomain = new Common();
+        $openId = $commonDomain->getOpenId($this->thirdSessionKey);
+
+        $data = array(
+            'openId' => $openId,
+            'money' => $this->money
+        );
+        $domainWalletWithdrawRecord = new DomainWalletWithdrawRecord();
+        $ret = $domainWalletWithdrawRecord->insert($data);
+
+        return $ret;
+    }
+
+    /**
+     * 获取当前用户提现记录
+     * @desc 根据openid获取当前用户提现记录
+     */
+    public function getWithdrawRecord(){
+        $commonDomain = new Common();
+        $openId = $commonDomain->getOpenId($this->thirdSessionKey);
+
+        $domainWalletWithdrawRecord = new DomainWalletWithdrawRecord();
+        $ret = $domainWalletWithdrawRecord->getRecordByOpenid($openId);
+
+        return $ret;
+    }
+
+    /**
      * 获取用户提现待打款记录，临时供打款用
      * @desc 根据openid获取提现明细，根据时间倒序排列
      * @return int id 提现记录id
@@ -33,7 +74,7 @@ class WalletWithdrawRecord extends Api {
      * @return int money 本次提现金额
      * @return string wx_code 用户微信号
      */
-    public function getWithdrawRecord(){
+    public function getRecord(){
 
         $domainWalletWithdrawRecord = new DomainWalletWithdrawRecord();
 

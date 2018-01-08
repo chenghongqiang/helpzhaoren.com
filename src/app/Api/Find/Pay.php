@@ -68,6 +68,7 @@ class Pay extends Api {
             $input->SetGoods_tag("HONGBAO");
             $input->SetTrade_type($data['trade_type']);
             $input->SetOpenid($openId);
+            $input->SetNotify_url("https://www.helpzhaoren.com?service=App.Find_Pay.Notify&detail=1");
             $order = WxPayApi::unifiedOrder($input);
 
             $tools = new WxPayJsApi();
@@ -85,7 +86,6 @@ class Pay extends Api {
 
     /**
      * 下单通知
-     * @ignore
      * @desc 支付成功后回调地址
      */
     public function notify(){

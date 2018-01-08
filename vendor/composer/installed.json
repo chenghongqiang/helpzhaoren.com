@@ -93,24 +93,24 @@
     },
     {
         "name": "phalapi/kernal",
-        "version": "2.1.2",
-        "version_normalized": "2.1.2.0",
+        "version": "2.2.0",
+        "version_normalized": "2.2.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phalapi/kernal.git",
-            "reference": "d54d969dae9b91d15a87bf899c1d6b3d1622afc1"
+            "reference": "908ceaf63311ab5c0337d9d4d6ba303fc970196a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/phalapi/kernal/d54d969dae9b91d15a87bf899c1d6b3d1622afc1.zip",
-            "reference": "d54d969dae9b91d15a87bf899c1d6b3d1622afc1",
+            "url": "https://files.phpcomposer.com/files/phalapi/kernal/908ceaf63311ab5c0337d9d4d6ba303fc970196a.zip",
+            "reference": "908ceaf63311ab5c0337d9d4d6ba303fc970196a",
             "shasum": ""
         },
         "require": {
             "phalapi/notorm": "2.0.1",
             "php": ">=5.3.3"
         },
-        "time": "2017-11-02T15:18:17+00:00",
+        "time": "2017-12-25T13:50:27+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -145,6 +145,142 @@
             "api",
             "framework",
             "phalapi"
+        ]
+    },
+    {
+        "name": "phalapi/qrcode",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phalapi/qrcode.git",
+            "reference": "cbb3c5f3f95a7902b0a72786a77495ada0c006b7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/phalapi/qrcode/cbb3c5f3f95a7902b0a72786a77495ada0c006b7.zip",
+            "reference": "cbb3c5f3f95a7902b0a72786a77495ada0c006b7",
+            "shasum": ""
+        },
+        "time": "2017-12-29T12:03:03+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "PhalApi\\QrCode\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0+"
+        ],
+        "authors": [
+            {
+                "name": "dogstar huang",
+                "email": "chanzonghuang@gmail.com",
+                "homepage": "http://my.oschina.net/dogstar",
+                "role": "Developer"
+            }
+        ],
+        "description": "PhalApi 2.x 扩展类库：基于QRCode实现的二维码扩展",
+        "homepage": "https://www.phalapi.net/",
+        "keywords": [
+            "phalapi",
+            "phalapi-qrcode",
+            "qrcode",
+            "二维码"
+        ]
+    },
+    {
+        "name": "nikic/fast-route",
+        "version": "v1.2.0",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nikic/FastRoute.git",
+            "reference": "b5f95749071c82a8e0f58586987627054400cdf6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/nikic/FastRoute/b5f95749071c82a8e0f58586987627054400cdf6.zip",
+            "reference": "b5f95749071c82a8e0f58586987627054400cdf6",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "time": "2017-01-19T11:35:12+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "FastRoute\\": "src/"
+            },
+            "files": [
+                "src/functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Nikita Popov",
+                "email": "nikic@php.net"
+            }
+        ],
+        "description": "Fast request router for PHP",
+        "keywords": [
+            "router",
+            "routing"
+        ]
+    },
+    {
+        "name": "phalapi/fast-route",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phalapi/fast-route.git",
+            "reference": "abcd9d79e1a0f37f39607a5900edca71d10990cb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/phalapi/fast-route/abcd9d79e1a0f37f39607a5900edca71d10990cb.zip",
+            "reference": "abcd9d79e1a0f37f39607a5900edca71d10990cb",
+            "shasum": ""
+        },
+        "require": {
+            "nikic/fast-route": "1.2.0",
+            "php": ">=5.3.3"
+        },
+        "time": "2017-10-25T13:51:18+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "PhalApi\\FastRoute\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0+"
+        ],
+        "authors": [
+            {
+                "name": "dogstar huang",
+                "email": "chanzonghuang@gmail.com",
+                "homepage": "http://my.oschina.net/dogstar",
+                "role": "Developer"
+            }
+        ],
+        "description": "PhalApi 2.x 扩展类库 - FastRoute路由，可以通过配置实现自定义路由配置，从而轻松映射到PhalApi中的service接口服务。",
+        "homepage": "https://www.phalapi.net/",
+        "keywords": [
+            "fast-route",
+            "phalapi",
+            "phalapi-fast-route"
         ]
     }
 ]

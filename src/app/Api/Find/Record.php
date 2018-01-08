@@ -109,6 +109,9 @@ class Record extends FindApi{
         $domainRecord = new DomainRECORD();
         $ret = $domainRecord->get($this->id);
 
+        if(empty($ret)){
+            return array();
+        }
         $domainUser = new DomainUSER();
         $creatorInfo = $domainUser->getUserByOpenid($ret['openId']);
         $ret['wx_creator_avatarUrl'] = $creatorInfo['avatarUrl'];

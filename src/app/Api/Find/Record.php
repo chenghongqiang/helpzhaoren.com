@@ -56,7 +56,7 @@ class Record extends FindApi{
     public function create(){
 
         \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__. " openid:" . $this->openID." out_trade_no:" . $this->out_trade_no);
-        $code = rand(pow(10,(6-1)), pow(10,6)-1);
+        $code = rand(100000, 999999);
         $data = array(
             'openid' => $this->openID,
             'money' => $this->money,

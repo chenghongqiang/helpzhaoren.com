@@ -2,7 +2,7 @@ CREATE DATABASE `phalapi`;
 
 use `phalapi`;
 
-#用户表 openid唯一建 加索引 DECIMAL(5, 1) -99999.9 到 999999.9
+#用户表 openid唯一建 加索引
 CREATE TABLE `phal_user` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `openId` VARCHAR(50) NOT NULL COMMENT '用户openId',

@@ -33,7 +33,7 @@ class Wechat extends Api{
      * 获取accessToken
      * @desc 获取accessToken
      * @return string accessToken
-     * @throws \PhalApi\Exception
+     * @exception -100010 appId校验失败
      */
     public function getAccessToken(){
         if($this->appId != WxPayConfig::APPID){

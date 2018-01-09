@@ -144,6 +144,9 @@ class USER {
             $list = explode('%%', $sessionValue);
             $sessionKey = $list[0];
 
+            \PhalApi\DI()->logger->info(__CLASS__.__METHOD__ . '->thirdSessionKey：'.$thirdSessionKey.
+                ' encryptedData:'.$encryptedData.' iv:'.$iv);
+
             $data = $wxAuth->getUserInfo($sessionKey, $encryptedData, $iv);
             $userInfo = json_decode($data);
 

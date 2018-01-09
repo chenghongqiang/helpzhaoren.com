@@ -35,6 +35,11 @@ class User extends Api {
             ),
             'userLogin' => array(
                 'code' => array('name' => 'code', 'type' => 'string', 'require' => true, 'desc' => '登录凭证code'),
+            ),
+            'getPhoneNumber' => array(
+                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
+                'encryptedData' => array('name' => 'encryptedData', 'type' => 'string', 'require' => true, 'desc' => '目标密文'),
+                'iv' => array('name' => 'iv', 'type' => 'string', 'require' => true, 'desc' => '初始向量'),
             )
         );
     }

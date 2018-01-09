@@ -121,6 +121,40 @@ class USER {
     }
 
     /**
+     * {
+        "phoneNumber": "13580006666",
+        "purePhoneNumber": "13580006666",
+        "countryCode": "86",
+        "watermark":
+        {
+            "appid":"APPID",
+            "timestamp":TIMESTAMP
+        }
+    }
+     * @param $thirdSessionKey
+     * @param $encryptedData
+     * @param $iv
+     * @return mixed
+     * @throws Exception
+     */
+    public function getPhoneNumber($thirdSessionKey, $encryptedData, $iv){
+        try{
+            $wxAuth = new WXAuth();
+            $sessionValue = \PhalApi\DI()->redis->get($thirdSessionKey);
+            $list = explode('%%', $sessionValue);
+            $sessionKey = $list[0];
+
+            $data = $wxAuth->getUserInfo($sessionKey, $encryptedData, $iv);
+            $userInfo = json_decode($data);
+
+            return $userInfo;
+        }catch (Exception $e){
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
+}
+
+
+    /**
      * 根据openId从数据库获取用户信息
      * @param $openId
      * @return mixed

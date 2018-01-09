@@ -7,6 +7,7 @@
 
 namespace App\WxCore;
 
+use App\Common\Utils\Code;
 use App\WxCore\lib\WxPayApi;
 use App\WxCore\lib\WxPayConfig;
 use App\WxCore\lib\WxPayException;
@@ -75,6 +76,12 @@ class WXAuth {
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
         if ($errCode == 0) {
+            //校验apppId真实性
+            $info = json_decode($data);
+            if($info->watermark->appid != WxPayConfig::APPID){
+                \PhalApi\DI()->logger->error(__CLASS__.__METHOD__ . ' appId校验失败');
+                throw new Exception("appId verify failed", Code::VERIFY_FAIL);
+            }
             return $data;
         } else {
             \PhalApi\DI()->logger->error(__CLASS__.__METHOD__ . ' errCode:' . $errCode);

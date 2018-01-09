@@ -12,6 +12,7 @@ use App\Component\FindApi;
 use App\Domain\Common;
 use PhalApi\Api;
 use App\Domain\Find\USER as DomainUSER;
+use PhalApi\Exception;
 
 /**
  * 用户相关接口
@@ -75,12 +76,34 @@ class User extends Api {
      */
     public function getUserProfile(){
 
-        $commonDomain = new Common();
-        $openId = $commonDomain->getOpenId($this->thirdSessionKey);
-        $domainUser = new DomainUSER();
-        $userInfo = $domainUser->getUserInfoFromDB($openId);
+        try{
+            $commonDomain = new Common();
+            $openId = $commonDomain->getOpenId($this->thirdSessionKey);
+            $domainUser = new DomainUSER();
+            $userInfo = $domainUser->getUserInfoFromDB($openId);
 
-        return $userInfo;
+            return $userInfo;
+        }catch (Exception $e){
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
+
+    }
+
+    /**
+     * 获取用户电话号码
+     * @desc 获取用户电话号码
+     * @return string phoneNumber 电话号码
+     */
+    public function getPhoneNumber(){
+        $domainUser = new DomainUSER();
+
+        try{
+            $phoneInfo = $domainUser->getPhoneNumber($this->thirdSessionKey, $this->encryptedData, $this->iv);
+            return $phoneInfo->purePhoneNumber; //没有区号的
+        }catch (Exception $e){
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
+
     }
 
 }

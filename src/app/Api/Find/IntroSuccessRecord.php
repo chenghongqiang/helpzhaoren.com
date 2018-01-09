@@ -104,7 +104,7 @@ class IntroSuccessRecord extends FindApi{
         if(!empty($introSuccescRecord)){
             unset($data);
             $data = array(
-                'recordId' => $this->record_id,
+                'recordId' => $record['id'],
                 'introducererOpenId0' => $introSuccescRecord['introducererOpenId'],
                 'money0' => $averageMoney,
                 'money1' => $averageMoney,

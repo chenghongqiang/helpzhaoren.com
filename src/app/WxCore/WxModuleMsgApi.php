@@ -57,7 +57,7 @@ class WxModuleMsgApi{
         $url = sprintf($sendModuleMsgURL, $accessToken);
 
         $curl = new CUrl();
-        $rs = $curl->post($url, $data, 6000);
+        $rs = $curl->post($url, http_build_query($data), 6000);
         $data = json_decode($rs, true);
 
         return $data;

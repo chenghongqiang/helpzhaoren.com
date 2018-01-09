@@ -40,7 +40,7 @@ class USER extends NotORM {
         if(is_array($openid)){
             return $conn->fetchAll();
         }else{
-            return $conn->fetch();
+            return $conn->fetchOne();
 
         }
 

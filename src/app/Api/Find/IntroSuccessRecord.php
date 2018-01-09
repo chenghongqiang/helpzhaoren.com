@@ -13,6 +13,7 @@ use App\Domain\Find\RECORD as DomainRECORD;
 use App\Domain\Find\IntroRecord as DomainIntroRecord;
 use App\Domain\Find\WalletIncomeRecord as DomainWalletIncomeRecord;
 use App\Domain\Find\IntroSuccessRecord as DomainIntroSuccessRecord;
+use App\Domain\Find\USER as DomainUSER;
 use PhalApi\Exception;
 
 /**
@@ -73,33 +74,8 @@ class IntroSuccessRecord extends FindApi{
                     //被引荐人提交数据成功后平分发起人金额 收取10%交易费用
                     $record = $domainRecord->get($this->record_id);
                     if(!empty($record)){
-                        $rate = \PhalApi\DI()->config->get('params.rate');
-                        $averageMoney = ($record['money']-$record['money']*$rate)/2;
-                        //更新推荐人和被推荐人钱包金额，并且写入各入账记录表
-                        $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-                        $introSuccescRecord = $domainIntroSuccessRecord->get($ret);
-                        if(!empty($introSuccescRecord)){
-                            unset($data);
-                            $data = array(
-                                'recordId' => $this->record_id,
-                                'introducererOpenId0' => $introSuccescRecord['introducererOpenId'],
-                                'money0' => $averageMoney,
-                                'money1' => $averageMoney,
-                                'introduceredOpenId1' => $introSuccescRecord['introduceredOpenId'],
-                            );
-
-                            $walletIncomeRecord = new DomainWalletIncomeRecord();
-                            $walletIncomeRecord->insert($data);
-
-                            //更新推荐人和被推荐人钱包
-
-
-                        }else{
-                            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 未找到推荐成功相关记录");
-                        }
-
+                        $this->updateRecord($record, $ret);
                     }
-
 
                 }else{
                     \PhalApi\DI()->notorm->rollback('db_master');
@@ -112,6 +88,40 @@ class IntroSuccessRecord extends FindApi{
             throw new Exception($e->getMessage(), 500);
         }
 
+    }
+
+    /**
+     * 写入各入账记录表，更新推荐人和被推荐人钱包金额
+     * @param $record
+     * @param $ret
+     */
+    private function updateRecord($record, $ret){
+        $rate = \PhalApi\DI()->config->get('params.rate');
+        $averageMoney = ($record['money']-$record['money']*$rate)/2;
+        //更新推荐人和被推荐人钱包金额，并且写入各入账记录表
+        $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
+        $introSuccescRecord = $domainIntroSuccessRecord->get($ret);
+        if(!empty($introSuccescRecord)){
+            unset($data);
+            $data = array(
+                'recordId' => $this->record_id,
+                'introducererOpenId0' => $introSuccescRecord['introducererOpenId'],
+                'money0' => $averageMoney,
+                'money1' => $averageMoney,
+                'introduceredOpenId1' => $introSuccescRecord['introduceredOpenId'],
+            );
+
+            $walletIncomeRecord = new DomainWalletIncomeRecord();
+            $walletIncomeRecord->insert($data);
+
+            //更新推荐人和被推荐人钱包
+            $domainUSER = new DomainUSER();
+            $domainUSER->updateWallet($introSuccescRecord['introducererOpenId'], $averageMoney);
+            $domainUSER->updateWallet($introSuccescRecord['introduceredOpenId'], $averageMoney);
+
+        }else{
+            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 未找到推荐成功相关记录");
+        }
     }
 
     /**

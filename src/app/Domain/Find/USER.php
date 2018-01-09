@@ -218,7 +218,8 @@ class USER {
     }
 
     public function updateWallet($openId, $money){
-
+        $model = new ModelUSER();
+        return $model->updateWallet($openId, $money);
     }
 
 }

@@ -46,6 +46,13 @@ class USER extends NotORM {
 
     }
 
+    public function updateWallet($openId, $money){
+
+        $user = $this->getORM();
+        return $user->where('openId', $openId)->update(array('money' => new NotORM_Literal("money + {{$money}}")));
+
+    }
+
 
 
 

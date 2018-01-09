@@ -9,7 +9,7 @@ namespace App\Model\Find;
 
 use PhalApi\Model\NotORMModel as NotORM;
 
-class WallIncomeRecord extends NotORM{
+class WalletIncomeRecord extends NotORM{
 
     protected function getTableName($id) {
         return 'wallet_income_record';

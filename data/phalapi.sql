@@ -32,8 +32,11 @@ CREATE TABLE `phal_wallet_withdraw_record` (
 #用户进账记录表
 CREATE TABLE `phal_wallet_income_record` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `openId` VARCHAR(50) NOT NULL COMMENT '用户openid',
-  `money` DECIMAL(7, 2) DEFAULT 0 COMMENT '本次进账金额(以元为单位)',
+  `recordId` int(10) NOT NULL COMMENT '找人记录表id',
+  `introducererOpenId0` VARCHAR(50) NOT NULL COMMENT '引荐人openid',
+  `money0` DECIMAL(7, 2) DEFAULT 0 COMMENT '引荐人本次进账金额(以元为单位)',
+  `introducererOpenId1` VARCHAR(50) NOT NULL COMMENT '被引荐人openid',
+  `money1` DECIMAL(7, 2) DEFAULT 0 COMMENT '被引荐人本次进账金额(以元为单位)',
   `state` tinyint(4) NOT NULL DEFAULT 1 COMMENT '状态，预留字段',
   `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 

@@ -7,6 +7,7 @@
 
 namespace App\Domain\Find;
 
+use App\Common\Utils\Code;
 use App\Common\Utils\Time;
 use App\Common\Utils\Tool;
 use App\Model\Find\USER as ModelUSER;
@@ -50,9 +51,9 @@ class USER {
         return $sessionKey;
     }
 
-    public function insertUserInfo($thirdSessionKey, $encryptedData, $iv){
+    public function insertUserInfo($thirdSessionKey, $encryptedData, $iv, $rawData, $signature){
 
-        $userInfo = $this->getUserInfo($thirdSessionKey, $encryptedData, $iv);
+        $userInfo = $this->getUserInfo($thirdSessionKey, $encryptedData, $iv, $rawData, $signature);
         $userInfoDB = $this->getUserInfoFromDB($userInfo->openId);
 
         if(!empty($userInfoDB)){
@@ -96,14 +97,23 @@ class USER {
             }
     }
      */
-    public function getUserInfo($thirdSessionKey, $encryptedData, $iv){
+    public function getUserInfo($thirdSessionKey, $encryptedData, $iv, $rawData, $signature){
         $wxAuth = new WXAuth();
         $sessionValue = \PhalApi\DI()->redis->get($thirdSessionKey);
         $list = explode('%%', $sessionValue);
         $sessionKey = $list[0];
 
         \PhalApi\DI()->logger->info(__CLASS__.__METHOD__ . '->thirdSessionKey：'.$thirdSessionKey.
-            ' encryptedData:'.$encryptedData.' iv:'.$iv);
+            ' encryptedData:'.$encryptedData.' iv:'.$iv. ' rawData:' .$rawData .' signature:' . $signature);
+
+        //校验签名和前端用户信息
+        $sign= sha1( $rawData . $sessionKey);
+        if($sign != $signature){
+            \PhalApi\DI()->logger->error(__CLASS__.__METHOD__ . ' 校验用户信息和签名失败，rawData:' .$rawData .' signature:' . $signature);
+
+            throw new Exception("校验用户信息和签名失败", Code::VERIFY_USERINFO_FAIL);
+        }
+
         $data = $wxAuth->getUserInfo($sessionKey, $encryptedData, $iv);
         $userInfo = json_decode($data);
 
@@ -167,6 +177,10 @@ class USER {
     public function getUserByOpenid($openid){
         $model = new ModelUSER();
         return $model->getUserByOpenid($openid);
+
+    }
+
+    public function updateWallet($openId, $money){
 
     }
 

@@ -36,7 +36,7 @@ class Wallet extends FindApi{
      * @desc 当前用户操作提现，写入提现记录
      * @return int id 插入记录id，false插入失败
      */
-    public function insert(){
+    private function insert(){
 
         $data = array(
             'openid' => $this->openID,
@@ -56,7 +56,7 @@ class Wallet extends FindApi{
      * @return string create_time 提现时间
      * @return int money 本次提现金额
      */
-    public function getWalletWithdrawRecord(){
+    private function getWalletWithdrawRecord(){
 
         $domainWalletWithdrawRecord = new DomainWalletWithdrawRecord();
 

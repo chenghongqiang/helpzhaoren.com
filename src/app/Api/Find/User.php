@@ -59,7 +59,7 @@ class User extends Api {
         $commonDomain = new Common();
         $commonDomain->getOpenId($this->thirdSessionKey);
         $domainUser = new DomainUSER();
-        $id = $domainUser->insertUserInfo($this->thirdSessionKey, $this->encryptedData, $this->iv);
+        $id = $domainUser->insertUserInfo($this->thirdSessionKey, $this->encryptedData, $this->iv, $this->rawData, $this->signature);
 
         return $id;
 

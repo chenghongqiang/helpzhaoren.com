@@ -31,12 +31,13 @@ class Wechat extends Api{
 
     /**
      * 获取accessToken
-     * @return mixed
+     * @desc 获取accessToken
+     * @return string accessToken
      * @throws \PhalApi\Exception
      */
     public function getAccessToken(){
         if($this->appId != WxPayConfig::APPID){
-            throw new Exception('appId校验失败', Code::VERIFY_FAIL);
+            throw new Exception('appId校验失败', Code::VERIFY_APPID_FAIL);
         }
 
         return WXAuth::getAccessToken();

@@ -19,5 +19,7 @@ class Code{
     const CONF_MISS				= -10004;			//配置缺失
     const DB_ERROR              = -10009;           //数据库错误
 
+    const VERIFY_APPID_FAIL     = -100010;          //appId校验失败
+
 
 }

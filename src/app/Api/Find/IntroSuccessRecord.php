@@ -130,45 +130,56 @@ class IntroSuccessRecord extends FindApi{
      * @return boolean flag 1.成功 0.失败
      */
     public function sendModuleMsg(){
+        $recordId = 11;
+        $domainRecord = new DomainRECORD();
+        $record = $domainRecord->get($recordId);
 
-        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__  . ' openID:' . $this->openID .' formId:' . $this->formId);
+        if(!empty($record)){
+            $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
+            $introSuccescRecord = $domainIntroSuccessRecord->get($recordId);
+            if(empty($introSuccescRecord)){
+                \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 未找到推荐成功相关记录，id:" . $recordId);
+            }
 
-        $data = array(
-            'touser' => $this->openID,
-            'template_id' => '2TyJ-pzj0k5QaYE3mlaMOB_93KgyIRkP8JQ7Nk6DV5A',
-            'page' => 'index',
-            'form_id' => $this->formId,
-            'data' => array(
-                'keyword1' => array('value' => '3'),
-                'keyword2' => array('value' => 'kewin'),
-                'keyword3' => array('value' => '找人红包'),
-            ),
-            'emphasis_keyword' => ''
+            //服务进度通知
+            $data = array(
+                'touser' => $record['openId'],
+                'template_id' => 'DdQxT0RfqPy4AGOPVVHz7a9vK09W7MVsORTwfVMsHHw',
+                'page' => 'pages/index',
+                'form_id' => $this->formId,
+                'data' => array(
+                    'keyword1' => array('value' => '找到啦，赶紧去联系他（她）吧'),
+                    'keyword2' => array('value' => $introSuccescRecord['wx_introducer_code']),
+                    'keyword3' => array('value' => $introSuccescRecord['wx_introducered_code']),
+                ),
+                'emphasis_keyword' => ''
 
-        );
-        //发送模板消息给发起人
-        $this->sendModuleMsgFunc($data);
+            );
 
-        $dataParam = array(
-            'touser' => $this->openID,
-            'template_id' => '2TyJ-pzj0k5QaYE3mlaMOB_93KgyIRkP8JQ7Nk6DV5A',
-            'page' => 'index',
-            'form_id' => $this->formId,
-            'data' => array(
-                'keyword1' => array('value' => '3'),
-                'keyword2' => array('value' => 'kewin'),
-                'keyword3' => array('value' => '找人红包'),
-            ),
-            'emphasis_keyword' => ''
+            //发送模板消息给发起人
+            $this->sendModuleMsgFunc($data);
 
-        );
-        //发送模板消息给引荐人和被引荐人
-        $this->sendModuleMsgFunc($dataParam);
+            //收益到账通知
+            $dataParam = array(
+                'touser' => $introSuccescRecord['introduceredOpenId'],
+                'template_id' => '2TyJ-pzj0k5QaYE3mlaMOC4CR-pofRwFlhJr0AEOvsE',
+                'page' => 'pages/index',
+                'form_id' => $this->formId,
+                'data' => array(
+                    'keyword1' => array('value' => $record['money']),
+                    'keyword2' => array('value' => $record['money']),
+                    'keyword3' => array('value' => $record['intro']),
+                ),
+                'emphasis_keyword' => ''
+
+            );
+            //发送模板消息给引荐人和被引荐人
+            $this->sendModuleMsgFunc($dataParam);
+        }
 
     }
 
     private function sendModuleMsgFunc($data){
-
 
         $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
         return $domainIntroSuccessRecord->sendModuleMsg($data);

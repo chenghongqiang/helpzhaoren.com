@@ -56,9 +56,11 @@ class WxModuleMsgApi{
         $sendModuleMsgURL = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=%s';
         $url = sprintf($sendModuleMsgURL, $accessToken);
 
-        $response = WxPayApi::postXmlCurl($data, $url, false, 6);
+        $curl = new CUrl();
+        $rs = $curl->post($url, $data, 6000);
+        $data = json_decode($rs, true);
 
-        return $response;
+        return $data;
     }
 
 

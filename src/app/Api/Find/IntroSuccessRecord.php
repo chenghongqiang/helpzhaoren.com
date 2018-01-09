@@ -108,7 +108,7 @@ class IntroSuccessRecord extends FindApi{
                 'introducererOpenId0' => $introSuccescRecord['introducererOpenId'],
                 'money0' => $averageMoney,
                 'money1' => $averageMoney,
-                'introduceredOpenId1' => $introSuccescRecord['introduceredOpenId'],
+                'introducererOpenId1' => $introSuccescRecord['introduceredOpenId'],
             );
 
             $walletIncomeRecord = new DomainWalletIncomeRecord();

@@ -9,11 +9,14 @@ namespace App\Common\Logger;
 
 use \PhalApi\Logger;
 
-//定制化日志
+/**
+ * Class DBLogger
+ * @package App\Common\Logger
+ */
 class DBLogger extends Logger{
 
     public function log($type, $msg, $data) {
-        // TODO 数据库的日记写入 ...
+        // TODO 鏁版嵁搴撶殑鏃ヨ鍐欏叆 ...
 
     }
 

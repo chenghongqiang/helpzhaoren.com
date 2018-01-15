@@ -43,4 +43,20 @@ return array(
             array('POST', '/app/find/pay/notify/{detail:\d+}', 'App.Find_Pay.Notify')
         ),
     ),
+    /**
+     * 计划任务配置
+     */
+    'Task' => array(
+        //MQ队列设置，可根据使用需要配置
+        'mq' => array(
+            'redis' => array(
+                'host' => '10.1.2.53',
+                'port' => 6379,
+                'db' => 2,
+                'auth' => '',
+                'prefix' => 'phal_task',
+                'timeout' => 1000
+            ),
+        )
+    ),
 );

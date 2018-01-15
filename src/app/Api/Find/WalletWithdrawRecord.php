@@ -12,6 +12,11 @@ use App\Domain\Find\WalletWithdrawRecord as DomainWalletWithdrawRecord;
 use PhalApi\Api;
 use PhalApi\Exception;
 
+/**
+ * 钱包提取记录
+ * Class WalletWithdrawRecord
+ * @package App\Api\Find
+ */
 class WalletWithdrawRecord extends Api {
 
     public function getRules(){

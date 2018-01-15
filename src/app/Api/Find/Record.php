@@ -193,6 +193,8 @@ class Record extends FindApi{
     /**
      * 获取当前用户找人记录【找人记录页面找人tab】
      * @desc 获取当前用户所有相关找人记录
+     * @return int id 找人记录id
+     * @return int introSuccessId 找人成功记录id
      * @return string intro 找人描述
      * @return string money 红包金额
      * @return string code 找人码
@@ -202,6 +204,11 @@ class Record extends FindApi{
     public function getFindRecord(){
         $domainRecord = new DomainRECORD();
         $records = $domainRecord->getRecordsByOpenId($this->openID);
+        foreach($records as $k => $v) {
+            $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
+            $introSuccessRecord = $domainIntroSuccessRecord->getRecordByRecordId($v['id']);
+            $records[$k]['introSuccessId'] = $introSuccessRecord['id'];
+        }
 
         return $records;
     }

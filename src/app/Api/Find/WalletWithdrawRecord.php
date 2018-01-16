@@ -8,6 +8,7 @@
 namespace App\Api\Find;
 
 use App\Domain\Common;
+use App\Domain\Find\USER as DomainUSER;
 use App\Domain\Find\WalletWithdrawRecord as DomainWalletWithdrawRecord;
 use PhalApi\Api;
 use PhalApi\Exception;
@@ -53,6 +54,14 @@ class WalletWithdrawRecord extends Api {
         );
         $domainWalletWithdrawRecord = new DomainWalletWithdrawRecord();
         $ret = $domainWalletWithdrawRecord->insert($data);
+        if($ret){
+            $domainUSER = new DomainUSER();
+            $flag = $domainUSER->updateWallet($openId, $this->money, 2);
+            if(!$flag){
+                \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "提现失败", $data);
+            }
+
+        }
 
         return $ret;
     }

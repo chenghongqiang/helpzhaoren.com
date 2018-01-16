@@ -46,10 +46,15 @@ class USER extends NotORM {
 
     }
 
-    public function updateWallet($openId, $money){
-
+    public function updateWallet($openId, $money, $type=1){
+        //type=1 钱包入账 type=2钱包出账
+        if($type == 1){
+            $literal = new \NotORM_Literal("wallet + {$money}");
+        }else if($type == 2){
+            $literal = new \NotORM_Literal("wallet - {$money}");
+        }
         $user = $this->getORM();
-        return $user->where('openId', $openId)->update(array('wallet' => new \NotORM_Literal("wallet + $money")));
+        return $user->where('openId', $openId)->update(array('wallet' => $literal));
 
     }
 

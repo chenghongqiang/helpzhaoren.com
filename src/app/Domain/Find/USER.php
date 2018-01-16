@@ -217,9 +217,9 @@ class USER {
 
     }
 
-    public function updateWallet($openId, $money){
+    public function updateWallet($openId, $money, $type=1){
         $model = new ModelUSER();
-        return $model->updateWallet($openId, $money);
+        return $model->updateWallet($openId, $money, $type);
     }
 
 }

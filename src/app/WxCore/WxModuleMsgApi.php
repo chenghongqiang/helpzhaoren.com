@@ -58,7 +58,7 @@ class WxModuleMsgApi{
 
         $curl = new CUrl();
         $curl->setHeader(array('Content-Type' => 'application/json'));
-        $rs = $curl->post($url, http_build_query($data), 6000);
+        $rs = $curl->post($url, json_encode($data), 6000);
         $data = json_decode($rs, true);
 
         return $data;

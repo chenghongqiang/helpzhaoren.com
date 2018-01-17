@@ -27,7 +27,7 @@ class FindTask extends Api{
                 'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
             ),
             'collectFormId' => array(
-                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
+                'openId' => array('name' => 'openId', 'type' => 'string', 'require' => true, 'desc' => 'openId'),
                 'formId' => array('name' => 'formId', 'type' => 'string', 'require' => true , 'desc' => 'formId'),
             )
         );

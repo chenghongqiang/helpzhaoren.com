@@ -33,7 +33,7 @@ class IntroSuccessRecord extends FindApi{
                 'wx_introducered_code' => array('name' => 'wx_introducered_code', 'type' => 'string', 'require' => true, 'desc' => '被引荐人微信号'),
             ),
             'sendModuleMsg' => array(
-                'recordId' => array('name' => 'record_id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
+                'recordId' => array('name' => 'recordId', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
                 'formId' => array('name' => 'formId', 'type' => 'string', 'require' => true , 'desc' => 'formId'),
             ),
             'getWxQrcode' => array(

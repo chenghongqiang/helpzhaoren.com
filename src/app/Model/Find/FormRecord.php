@@ -32,6 +32,7 @@ class FormRecord extends NotORM{
             ->where('openId', $openId)
             ->where('formId != ?', 'the formId is a mock one')
             ->where('create_time > ?', date("Y-m-d h:m:s", strtotime('-7 days')))
+            ->order('id desc')
             ->fetchOne();
 
     }

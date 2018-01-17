@@ -65,6 +65,11 @@ class IntroSuccessRecord {
             'emphasis_keyword' => ''
 
         );
-        $this->sendModuleMsg($dataParam);
+        try{
+            $this->sendModuleMsg($dataParam);
+        }catch (Exception $e) {
+            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "发送模板消息失败，id:" . $record['id'],'errMsg:'. $e->getMessage());
+        }
+
     }
 }

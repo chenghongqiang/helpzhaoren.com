@@ -165,10 +165,19 @@ class IntroSuccessRecord extends FindApi{
             $introducererInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introducererOpenId']);
             $introduceredInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introduceredOpenId']);
 
+            $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
             $domainIntroSuccessRecord->sendModuleMsgToIntro($this->formId, $introSuccescRecord['introduceredOpenId'], $record, $introduceredInfo['nickName'], $introSuccescRecord['money1']);
+
+            $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
             $domainIntroSuccessRecord->sendModuleMsgToIntro($this->formId, $introSuccescRecord['introducererOpenId'], $record, $introducererInfo['nickName'], $introSuccescRecord['money0']);
         }
 
+    }
+
+    private function sendModuleMsgFunc($data){
+
+        $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
+        return $domainIntroSuccessRecord->sendModuleMsg($data);
     }
 
 }

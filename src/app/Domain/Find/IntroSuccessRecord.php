@@ -58,7 +58,7 @@ class IntroSuccessRecord {
             'page' => 'pages/index',
             'form_id' => $formId,
             'data' => array(
-                'keyword1' => array('value' => $money."元"),
+                'keyword1' => array('value' => $money),
                 'keyword2' => array('value' => $wxNickName),
                 'keyword3' => array('value' => "想找:" . $record['intro']),
             ),

@@ -30,4 +30,9 @@ class FormRecord {
         $model = new ModelFormRecord();
         return $model->getFormRecord($state);
     }
+
+    public function getFormIdByOpenId($state=1, $openId){
+        $model = new ModelFormRecord();
+        return $model->getFormIdByOpenId($state, $openId);
+    }
 }

@@ -24,5 +24,15 @@ class FormRecord extends NotORM{
             ->fetchAll();
     }
 
+    public function getFormIdByOpenId($state=1, $openId)
+    {
+        return $this->getORM()
+            ->select('formId')
+            ->where('state', $state)
+            ->where('openId', $openId)
+            ->where('formId != ?', 'the formId is a mock one')
+            ->where('create_time > ?', date("Y-m-d h:m:s", strtotime('-7 days')))
+            ->fetchOne();
 
+    }
 }

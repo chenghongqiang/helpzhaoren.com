@@ -47,4 +47,24 @@ class IntroSuccessRecord {
         }
 
     }
+
+    //发送模板消息给引荐人和被引荐人
+    public function sendModuleMsgToIntro($openId, $record, $wxNickName){
+
+        //收益到账通知
+        $dataParam = array(
+            'touser' => $openId,
+            'template_id' => '2TyJ-pzj0k5QaYE3mlaMOC4CR-pofRwFlhJr0AEOvsE',
+            'page' => 'pages/index',
+            'form_id' => $this->formId,
+            'data' => array(
+                'keyword1' => array('value' => $record['money']),
+                'keyword2' => array('value' => $wxNickName),
+                'keyword3' => array('value' => "想找:" . $record['intro']),
+            ),
+            'emphasis_keyword' => ''
+
+        );
+        $this->sendModuleMsg($dataParam);
+    }
 }

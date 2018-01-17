@@ -33,6 +33,7 @@ class IntroSuccessRecord extends FindApi{
                 'wx_introducered_code' => array('name' => 'wx_introducered_code', 'type' => 'string', 'require' => true, 'desc' => '被引荐人微信号'),
             ),
             'sendModuleMsg' => array(
+                'recordId' => array('name' => 'record_id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
                 'formId' => array('name' => 'formId', 'type' => 'string', 'require' => true , 'desc' => 'formId'),
             ),
             'getWxQrcode' => array(
@@ -130,7 +131,7 @@ class IntroSuccessRecord extends FindApi{
      * @return boolean flag 1.成功 0.失败
      */
     public function sendModuleMsg(){
-        $recordId = 11;
+        $recordId = $this->recordId;
         $domainRecord = new DomainRECORD();
         $record = $domainRecord->get($recordId);
 
@@ -159,22 +160,12 @@ class IntroSuccessRecord extends FindApi{
             //发送模板消息给发起人
             $this->sendModuleMsgFunc($data);
 
-            //收益到账通知
-            $dataParam = array(
-                'touser' => $introSuccescRecord['introduceredOpenId'],
-                'template_id' => '2TyJ-pzj0k5QaYE3mlaMOC4CR-pofRwFlhJr0AEOvsE',
-                'page' => 'pages/index',
-                'form_id' => $this->formId,
-                'data' => array(
-                    'keyword1' => array('value' => $record['money']),
-                    'keyword2' => array('value' => $record['money']),
-                    'keyword3' => array('value' => $record['intro']),
-                ),
-                'emphasis_keyword' => ''
+            $domainUSER = new DomainUSER();
+            $introducererInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introducererOpenId']);
+            $introduceredInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introduceredOpenId']);
 
-            );
-            //发送模板消息给引荐人和被引荐人
-            $this->sendModuleMsgFunc($dataParam);
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($introSuccescRecord['introduceredOpenId'], $record, $introduceredInfo['nickName']);
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($introSuccescRecord['introducererOpenId'], $record, $introducererInfo['nickName']);
         }
 
     }

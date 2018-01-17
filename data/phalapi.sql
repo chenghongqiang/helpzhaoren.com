@@ -122,6 +122,17 @@ CREATE TABLE `phal_trade_record` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+#formId收集表
+CREATE TABLE `phal_form_record` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'form记录表id',
+  `openId` VARCHAR(128) NOT NULL COMMENT '用户的openId',
+  `formId` VARCHAR(128) NOT NULL COMMENT '表单formId',
+  `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `state` tinyint(4) NOT NULL DEFAULT 1 COMMENT '记录状态，默认为1 有效状态 2 无效',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 #计划任务
 CREATE TABLE `tbl_task_progress` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,

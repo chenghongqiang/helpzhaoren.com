@@ -8,6 +8,7 @@
 namespace App\Api\Task;
 
 use App\Domain\Find\RECORD as DomainRECORD;
+use App\Domain\Find\FormRecord as DomainFormRECORD;
 use App\Domain\Find\IntroSuccessRecord as DomainIntroSuccessRecord;
 use PhalApi\Api;
 use PhalApi\Exception;
@@ -24,6 +25,10 @@ class FindTask extends Api{
         return array(
             'updateOperRecordState' => array(
                 'id' => array('name' => 'id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
+            ),
+            'collectFormId' => array(
+                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
+                'formId' => array('name' => 'formId', 'type' => 'string', 'require' => true , 'desc' => 'formId'),
             )
         );
     }
@@ -32,6 +37,26 @@ class FindTask extends Api{
      */
     public function updateOperRecordState() {
         throw new Exception("hello", 404);
+    }
+
+    /**
+     * 收集formId
+     * @ignore
+     * @desc 计划任务，在创建记录、引荐人和被引荐人提交数据时收集formId [crontab配置定时任务]
+     * @use \PhalApi\DI()->taskLite->add('App.Task_FindTask.collectFormId', array('formId' => 'xxxx'));
+     */
+    public function collectFormId(){
+        $domainFormRecord = new DomainFormRECORD();
+        $data = array(
+            'openId' => $this->openId,
+            'formId' => $this->formId
+        );
+
+        $ret = $domainFormRecord->insert($data);
+        if(!$ret){
+            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "收集formId失败 formId:". $this->formId);
+        }
+
     }
 
     public function testUpdate(){

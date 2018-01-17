@@ -23,7 +23,7 @@ class IntroRecord extends FindApi{
             'intro' => array(
                 'record_id' => array('name' => 'record_id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
                 'wx_introducer_code' => array('name' => 'wx_introducer_code', 'type' => 'string', 'require' => true, 'desc' => '引荐人微信号'),
-
+                'formId' => array('name' => 'formId', 'type' => 'string', 'desc' => 'formId'),
             )
         ));
     }
@@ -34,6 +34,9 @@ class IntroRecord extends FindApi{
      * @return int intro_user_id 引荐成功后引荐人记录id，方便分享后查找对应引荐人记录
      */
     public function intro(){
+        //添加任务计划
+        \PhalApi\DI()->taskLite->add('App.Task_FindTask.collectFormId', array('openId' => $this->openID, 'formId' => $this->formId));
+
         $domainIntroRecord = new DomainIntroRecord();
 
         $data = array(

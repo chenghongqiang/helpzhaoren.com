@@ -8,12 +8,14 @@
 
 namespace App\Api\Find;
 
+use App\Common\Utils\Code;
 use App\Component\FindApi;
 use App\Domain\Find\RECORD as DomainRECORD;
 use App\Domain\Find\IntroRecord as DomainIntroRecord;
 use App\Domain\Find\WalletIncomeRecord as DomainWalletIncomeRecord;
 use App\Domain\Find\IntroSuccessRecord as DomainIntroSuccessRecord;
 use App\Domain\Find\USER as DomainUSER;
+use App\Domain\Find\FormRecord as DomainFormRECORD;
 use PhalApi\Exception;
 
 /**
@@ -31,10 +33,10 @@ class IntroSuccessRecord extends FindApi{
                 'record_id' => array('name' => 'record_id', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
                 'intro_user_id' => array('name' => 'intro_user_id', 'type' => 'int', 'require' => true , 'desc' => '引荐人id'),
                 'wx_introducered_code' => array('name' => 'wx_introducered_code', 'type' => 'string', 'require' => true, 'desc' => '被引荐人微信号'),
+                'formId' => array('name' => 'formId', 'type' => 'string', 'desc' => 'formId'),
             ),
             'sendModuleMsg' => array(
                 'recordId' => array('name' => 'recordId', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
-                'formId' => array('name' => 'formId', 'type' => 'string', 'require' => true , 'desc' => 'formId'),
             ),
             'getWxQrcode' => array(
                 'page' => array('name' => 'page', 'type' => 'string', 'require' => true , 'desc' => '已经发布的小程序页面'),
@@ -49,6 +51,9 @@ class IntroSuccessRecord extends FindApi{
      * @return int intro_success_id 引荐成功记录id
      */
     public function intro(){
+
+        //添加任务计划
+        \PhalApi\DI()->taskLite->add('App.Task_FindTask.collectFormId', array('openId' => $this->openID, 'formId' => $this->formId));
 
         //获取引荐人记录
         $domainIntroRecord = new DomainIntroRecord();
@@ -140,15 +145,22 @@ class IntroSuccessRecord extends FindApi{
             $introSuccescRecord = $domainIntroSuccessRecord->getRecordByRecordId($recordId);
             if(empty($introSuccescRecord)){
                 \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 未找到推荐成功相关记录，id:" . $recordId);
-                throw new Exception("未找到推荐成功相关记录", 404);
+                throw new Exception("未找到推荐成功相关记录", Code::NO_RECORD);
             }
 
+            $domainFormRECORD = new DomainFormRECORD();
+            $formRecords = $domainFormRECORD->getFormRecord();
+
+            if(empty($formRecords) || count($formRecords)<3 || $formRecords[0]['formId'] == ''){
+                \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "未找到供发送模板消息的formId");
+                throw new Exception("未找到供发送模板消息的formId", Code::NO_RECORD);
+            }
             //服务进度通知
             $data = array(
                 'touser' => $record['openId'],
-                'template_id' => 'DdQxT0RfqPy4AGOPVVHz7a9vK09W7MVsORTwfVMsHHw',
-                'page' => 'pages/index',
-                'form_id' => $this->formId,
+                'template_id' => "DdQxT0RfqPy4AGOPVVHz7a9vK09W7MVsORTwfVMsHHw",
+                'page' => "pages/introSuccess?type=3&recordId=" + $recordId + "&introSuccessId=" + $introSuccescRecord['id'],
+                'form_id' => $formRecords[0]['formId'],
                 'data' => array(
                     'keyword1' => array('value' => '找到啦，赶紧去联系他（她）吧'),
                     'keyword2' => array('value' => $introSuccescRecord['wx_introducer_code']),
@@ -164,20 +176,11 @@ class IntroSuccessRecord extends FindApi{
             $domainUSER = new DomainUSER();
             $introducererInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introducererOpenId']);
             $introduceredInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introduceredOpenId']);
-
-            $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($this->formId, $introSuccescRecord['introduceredOpenId'], $record, $introduceredInfo['nickName'], $introSuccescRecord['money1']);
-
-            $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($this->formId, $introSuccescRecord['introducererOpenId'], $record, $introducererInfo['nickName'], $introSuccescRecord['money0']);
+            //发送模板消息给引荐人和被引荐人
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($formRecords[1]['formId'], $introSuccescRecord['introduceredOpenId'], $record, $introduceredInfo['nickName'], $introSuccescRecord['money1']);
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($formRecords[2]['formId'], $introSuccescRecord['introducererOpenId'], $record, $introducererInfo['nickName'], $introSuccescRecord['money0']);
         }
 
-    }
-
-    private function sendModuleMsgFunc($data){
-
-        $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-        return $domainIntroSuccessRecord->sendModuleMsg($data);
     }
 
 }

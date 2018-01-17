@@ -165,8 +165,8 @@ class IntroSuccessRecord extends FindApi{
             $introducererInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introducererOpenId']);
             $introduceredInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introduceredOpenId']);
 
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($introSuccescRecord['introduceredOpenId'], $record, $introduceredInfo['nickName']);
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($introSuccescRecord['introducererOpenId'], $record, $introducererInfo['nickName']);
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($this->formId, $introSuccescRecord['introduceredOpenId'], $record, $introduceredInfo['nickName']);
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($this->formId, $introSuccescRecord['introducererOpenId'], $record, $introducererInfo['nickName']);
         }
 
     }

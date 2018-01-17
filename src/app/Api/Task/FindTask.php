@@ -33,10 +33,12 @@ class FindTask extends Api{
         );
     }
     /**
-     * 更新找人记录状态
+     * 执行任务计划
+     * @desc 执行任务计划
      */
-    public function updateOperRecordState() {
-        throw new Exception("hello", 404);
+    public function executeTask() {
+        $ret = \PhalApi\DI()->taskRunnerLocal->go('App.Task_FindTask.collectFormId');
+        return $ret;
     }
 
     /**

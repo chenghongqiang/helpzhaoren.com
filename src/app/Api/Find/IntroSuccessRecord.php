@@ -140,6 +140,7 @@ class IntroSuccessRecord extends FindApi{
             $introSuccescRecord = $domainIntroSuccessRecord->getRecordByRecordId($recordId);
             if(empty($introSuccescRecord)){
                 \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 未找到推荐成功相关记录，id:" . $recordId);
+                throw new Exception("未找到推荐成功相关记录", 404);
             }
 
             //服务进度通知

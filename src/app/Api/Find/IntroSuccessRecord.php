@@ -159,22 +159,16 @@ class IntroSuccessRecord extends FindApi{
             );
 
             //发送模板消息给发起人
-            $this->sendModuleMsgFunc($data);
+            $domainIntroSuccessRecord->sendModuleMsg($data);
 
             $domainUSER = new DomainUSER();
             $introducererInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introducererOpenId']);
             $introduceredInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introduceredOpenId']);
 
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($this->formId, $introSuccescRecord['introduceredOpenId'], $record, $introduceredInfo['nickName']);
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($this->formId, $introSuccescRecord['introducererOpenId'], $record, $introducererInfo['nickName']);
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($this->formId, $introSuccescRecord['introduceredOpenId'], $record, $introduceredInfo['nickName'], $introSuccescRecord['money1']);
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($this->formId, $introSuccescRecord['introducererOpenId'], $record, $introducererInfo['nickName'], $introSuccescRecord['money0']);
         }
 
-    }
-
-    private function sendModuleMsgFunc($data){
-
-        $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-        return $domainIntroSuccessRecord->sendModuleMsg($data);
     }
 
 }

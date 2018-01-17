@@ -20,7 +20,8 @@ class FormRecord extends NotORM{
             ->where('state', $state)
             ->where('formId != ?', 'the formId is a mock one')
             ->where('create_time < ?', date("Y-m-d h:m:s", strtotime('-7 days')))
-            ->limit(3);
+            ->limit(3)
+            ->fetch();
     }
 
 

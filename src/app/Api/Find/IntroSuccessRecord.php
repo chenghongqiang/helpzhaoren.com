@@ -156,7 +156,7 @@ class IntroSuccessRecord extends FindApi{
             $data = array(
                 'touser' => $record['openId'],
                 'template_id' => "DdQxT0RfqPy4AGOPVVHz7a9vK09W7MVsORTwfVMsHHw",
-                'page' => "pages/introSuccess?type=2&typeSuccess=3&recordId=" + $recordId + "&introSuccessId=" + $introSuccessRecord['id'],
+                'page' => '/pages/introSuccess?type=2&typeSuccess=3&recordId=' + $recordId + '&introSuccessId='+ $introSuccessRecord['id'],
                 'form_id' => $formId,
                 'data' => array(
                     'keyword1' => array('value' => '找到啦，赶紧去联系他（她）吧'),

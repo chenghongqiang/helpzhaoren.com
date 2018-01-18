@@ -52,6 +52,7 @@ class IntroSuccessRecord {
     public function sendModuleMsgToIntro($formId, $openId, $record, $wxNickName){
 
         $rate = \PhalApi\DI()->config->get('params.rate');
+        $money = ($record['money']-$record['money'] * $rate)/2;
         //收益到账通知
         $dataParam = array(
             'touser' => $openId,
@@ -59,7 +60,7 @@ class IntroSuccessRecord {
             'page' => '/pages/index',
             'form_id' => $formId,
             'data' => array(
-                'keyword1' => array('value' => ($record['money']-$record['money']*$rate)/2),
+                'keyword1' => array('value' => $money),
                 'keyword2' => array('value' => $wxNickName),
                 'keyword3' => array('value' => "想找: " . $record['intro']),
             ),

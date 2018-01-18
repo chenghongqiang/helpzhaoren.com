@@ -80,7 +80,7 @@ class IntroSuccessRecord extends FindApi{
                     if(!empty($record)){
                         $this->updateRecord($record, $ret);
                     }
-
+                    $this->sendModuleMsg($this->record_id);
                 }else{
                     \PhalApi\DI()->notorm->rollback('db_master');
                     throw new Exception('更新记录状态失败', 500);
@@ -134,8 +134,8 @@ class IntroSuccessRecord extends FindApi{
      * @desc 被推荐人提交数据城后，给发起人、引荐人、被引荐人发送模板消息
      * @return boolean flag 1.成功 0.失败
      */
-    private function sendModuleMsg(){
-        $recordId = $this->recordId;
+    private function sendModuleMsg($recordId){
+
         $domainRecord = new DomainRECORD();
         $record = $domainRecord->get($recordId);
 

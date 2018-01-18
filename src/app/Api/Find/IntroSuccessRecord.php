@@ -90,8 +90,6 @@ class IntroSuccessRecord extends FindApi{
             return $ret;
         }catch (\Exception $e){
             throw new Exception($e->getMessage(), 500);
-        }finally{
-            $this->sendModuleMsg($this->record_id);
         }
 
     }

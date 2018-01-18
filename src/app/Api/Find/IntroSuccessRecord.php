@@ -11,11 +11,11 @@ namespace App\Api\Find;
 use App\Common\Utils\Code;
 use App\Component\FindApi;
 use App\Domain\Find\RECORD as DomainRECORD;
+use App\Domain\Find\FormRecord as DomainFormRECORD;
 use App\Domain\Find\IntroRecord as DomainIntroRecord;
 use App\Domain\Find\WalletIncomeRecord as DomainWalletIncomeRecord;
 use App\Domain\Find\IntroSuccessRecord as DomainIntroSuccessRecord;
 use App\Domain\Find\USER as DomainUSER;
-use App\Domain\Find\FormRecord as DomainFormRECORD;
 use PhalApi\Exception;
 
 /**
@@ -35,9 +35,6 @@ class IntroSuccessRecord extends FindApi{
                 'wx_introducered_code' => array('name' => 'wx_introducered_code', 'type' => 'string', 'require' => true, 'desc' => '被引荐人微信号'),
                 'formId' => array('name' => 'formId', 'type' => 'string', 'desc' => 'formId'),
             ),
-            'sendModuleMsg' => array(
-                'recordId' => array('name' => 'recordId', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
-            ),
             'getWxQrcode' => array(
                 'page' => array('name' => 'page', 'type' => 'string', 'require' => true , 'desc' => '已经发布的小程序页面'),
                 'width' => array('name' => 'width', 'type' => 'string', 'desc' => '二维码宽度', 'default' => '430'),
@@ -52,7 +49,7 @@ class IntroSuccessRecord extends FindApi{
      */
     public function intro(){
 
-        //添加任务计划
+        //添加收集formId任务计划
         \PhalApi\DI()->taskLite->add('App.Task_FindTask.collectFormId', array('openId' => $this->openID, 'formId' => $this->formId));
 
         //获取引荐人记录
@@ -77,6 +74,7 @@ class IntroSuccessRecord extends FindApi{
                 $flag = $domainRecord->upate($this->record_id, array('oper_state' => 3));
                 if($flag){
                     \PhalApi\DI()->notorm->commit('db_master');
+
                     //被引荐人提交数据成功后平分发起人金额 收取10%交易费用
                     $record = $domainRecord->get($this->record_id);
                     if(!empty($record)){
@@ -92,6 +90,8 @@ class IntroSuccessRecord extends FindApi{
             return $ret;
         }catch (\Exception $e){
             throw new Exception($e->getMessage(), 500);
+        }finally{
+            $this->sendModuleMsg($this->record_id);
         }
 
     }
@@ -101,13 +101,14 @@ class IntroSuccessRecord extends FindApi{
      * @param $record
      * @param $ret
      */
-    private function updateRecord($record, $ret){
+    private function updateRecord($record, $ret)
+    {
         $rate = \PhalApi\DI()->config->get('params.rate');
-        $averageMoney = ($record['money']-$record['money']*$rate)/2;
+        $averageMoney = ($record['money'] - $record['money'] * $rate) / 2;
         //更新推荐人和被推荐人钱包金额，并且写入各入账记录表
         $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
         $introSuccescRecord = $domainIntroSuccessRecord->get($ret);
-        if(!empty($introSuccescRecord)){
+        if (!empty($introSuccescRecord)) {
             unset($data);
             $data = array(
                 'recordId' => $record['id'],
@@ -125,8 +126,8 @@ class IntroSuccessRecord extends FindApi{
             $domainUSER->updateWallet($introSuccescRecord['introducererOpenId'], $averageMoney);
             $domainUSER->updateWallet($introSuccescRecord['introduceredOpenId'], $averageMoney);
 
-        }else{
-            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 未找到推荐成功相关记录");
+        } else {
+            \PhalApi\DI()->logger->error(__CLASS__ . __FUNCTION__ . " 未找到推荐成功相关记录");
         }
     }
 
@@ -135,7 +136,7 @@ class IntroSuccessRecord extends FindApi{
      * @desc 被推荐人提交数据城后，给发起人、引荐人、被引荐人发送模板消息
      * @return boolean flag 1.成功 0.失败
      */
-    public function sendModuleMsg(){
+    private function sendModuleMsg(){
         $recordId = $this->recordId;
         $domainRecord = new DomainRECORD();
         $record = $domainRecord->get($recordId);
@@ -159,7 +160,7 @@ class IntroSuccessRecord extends FindApi{
             $data = array(
                 'touser' => $record['openId'],
                 'template_id' => "DdQxT0RfqPy4AGOPVVHz7a9vK09W7MVsORTwfVMsHHw",
-                'page' => "pages/introSuccess?type=3&recordId=" + $recordId + "&introSuccessId=" + $introSuccescRecord['id'],
+                'page' => "/pages/introSuccess?type=3&recordId=" + $recordId + "&introSuccessId=" + $introSuccescRecord['id'],
                 'form_id' => $formId['formId'],
                 'data' => array(
                     'keyword1' => array('value' => '找到啦，赶紧去联系他（她）吧'),

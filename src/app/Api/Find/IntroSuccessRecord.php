@@ -141,10 +141,9 @@ class IntroSuccessRecord extends FindApi{
 
         if(!empty($record)){
             $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-            $introSuccescRecord = $domainIntroSuccessRecord->getRecordByRecordId($recordId);
+            $introSuccessRecord = $domainIntroSuccessRecord->getRecordByRecordId($recordId);
             if(empty($introSuccescRecord)){
                 \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 未找到推荐成功相关记录，id:" . $recordId);
-                throw new Exception("未找到推荐成功相关记录", Code::NO_RECORD);
             }
 
             $domainFormRECORD = new DomainFormRECORD();
@@ -152,18 +151,17 @@ class IntroSuccessRecord extends FindApi{
 
             if(empty($formId)){
                 \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "未找到供发送模板消息的formId");
-                throw new Exception("未找到供发送模板消息的formId", Code::NO_RECORD);
             }
             //服务进度通知
             $data = array(
                 'touser' => $record['openId'],
                 'template_id' => "DdQxT0RfqPy4AGOPVVHz7a9vK09W7MVsORTwfVMsHHw",
-                'page' => "/pages/introSuccess?type=3&recordId=" + $recordId + "&introSuccessId=" + $introSuccescRecord['id'],
+                'page' => "pages/introSuccess?type=2&typeSuccess=3&recordId=" + $recordId + "&introSuccessId=" + $introSuccessRecord['id'],
                 'form_id' => $formId['formId'],
                 'data' => array(
                     'keyword1' => array('value' => '找到啦，赶紧去联系他（她）吧'),
-                    'keyword2' => array('value' => $introSuccescRecord['wx_introducer_code']),
-                    'keyword3' => array('value' => $introSuccescRecord['wx_introducered_code']),
+                    'keyword2' => array('value' => $introSuccessRecord['wx_introducer_code']),
+                    'keyword3' => array('value' => $introSuccessRecord['wx_introducered_code']),
                 ),
                 'emphasis_keyword' => ''
 
@@ -173,16 +171,19 @@ class IntroSuccessRecord extends FindApi{
             $domainIntroSuccessRecord->sendModuleMsg($data);
 
             $domainUSER = new DomainUSER();
-            $introducererInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introducererOpenId']);
-            $introduceredInfo = $domainUSER->getUserByOpenid($introSuccescRecord['introduceredOpenId']);
+            $introducererInfo = $domainUSER->getUserByOpenid($introSuccessRecord['introducererOpenId']);
+            $introduceredInfo = $domainUSER->getUserByOpenid($introSuccessRecord['introduceredOpenId']);
 
             //根据openId获取对应的formId
-            $formIdOne = $domainFormRECORD->getFormIdByOpenId(1, $introSuccescRecord['introducererOpenId']);
-            $formIdTwo = $domainFormRECORD->getFormIdByOpenId(1, $introSuccescRecord['introduceredOpenId']);
+            $formIdOne = $domainFormRECORD->getFormIdByOpenId(1, $introSuccessRecord['introducererOpenId']);
+            $formIdTwo = $domainFormRECORD->getFormIdByOpenId(1, $introSuccessRecord['introduceredOpenId']);
 
             //发送模板消息给引荐人和被引荐人
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdOne['formId'], $introSuccescRecord['introducererOpenId'], $record, $introducererInfo['nickName'], $introSuccescRecord['money0']);
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdTwo['formId'], $introSuccescRecord['introduceredOpenId'], $record, $introduceredInfo['nickName'], $introSuccescRecord['money1']);
+            $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdOne['formId'], $introSuccessRecord['introducererOpenId'], $record, $introducererInfo['nickName'], $introSuccessRecord['money0']);
+
+            $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdTwo['formId'], $introSuccessRecord['introduceredOpenId'], $record, $introduceredInfo['nickName'], $introSuccessRecord['money1']);
 
         }
 

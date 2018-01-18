@@ -156,10 +156,10 @@ class IntroSuccessRecord extends FindApi{
             $data = array(
                 'touser' => $record['openId'],
                 'template_id' => "DdQxT0RfqPy4AGOPVVHz7a9vK09W7MVsORTwfVMsHHw",
-                'page' => '',
+                'page' => '/pages/index',
                 'form_id' => $formId,
                 'data' => array(
-                    'keyword1' => array('value' => '找到啦，赶紧去联系他（她）吧'),
+                    'keyword1' => array('value' => '恭喜你认识2个朋友，加他们微信私聊吧'),
                     'keyword2' => array('value' => $introSuccessRecord['wx_introducer_code']),
                     'keyword3' => array('value' => $introSuccessRecord['wx_introducered_code']),
                 ),

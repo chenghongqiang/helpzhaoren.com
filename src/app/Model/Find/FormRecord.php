@@ -27,7 +27,7 @@ class FormRecord extends NotORM{
     public function getFormIdByOpenId($state=1, $openId)
     {
         return $this->getORM()
-            ->select('formId')
+            ->select('id', 'formId')
             ->where('state', $state)
             ->where('openId', $openId)
             ->where('formId != ?', 'the formId is a mock one')

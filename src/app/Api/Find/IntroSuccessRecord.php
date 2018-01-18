@@ -150,17 +150,14 @@ class IntroSuccessRecord extends FindApi{
             }
 
             $domainFormRECORD = new DomainFormRECORD();
-            $formId = $domainFormRECORD->getFormIdByOpenId(1, $record['openId']);
+            $formId = $domainFormRECORD->getFormId($record['openId']);
 
-            if(empty($formId)){
-                \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "未找到供发送模板消息的formId");
-            }
             //服务进度通知
             $data = array(
                 'touser' => $record['openId'],
                 'template_id' => "DdQxT0RfqPy4AGOPVVHz7a9vK09W7MVsORTwfVMsHHw",
                 'page' => "pages/introSuccess?type=2&typeSuccess=3&recordId=" + $recordId + "&introSuccessId=" + $introSuccessRecord['id'],
-                'form_id' => $formId['formId'],
+                'form_id' => $formId,
                 'data' => array(
                     'keyword1' => array('value' => '找到啦，赶紧去联系他（她）吧'),
                     'keyword2' => array('value' => $introSuccessRecord['wx_introducer_code']),
@@ -178,15 +175,12 @@ class IntroSuccessRecord extends FindApi{
             $introduceredInfo = $domainUSER->getUserByOpenid($introSuccessRecord['introduceredOpenId']);
 
             //根据openId获取对应的formId
-            $formIdOne = $domainFormRECORD->getFormIdByOpenId(1, $introSuccessRecord['introducererOpenId']);
-            $formIdTwo = $domainFormRECORD->getFormIdByOpenId(1, $introSuccessRecord['introduceredOpenId']);
+            $formIdOne = $domainFormRECORD->getFormId($introSuccessRecord['introducererOpenId']);
+            $formIdTwo = $domainFormRECORD->getFormId($introSuccessRecord['introduceredOpenId']);
 
             //发送模板消息给引荐人和被引荐人
-            $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdOne['formId'], $introSuccessRecord['introducererOpenId'], $record, $introducererInfo['nickName'], $introSuccessRecord['money0']);
-
-            $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdTwo['formId'], $introSuccessRecord['introduceredOpenId'], $record, $introduceredInfo['nickName'], $introSuccessRecord['money1']);
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdOne, $introSuccessRecord['introducererOpenId'], $record, $introducererInfo['nickName'], $introSuccessRecord['money0']);
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdTwo, $introSuccessRecord['introduceredOpenId'], $record, $introduceredInfo['nickName'], $introSuccessRecord['money1']);
 
         }
 

@@ -35,4 +35,16 @@ class FormRecord {
         $model = new ModelFormRecord();
         return $model->getFormIdByOpenId($state, $openId);
     }
+
+    public function getFormId($openId){
+        $model = new ModelFormRecord();
+        $record = $model->getFormIdByOpenId(1, $openId);
+
+        if(empty($record)){
+            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "未找到供发送模板消息的formId, openId:" . $openId);
+        }
+
+        $model->update($record['id'], array('state' => -1));
+        return $record['formId'];
+    }
 }

@@ -179,8 +179,8 @@ class IntroSuccessRecord extends FindApi{
             $formIdTwo = $domainFormRECORD->getFormId($introSuccessRecord['introduceredOpenId']);
 
             //发送模板消息给引荐人和被引荐人
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdOne, $introSuccessRecord['introducererOpenId'], $record, $introducererInfo['nickName'], $introSuccessRecord['money0']);
-            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdTwo, $introSuccessRecord['introduceredOpenId'], $record, $introduceredInfo['nickName'], $introSuccessRecord['money1']);
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdOne, $introSuccessRecord['introducererOpenId'], $record, $introducererInfo['nickName']);
+            $domainIntroSuccessRecord->sendModuleMsgToIntro($formIdTwo, $introSuccessRecord['introduceredOpenId'], $record, $introduceredInfo['nickName']);
 
         }
 

@@ -49,8 +49,9 @@ class IntroSuccessRecord {
     }
 
     //发送模板消息给引荐人和被引荐人
-    public function sendModuleMsgToIntro($formId, $openId, $record, $wxNickName, $money){
+    public function sendModuleMsgToIntro($formId, $openId, $record, $wxNickName){
 
+        $rate = \PhalApi\DI()->config->get('params.rate');
         //收益到账通知
         $dataParam = array(
             'touser' => $openId,
@@ -58,9 +59,9 @@ class IntroSuccessRecord {
             'page' => '/pages/index',
             'form_id' => $formId,
             'data' => array(
-                'keyword1' => array('value' => $money),
+                'keyword1' => array('value' => ($record['money']-$record['money']*$rate)/2),
                 'keyword2' => array('value' => $wxNickName),
-                'keyword3' => array('value' => "想找:" . $record['intro']),
+                'keyword3' => array('value' => "想找: " . $record['intro']),
             ),
             'emphasis_keyword' => ''
 

@@ -80,7 +80,10 @@ class IntroSuccessRecord extends FindApi{
                     if(!empty($record)){
                         $this->updateRecord($record, $ret);
                     }
+
+                    \PhalApi\DI()->taskRunnerLocal->go('App.Task_FindTask.collectFormId');
                     $this->sendModuleMsg($this->record_id);
+
                 }else{
                     \PhalApi\DI()->notorm->rollback('db_master');
                     throw new Exception('更新记录状态失败', 500);
@@ -142,7 +145,7 @@ class IntroSuccessRecord extends FindApi{
         if(!empty($record)){
             $domainIntroSuccessRecord = new DomainIntroSuccessRecord();
             $introSuccessRecord = $domainIntroSuccessRecord->getRecordByRecordId($recordId);
-            if(empty($introSuccescRecord)){
+            if(empty($introSuccessRecord)){
                 \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__. " 未找到推荐成功相关记录，id:" . $recordId);
             }
 

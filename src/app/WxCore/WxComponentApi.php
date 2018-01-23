@@ -14,11 +14,11 @@ use PhalApi\CUrl;
 use PhalApi\Exception;
 
 /**
- * 微信模板消息API
- * Class WxModuleMsgApi
+ * 微信组件API
+ * Class WxComponentApi
  * @package App\WxCore
  */
-class WxModuleMsgApi{
+class WxComponentApi{
 
     /**
      * 发送小程序模板消息
@@ -55,6 +55,20 @@ class WxModuleMsgApi{
         //发送模板消息接口
         $sendModuleMsgURL = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=%s';
         $url = sprintf($sendModuleMsgURL, $accessToken);
+
+        $curl = new CUrl();
+        $curl->setHeader(array('Content-Type' => 'application/json'));
+        $rs = $curl->post($url, json_encode($data), 6000);
+        $data = json_decode($rs, true);
+
+        return $data;
+    }
+
+
+    public static function getQrcode($accessToekn, $data){
+        //发送模板消息接口
+        $getQrcodeURL = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=%s';
+        $url = sprintf($getQrcodeURL, $accessToekn);
 
         $curl = new CUrl();
         $curl->setHeader(array('Content-Type' => 'application/json'));

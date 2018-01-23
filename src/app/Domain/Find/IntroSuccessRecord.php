@@ -9,7 +9,7 @@ namespace App\Domain\Find;
 
 use App\Model\Find\IntroSuccessRecord as ModelIntroSuccessRecord;
 use App\WxCore\WXAuth;
-use App\WxCore\WxModuleMsgApi;
+use App\WxCore\WxComponentApi;
 use PhalApi\Exception;
 
 class IntroSuccessRecord {
@@ -38,7 +38,7 @@ class IntroSuccessRecord {
         $accessToken = WXAuth::getAccessToken();
 
         //{"errcode": 0, "errmsg": "ok"}
-        $data = WxModuleMsgApi::sendModuleMsg($accessToken, $data);
+        $data = WxComponentApi::sendModuleMsg($accessToken, $data);
         if($data['errcode']==0){
             //发送模板消息成功
             return true;

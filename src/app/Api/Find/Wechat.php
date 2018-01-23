@@ -10,6 +10,7 @@ namespace App\Api\Find;
 use App\Common\Utils\Code;
 use App\WxCore\lib\WxPayConfig;
 use App\WxCore\WXAuth;
+use App\WxCore\WxComponentApi;
 use PhalApi\Api;
 use PhalApi\Exception;
 
@@ -25,6 +26,9 @@ class Wechat extends Api{
             'getAccessToken' => array(
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
                 'appId' => array('name' => 'appId', 'type' => 'string', 'max' => 18, 'require' => true, 'desc' => 'appId'),
+            ),
+            'getQrcode' => array(
+                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session')
             )
         );
     }
@@ -41,6 +45,30 @@ class Wechat extends Api{
         }
 
         return WXAuth::getAccessToken();
+    }
+
+    /**
+     * 获取小程序二维码
+     * @param $accessToken
+     */
+    public function getQrcode(){
+
+        $accessToken = WXAuth::getAccessToken();
+
+        $data = array(
+            'scene' => time(),
+            'width' => '430',
+            'auto_color' => false
+        );
+
+        //{"errcode": 0, "errmsg": "ok"}
+        $data = WxComponentApi::sendModuleMsg($accessToken, $data);
+        if($data['errcode']==0){
+            //成功获取二维码
+            return true;
+        }else{
+            throw new Exception($data['errmsg'], $data['errcode']);
+        }
     }
 
 

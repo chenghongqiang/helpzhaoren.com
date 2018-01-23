@@ -64,12 +64,8 @@ class Wechat extends Api{
 
         //{"errcode": 0, "errmsg": "ok"}
         $data = WxComponentApi::getQrcode($accessToken, $data);
-        if($data['errcode']==0){
-            //成功获取二维码
-            return true;
-        }else{
-            throw new Exception($data['errmsg'], $data['errcode']);
-        }
+
+        return $data;
     }
 
 

@@ -37,7 +37,7 @@ class USER {
                 //sessionKey有效期1天
                 \PhalApi\DI()->redis->set($sessionKey, $sessionData['session_key'].'%%' .$sessionData['openid'], Time::DAY);
 
-                \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__  . ' sessionKey:' . $sessionKey);
+                \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__ , 'sessionKey:' . $sessionKey . ' code:' . $code);
 
                 /*$data['openid'] = $sessionData['openid'];
                 $data['thirdSessionKey'] = $sessionKey;*/

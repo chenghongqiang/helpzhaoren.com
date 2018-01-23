@@ -49,6 +49,7 @@ class Wechat extends Api{
 
     /**
      * 获取小程序二维码
+     * @desc 获取不同场景下的小程序二维码
      * @param $accessToken
      */
     public function getQrcode(){
@@ -62,7 +63,7 @@ class Wechat extends Api{
         );
 
         //{"errcode": 0, "errmsg": "ok"}
-        $data = WxComponentApi::sendModuleMsg($accessToken, $data);
+        $data = WxComponentApi::getQrcode($accessToken, $data);
         if($data['errcode']==0){
             //成功获取二维码
             return true;

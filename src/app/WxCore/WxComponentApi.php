@@ -74,7 +74,7 @@ class WxComponentApi{
         $curl->setHeader(array('Content-Type' => 'application/json'));
         $rs = $curl->post($url, json_encode($data), 6000);
 
-        return $rs;
+        echo $rs;
     }
 
 

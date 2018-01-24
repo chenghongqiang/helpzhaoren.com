@@ -28,7 +28,9 @@ class Wechat extends Api{
                 'appId' => array('name' => 'appId', 'type' => 'string', 'max' => 18, 'require' => true, 'desc' => 'appId'),
             ),
             'getQrcode' => array(
-                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session')
+                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
+                'scene' => array('name' => 'scene', 'type' => 'string', 'desc' => 'scene'),
+                'width' => array('name' => 'width', 'type' => 'string', 'desc' => 'width')
             )
         );
     }
@@ -57,8 +59,8 @@ class Wechat extends Api{
         $accessToken = WXAuth::getAccessToken();
 
         $data = array(
-            'scene' => time(),
-            'width' => '430',
+            'scene' => isset($this->scene) ? $this->scene: time(),
+            'width' => isset($this->width) ? $this->width: '430',
             'auto_color' => false
         );
 

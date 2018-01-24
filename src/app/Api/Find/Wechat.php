@@ -62,10 +62,11 @@ class Wechat extends Api{
             'auto_color' => false
         );
 
-        //{"errcode": 0, "errmsg": "ok"}
-        $data = WxComponentApi::getQrcode($accessToken, $data);
+        ob_start();
+        $imageString = base64_encode(WxComponentApi::getQrcode($accessToken, $data));
+        ob_end_clean();
 
-        echo $data;
+        return $imageString;
     }
 
 

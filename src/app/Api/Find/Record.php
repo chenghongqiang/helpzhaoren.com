@@ -85,6 +85,8 @@ class Record extends FindApi{
             throw new Exception('找人记录创建失败', 500);
         }
 
+        \PhalApi\DI()->taskLite->add('App.Task_FindTask.returnMoney', array('recordId' => $id));
+
         $result = array(
             'id' => $id,
             'code' => $code
@@ -142,7 +144,7 @@ class Record extends FindApi{
         }
 
         //过期失效更新下状态
-        if(( $ret['oper_state']!=2 ) && (strtotime("now") - strtotime($ret['create_time']))>=24*3600){
+        if(( $ret['oper_state'] == 1 ) && (strtotime("now") - strtotime($ret['create_time']))>=24*3600){
             $flag = $domainRecord->upate($this->id, array('oper_state' => 2));
             if($flag) {
                 $ret['oper_state'] = 2;

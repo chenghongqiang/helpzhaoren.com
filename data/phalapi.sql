@@ -134,7 +134,7 @@ CREATE TABLE `phal_form_record` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 #计划任务
-CREATE TABLE `tbl_task_progress` (
+CREATE TABLE `phal_task_progress` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) DEFAULT '' COMMENT '任务标题',
   `trigger_class` varchar(50) DEFAULT '' COMMENT '触发器类名',

@@ -15,9 +15,21 @@ class IntroRecord extends NotORM{
     }
 
     public function getIntroRecord($recordId, $openId){
+
+        if($recordId === 0) {
+            $condition = array(
+                'openId' => $openId
+            );
+        }else{
+            $condition = array(
+                'recordId' => $recordId,
+                'openId' => $openId
+            );
+        }
+
         return $this->getORM()
             ->select('id, recordId, wx_introducer_code')
-            ->where(array('recordId' => $recordId, 'openId' => $openId))
+            ->where($condition)
             ->fetchRow();
     }
 

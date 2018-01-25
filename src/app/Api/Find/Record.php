@@ -28,7 +28,7 @@ class Record extends FindApi{
 
             'create' => array(
                 'money' => array('name' => 'money', 'type' => 'int', 'require' => true, 'desc' => '红包金额'),
-                'intro' => array('name' => 'intro', 'type' => 'string', 'require' => true, 'min' => '6','max' => '90' ,'desc' => '找人描述'),
+                'intro' => array('name' => 'intro', 'type' => 'string', 'require' => true, 'min' => '6','max' => '120' ,'desc' => '找人描述'),
                 'out_trade_no' => array('name' => 'out_trade_no', 'type' => 'string', 'require' => true , 'desc' => '商户订单号'),
                 'formId' => array('name' => 'formId', 'type' => 'string', 'desc' => 'formId'),
                 'wx_self_code' => array('name' => 'wx_self_code', 'type' => 'string', 'require' => true, 'desc' => '发起人微信号'),
@@ -104,6 +104,7 @@ class Record extends FindApi{
      * @return string intro 找人推荐描述
      * @return string wx_introducer_code 引荐人微信号
      * @return string wx_introducer_avatarUrl 引荐人微信图像
+     * @return string wx_current_code 当前用户微信号
      * @return int oper_state 记录状态 1.进行中 2.过期失效 3.引荐成功
      * @return string create_time 记录创建时间
      * @rerurn string current_time 当前时间，根据记录创建时间和服务器当前时间确认此记录是否过期
@@ -131,6 +132,13 @@ class Record extends FindApi{
                 $ret['wx_introducer_avatarUrl'] = $introUserInfo['avatarUrl'];
             }
 
+        }
+
+        //获取当前用户联系方式
+        $domainIntroRecord = new DomainIntroRecord();
+        $userRet = $domainIntroRecord->getIntroRecord(0, $this->openID);
+        if(!empty($userRet)) {
+            $ret['wx_current_code'] = $userRet['wx_introducer_code'];
         }
 
         //过期失效更新下状态

@@ -117,9 +117,11 @@ class FindTask extends Api{
 
         //过期失效更新下状态
         if(( $recordInfo['oper_state'] == 1 ) && (strtotime("now") - strtotime($recordInfo['create_time']))>=24 * (Time::HOUR)){
-            $flag = $domainRecord->upate($this->id, array('oper_state' => 2));
+            $flag = $domainRecord->upate($this->recordId, array('oper_state' => 2));
             if($flag) {
                 $ret['oper_state'] = 2;
+            }else{
+                \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "更新记录状态失败 recordId:" . $this->recordId);
             }
         }
 

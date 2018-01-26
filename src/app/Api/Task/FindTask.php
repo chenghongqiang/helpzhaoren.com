@@ -115,17 +115,18 @@ class FindTask extends Api{
         $domainRecord = new DomainRECORD();
         $recordInfo = $domainRecord->get($this->recordId);
 
+        $state = 1;
         //过期失效更新下状态
         if(( $recordInfo['oper_state'] == 1 ) && (strtotime("now") - strtotime($recordInfo['create_time']))>=24 * (Time::HOUR)){
             $flag = $domainRecord->upate($this->recordId, array('oper_state' => 2));
             if($flag) {
-                $ret['oper_state'] = 2;
+                $state = 2;
             }else{
                 \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "更新记录状态失败 recordId:" . $this->recordId);
             }
         }
 
-        if( ( $recordInfo['oper_state'] == 2 ) && (strtotime("now") - strtotime($recordInfo['create_time']))>=24 * (Time::HOUR)) {
+        if( ( $state == 2 ) && (strtotime("now") - strtotime($recordInfo['create_time']))>=24 * (Time::HOUR)) {
             //返还红包金额到发起人账户内
             $domainUser = new DomainUSER();
             $updateFlag = $domainUser->updateWallet($recordInfo['openId'], $recordInfo['money'], 1);

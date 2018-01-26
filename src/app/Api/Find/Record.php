@@ -7,9 +7,11 @@
 
 namespace App\Api\Find;
 
+use App\Common\Utils\Time;
 use App\Component\FindApi;
 use App\Domain\Find\USER as DomainUSER;
 use App\Domain\Find\RECORD as DomainRECORD;
+use App\Domain\Task\TaskProgress as DomainTaskProgress;
 use App\Domain\Find\OrderRecord as DomainOrderRecord;
 use App\Domain\Find\IntroRecord as DomainIntroRecord;
 use App\Domain\Find\IntroSuccessRecord as DomainIntroSuccessRecord;
@@ -86,6 +88,17 @@ class Record extends FindApi{
         }
 
         \PhalApi\DI()->taskLite->add('App.Task_FindTask.returnMoney', array('recordId' => $id));
+        //插入数据到任务计划中
+        $taskProgress = new DomainTaskProgress();
+        $taskRet = $taskProgress->insert(array(
+            'title' => '找人记录过期任务计划',
+            'trigger_class' => 'CommonTrigger',
+            'fire_params' => 'App.Task_FindTask.returnMoney',
+            'interval_time' => 24 * (Time::HOUR) + 60,
+        ));
+        if(!$taskRet) {
+            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "找人记录过期任务计划插入失败，recordId: {$id}");
+        }
 
         $result = array(
             'id' => $id,

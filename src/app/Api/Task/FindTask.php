@@ -8,6 +8,7 @@
 namespace App\Api\Task;
 
 use App\Common\Utils\Code;
+use App\Common\Utils\Time;
 use App\Domain\Find\USER as DomainUSER;
 use App\Domain\Find\RECORD as DomainRECORD;
 use App\Domain\Find\FormRecord as DomainFormRECORD;
@@ -60,8 +61,15 @@ class FindTask extends Api{
      * @desc 执行任务计划
      */
     public function executeRecordTask() {
-        $ret = \PhalApi\DI()->taskRunnerLocal->go('App.Task_FindTask.returnMoney');
-        return $ret;
+        try {
+            \PhalApi\DI()->taskProgress->run();
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+            echo "\n\n";
+            echo $ex->getTraceAsString();
+
+            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "task progress exception");
+        }
     }
 
     /**
@@ -93,14 +101,14 @@ class FindTask extends Api{
         $recordInfo = $domainRecord->get($this->recordId);
 
         //过期失效更新下状态
-        if(( $recordInfo['oper_state'] == 1 ) && (strtotime("now") - strtotime($recordInfo['create_time']))>=24*3600){
+        if(( $recordInfo['oper_state'] == 1 ) && (strtotime("now") - strtotime($recordInfo['create_time']))>=24 * (Time::HOUR)){
             $flag = $domainRecord->upate($this->id, array('oper_state' => 2));
             if($flag) {
                 $ret['oper_state'] = 2;
             }
         }
 
-        if( ( $recordInfo['oper_state'] == 2 ) && (strtotime("now") - strtotime($recordInfo['create_time']))>=24*3600 ) {
+        if( ( $recordInfo['oper_state'] == 2 ) && (strtotime("now") - strtotime($recordInfo['create_time']))>=24 * (Time::HOUR)) {
             //返还红包金额到发起人账户内
             $domainUser = new DomainUSER();
             $updateFlag = $domainUser->updateWallet($recordInfo['openId'], $recordInfo['money'], 1);

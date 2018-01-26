@@ -53,3 +53,5 @@ $di->redis = new PhalApi\Cache\RedisCache($di->config->get('dbs')['redis']);
 $mq = new \PhalApi\Task\MQ\RedisMQ();  //可以选择你需要的MQ
 $di->taskLite = new \PhalApi\Task\Lite($mq);
 $di->taskRunnerLocal = new PhalApi\Task\Runner\LocalRunner($mq);
+
+$di->taskProgress = new PhalApi\Task\Progress();

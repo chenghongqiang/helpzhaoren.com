@@ -92,7 +92,7 @@ class Record extends FindApi{
         $taskProgress = new DomainTaskProgress();
         $taskRet = $taskProgress->insert(array(
             'title' => '找人记录过期任务计划',
-            'trigger_class' => 'CommonTrigger',
+            'trigger_class' => 'PhalApi\Task\Progress\Trigger\CommonTrigger',
             'fire_params' => 'App.Task_FindTask.returnMoney',
             'interval_time' => 24 * (Time::HOUR) + 60,
         ));

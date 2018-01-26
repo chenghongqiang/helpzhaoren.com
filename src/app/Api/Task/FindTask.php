@@ -33,6 +33,9 @@ class FindTask extends Api{
                 'openId' => array('name' => 'openId', 'type' => 'string', 'require' => true, 'desc' => 'openId'),
                 'formId' => array('name' => 'formId', 'type' => 'string', 'require' => true , 'desc' => 'formId'),
             ),
+            'collectReturnMoney' => array(
+                'recordId' => array('name' => 'recordId', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
+            ),
             'returnMoney' => array(
                 'recordId' => array('name' => 'recordId', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
             )
@@ -90,6 +93,16 @@ class FindTask extends Api{
             \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "收集formId失败 formId:". $this->formId);
         }
 
+    }
+
+    /**
+     * 收集returnMoney redis 列表数据
+     * @ignore
+     * @desc 计划任务 收集returnMoney redis 列表数据
+     * @use \PhalApi\DI()->taskLite->add('App.Task_FindTask.returnMoney', array('recordId' => $this->recordId));
+     */
+    public function collectReturnMoney() {
+        \PhalApi\DI()->taskLite->add('App.Task_FindTask.returnMoney', array('recordId' => $this->recordId));
     }
 
     /**

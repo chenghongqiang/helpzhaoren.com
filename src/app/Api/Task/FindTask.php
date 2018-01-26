@@ -110,6 +110,8 @@ class FindTask extends Api{
      * @desc 发起记录24小时内未被完成，设置发起状态为过期，同时返还红包到发起人账户
      */
     public function returnMoney() {
+
+        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__, "返还红包金额到发起人账户任务计划 recordId:" . $this->recordId);
         $domainRecord = new DomainRECORD();
         $recordInfo = $domainRecord->get($this->recordId);
 

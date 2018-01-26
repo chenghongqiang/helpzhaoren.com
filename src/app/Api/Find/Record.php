@@ -94,7 +94,7 @@ class Record extends FindApi{
             'title' => '找人记录过期任务计划',
             'trigger_class' => 'PhalApi\Task\Progress\Trigger\CommonTrigger',
             'fire_params' => 'App.Task_FindTask.returnMoney',
-            'interval_time' => 24 * (Time::HOUR) + 60,
+            'interval_time' => 24 * (Time::HOUR) + 60 + time(),
         ));
         if(!$taskRet) {
             \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "找人记录过期任务计划插入失败，recordId: {$id}");

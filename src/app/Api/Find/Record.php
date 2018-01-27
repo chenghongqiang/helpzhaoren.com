@@ -260,7 +260,12 @@ class Record extends FindApi{
         foreach ($introSuccessRecords as $k => $value) {
 
             $record = $domainRecord->get($value['recordId']);
-            $ret[$k] = $record;
+
+            $rate = \PhalApi\DI()->config->get('params.rate');
+            $ret[$k]['intro'] = $record['intro'];
+            $ret[$k]['money'] = $record['money'] * $rate / 2;
+            $ret[$k]['oper_state'] = $record['oper_state'];
+            $ret[$k]['create_time'] = $record['create_time'];
 
             //获取发起人图像
             $domainUser = new DomainUSER();

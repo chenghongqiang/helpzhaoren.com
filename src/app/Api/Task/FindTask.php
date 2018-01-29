@@ -85,7 +85,7 @@ class FindTask extends Api{
 
         $cronCommand = $time[4].' '.$time[3].' '.$time[2].' '.$time[1]." * curl https://". $_SERVER['HTTP_HOST']."?service=App.Task_FindTask.returnMoney&recordId=".$this->recordId."\r\n";
 
-        $cronFile = API_ROOT . "/runtime/". date('Ym') . "/addReturnMoneyCrontab";
+        $cronFile = API_ROOT . "/runtime/log/". date('Ym') . "/addReturnMoneyCrontab";
         $crontab_arr = array();
         $state_code = -1;
 

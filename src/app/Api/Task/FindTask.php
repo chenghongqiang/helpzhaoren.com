@@ -83,18 +83,17 @@ class FindTask extends Api{
         $createTime = date('Y,m,d,H,i,s',(strtotime( $recordInfo['create_time'])));
         $time = explode(',', $createTime);
 
-        $cronCommand = $time[4].' '.$time[3].' '.$time[2].' '.$time[1]." * curl https://". $_SERVER['HTTP_HOST']."?service=App.Task_FindTask.returnMoney&recordId=".$this->recordId." >> /tmp/returnMoney.log\r\n";
+        $cronCommand = $time[4].' '.$time[3].' '.$time[2].' '.$time[1]." * curl https://". $_SERVER['HTTP_HOST']."?service=App.Task_FindTask.returnMoney&recordId=".$this->recordId."\r\n";
 
-        $cronFile = API_ROOT . '/runtime/addReturnMoneyCrontab';
+        $cronFile = API_ROOT . "/runtime/". date('Ym') . "/addReturnMoneyCrontab";
         $crontab_arr = array();
         $state_code = -1;
 
-        $f = fopen($cronFile, 'w');
-        fwrite($f,$cronCommand);
-        fclose($f);
+        file_put_contents($cronFile, $cronCommand, FILE_APPEND);
+
         exec('crontab '.$cronFile, $crontab_arr, $state_code);
         if($state_code == 0){
-            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "exec crontab执行成功 recordId:" . $this->recordId);
+            \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__, "exec crontab执行成功 recordId:" . $this->recordId);
         }else{
             \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "exec crontab执行失败 recordId:" . $this->recordId , "createTime:" . $createTime);
         }

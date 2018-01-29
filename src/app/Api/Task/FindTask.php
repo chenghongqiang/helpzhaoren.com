@@ -38,6 +38,9 @@ class FindTask extends Api{
             ),
             'returnMoney' => array(
                 'recordId' => array('name' => 'recordId', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
+            ),
+            'addReturnMoneyCrontab' => array(
+                'recordId' => array('name' => 'recordId', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
             )
         );
     }

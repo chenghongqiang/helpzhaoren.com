@@ -64,15 +64,38 @@ class FindTask extends Api{
      * @desc 执行任务计划
      */
     public function executeRecordTask() {
-        try {
-            \PhalApi\DI()->taskProgress->run();
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
-            echo "\n\n";
-            echo $ex->getTraceAsString();
+        $ret = \PhalApi\DI()->taskRunnerLocal->go('App.Task_FindTask.addReturnMoneyCrontab');
+        return $ret;
+    }
 
-            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "task progress exception");
+    /**
+     * 添加返还金额的定时任务
+     * @desc 添加返还金额的定时任务
+     */
+    public function addReturnMoneyCrontab() {
+
+        $domainRecord = new DomainRECORD();
+        $recordInfo = $domainRecord->get($this->recordId);
+
+        $createTime = date('Y,m,d,H,i,s',(strtotime( $recordInfo['create_time'])));
+        $time = explode(',', $createTime);
+
+        $cronCommand = $time[4].' '.$time[3].' '.$time[2].' '.$time[1]." * curl ". $_SERVER['HTTP_HOST']."/App.Task_FindTask.returnMoney?recordId=".$this->recordId." >> /tmp/returnMoney.log\r\n";
+
+        $cronFile = API_ROOT . '/runtime/addReturnMoneyCrontab';
+        $crontab_arr = array();
+        $state_code = -1;
+
+        $f = fopen($cronFile, 'w');
+        fwrite($f,$cronCommand);
+        fclose($f);
+        exec('crontab '.$cronFile, $crontab_arr, $state_code);
+        if($state_code == 0){
+            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "exec crontab执行成功 recordId:" . $this->recordId);
+        }else{
+            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "exec crontab执行失败 recordId:" . $this->recordId , "createTime:" . $createTime);
         }
+
     }
 
     /**
@@ -81,7 +104,7 @@ class FindTask extends Api{
      * @desc 计划任务，在创建记录、引荐人和被引荐人提交数据时收集formId [crontab配置定时任务]
      * @use \PhalApi\DI()->taskLite->add('App.Task_FindTask.collectFormId', array('formId' => 'xxxx'));
      */
-    public function collectFormId(){
+    public function collectFormId() {
         $domainFormRecord = new DomainFormRECORD();
         $data = array(
             'openId' => $this->openId,

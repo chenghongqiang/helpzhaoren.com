@@ -87,18 +87,7 @@ class Record extends FindApi{
             throw new Exception('找人记录创建失败', 500);
         }
 
-        \PhalApi\DI()->taskLite->add('App.Task_FindTask.returnMoney', array('recordId' => $id));
-        //插入数据到任务计划中
-        $taskProgress = new DomainTaskProgress();
-        $taskRet = $taskProgress->insert(array(
-            'title' => '找人记录过期任务计划',
-            'trigger_class' => 'PhalApi\Task\Progress\Trigger\CommonTrigger',
-            'fire_params' => 'App.Task_FindTask.returnMoney',
-            'interval_time' => 24 * (Time::HOUR) + 60 + time(),
-        ));
-        if(!$taskRet) {
-            \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "找人记录过期任务计划插入失败，recordId: {$id}");
-        }
+        \PhalApi\DI()->taskLite->add('App.Task_FindTask.addReturnMoneyCrontab', array('recordId' => $id));
 
         $result = array(
             'id' => $id,

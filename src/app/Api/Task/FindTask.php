@@ -80,12 +80,12 @@ class FindTask extends Api{
         $domainRecord = new DomainRECORD();
         $recordInfo = $domainRecord->get($this->recordId);
 
-        $createTime = date('Y,m,d,H,i,s',(strtotime( $recordInfo['create_time'])));
+        $createTime = date('Y,m,d,H,i,s',(strtotime( $recordInfo['create_time']) + 24 * (Time::HOUR)));
         $time = explode(',', $createTime);
 
         $cronCommand = $time[4].' '.$time[3].' '.$time[2].' '.$time[1]." * curl https://". $_SERVER['HTTP_HOST']."?service=App.Task_FindTask.returnMoney&recordId=".$this->recordId."\r\n";
 
-        $cronFile = API_ROOT . "/runtime/log/". date('Ym') . "/addReturnMoneyCrontab";
+        $cronFile = API_ROOT . "/runtime/log/". date('Ym') . "/crontab.log";
         $crontab_arr = array();
         $state_code = -1;
 

@@ -232,6 +232,8 @@ class Record extends FindApi{
     /**
      * 获取当前用户引荐被引荐记录【找人记录页面引荐tab】
      * @desc 获取当前用户所有引荐被引荐找人相关记录
+     * $return int id 记录id
+     * $return string introSuccessId 找人成功记录id
      * @return string intro 找人描述
      * @return string wx_creator_avatarUrl 发起人微信图像
      * @return string wx_creator_nickName 发起人昵称
@@ -251,6 +253,9 @@ class Record extends FindApi{
             $record = $domainRecord->get($value['recordId']);
 
             $rate = \PhalApi\DI()->config->get('params.rate');
+
+            $ret[$k]['id'] = $record['id'];
+            $ret[$k]['introSuccessId'] = $value['recordId'];
             $ret[$k]['intro'] = $record['intro'];
             $ret[$k]['money'] = ($record['money'] - $record['money'] * $rate) / 2;
             $ret[$k]['oper_state'] = $record['oper_state'];

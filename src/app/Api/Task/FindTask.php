@@ -139,11 +139,11 @@ class FindTask extends Api{
         $domainRecord = new DomainRECORD();
         $recordInfo = $domainRecord->get($this->recordId);
 
-        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__, "返还红包金额到发起人账户任务计划 recordId:" . $recordInfo['id']);
-
         $state = 1;
+
+        \PhalApi\DI()->logger->info(__CLASS__.__FUNCTION__, "返还红包金额到发起人账户任务计划 recordId:" . $recordInfo['id']);
         //过期失效更新下状态
-        if(( $recordInfo['oper_state'] == 1 ) && (time() - strtotime($recordInfo['create_time']))>= (Time::DAY - 600)){
+        if(( $recordInfo['oper_state'] == 1 ) && ((time() - strtotime($recordInfo['create_time']))>= (Time::DAY - 600))){
             $flag = $domainRecord->upate($this->recordId, array('oper_state' => 2));
             if($flag) {
                 $state = 2;
@@ -152,7 +152,7 @@ class FindTask extends Api{
             }
         }
 
-        if( ( $state == 2 || $recordInfo['oper_state'] == 2 ) && (time() - strtotime($recordInfo['create_time'])) >= (Time::DAY - 600)) {
+        if( ( $state == 2 || $recordInfo['oper_state'] == 2 ) && ((time() - strtotime($recordInfo['create_time'])) >= (Time::DAY - 600))) {
             //返还红包金额到发起人账户内
             $domainUser = new DomainUSER();
             $updateFlag = $domainUser->updateWallet($recordInfo['openId'], $recordInfo['money'], 1);

@@ -151,7 +151,7 @@ class FindTask extends Api{
             }
         }
 
-        if( ( $state == 2 ) && (strtotime("now") - strtotime($recordInfo['create_time']))>=24 * (Time::HOUR)) {
+        if( $state == 2 || $recordInfo['oper_state'] == 2 ) {
             //返还红包金额到发起人账户内
             $domainUser = new DomainUSER();
             $updateFlag = $domainUser->updateWallet($recordInfo['openId'], $recordInfo['money'], 1);

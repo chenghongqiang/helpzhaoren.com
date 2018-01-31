@@ -194,7 +194,12 @@ class Record extends FindApi{
             //获取三方用户的数据
             $userInfoList = $domainUser->getUserByOpenid($openIdArr);
             foreach ($userInfoList as $k => $value){
-                $ret[$avatarUrlKey[$k]] = $value['avatarUrl'];
+                if($value['openId'] == $introRecord['introducererOpenId']) {
+                    $ret['wx_introducer_avatarUrl'] = $value['avatarUrl'];
+                }else if($value['openId'] == $introRecord['introduceredOpenId']) {
+                    $ret['wx_introducered_avatarUrl'] = $value['avatarUrl'];
+                }
+                //$ret[$avatarUrlKey[$k]] = $value['avatarUrl'];
             }
 
             if($introRecord['introducererOpenId'] == $introRecord['introduceredOpenId']){

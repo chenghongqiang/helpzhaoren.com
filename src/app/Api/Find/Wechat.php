@@ -59,11 +59,12 @@ class Wechat extends Api{
 
         $accessToken = WXAuth::getAccessToken();
 
+        $page = $this->path;
         $data = array(
             'scene' => isset($this->scene) ? $this->scene: time(),
             'width' => isset($this->width) ? $this->width: 430,
             'auto_color' => false,
-            'path' => $this->path
+            'page' => $page
         );
 
         ob_start();

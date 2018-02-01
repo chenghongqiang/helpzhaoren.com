@@ -63,7 +63,7 @@ class Wechat extends Api{
             'scene' => isset($this->scene) ? $this->scene: time(),
             'width' => isset($this->width) ? $this->width: 430,
             'auto_color' => false,
-            'path' => $this->path
+            'page' => $this->path
         );
 
         ob_start();

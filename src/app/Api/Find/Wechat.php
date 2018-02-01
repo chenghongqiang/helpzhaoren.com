@@ -31,7 +31,7 @@ class Wechat extends Api{
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
                 'scene' => array('name' => 'scene', 'type' => 'string', 'desc' => 'scene'),
                 'width' => array('name' => 'width', 'type' => 'int', 'desc' => 'width'),
-                'path' => array('name' => 'path', 'type' => 'string', 'max' => 128, 'require' => true, 'desc' => 'path'),
+                'page' => array('name' => 'page', 'type' => 'string', 'max' => 18,'require' => true, 'desc' => 'page'),
             )
         );
     }
@@ -59,12 +59,11 @@ class Wechat extends Api{
 
         $accessToken = WXAuth::getAccessToken();
 
-        $page = $this->path;
         $data = array(
             'scene' => isset($this->scene) ? $this->scene: time(),
             'width' => isset($this->width) ? $this->width: 430,
             'auto_color' => false,
-            'page' => $page
+            'page' => $this->page // 根路径前不要填加'/',不能携带参数（参数请放在scene字段里）
         );
 
         ob_start();

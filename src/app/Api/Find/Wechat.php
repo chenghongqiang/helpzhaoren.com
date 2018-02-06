@@ -66,9 +66,7 @@ class Wechat extends Api{
             'page' => $this->page // 根路径前不要填加'/',不能携带参数（参数请放在scene字段里）
         );
 
-        ob_start();
-        $imageString = base64_encode(WxComponentApi::getQrcode($accessToken, $data));
-        ob_end_clean();
+        $imageString = WxComponentApi::getQrcode($accessToken, $data);
 
         return $imageString;
     }

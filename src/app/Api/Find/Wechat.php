@@ -68,7 +68,7 @@ class Wechat extends Api{
 
         $imageString = WxComponentApi::getQrcode($accessToken, $data);
 
-        echo $imageString;
+        echo "data:image/png;base64," . $imageString;
     }
 
 

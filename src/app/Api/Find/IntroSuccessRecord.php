@@ -34,10 +34,6 @@ class IntroSuccessRecord extends FindApi{
                 'intro_user_id' => array('name' => 'intro_user_id', 'type' => 'int', 'require' => true , 'desc' => '引荐人id'),
                 'wx_introducered_code' => array('name' => 'wx_introducered_code', 'type' => 'string', 'require' => true, 'desc' => '被引荐人微信号'),
                 'formId' => array('name' => 'formId', 'type' => 'string', 'desc' => 'formId'),
-            ),
-            'getWxQrcode' => array(
-                'page' => array('name' => 'page', 'type' => 'string', 'require' => true , 'desc' => '已经发布的小程序页面'),
-                'width' => array('name' => 'width', 'type' => 'string', 'desc' => '二维码宽度', 'default' => '430'),
             )
         ));
     }

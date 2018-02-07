@@ -152,7 +152,7 @@ class IntroSuccessRecord extends FindApi{
             $data = array(
                 'touser' => $record['openId'],
                 'template_id' => "DdQxT0RfqPy4AGOPVVHz7a9vK09W7MVsORTwfVMsHHw",
-                'page' => '/pages/index',
+                'page' => 'pages/index',
                 'form_id' => $formId,
                 'data' => array(
                     'keyword1' => array('value' => '恭喜你认识2个朋友，加他们微信私聊吧'),

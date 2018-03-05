@@ -11,6 +11,8 @@ use App\Domain\Common;
 use App\WxCore\lib\WxPayApi;
 use App\WxCore\lib\WxPayConfig;
 use App\WxCore\lib\WxPayOrderQuery;
+use App\WxCore\lib\WxPayRefund;
+use App\WxCore\lib\WxPayTransfers;
 use App\WxCore\lib\WxPayUnifiedOrder;
 use App\WxCore\PayNotifyCallBack;
 use App\WxCore\WxPayJsApi;
@@ -34,6 +36,10 @@ class Pay extends Api {
             'payCheck' => array(
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
                 'out_trade_no' => array('name' => 'out_trade_no', 'type' => 'string', 'require' => true , 'desc' => '商户订单号，预支付接口返回'),
+            ),
+            'refund' => array(
+                'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
+                'total_fee' => array('name' => 'total_fee', 'type' => 'int', 'min' => '1', 'require' => true , 'desc' => '订单金额'),
             )
         );
     }
@@ -156,6 +162,83 @@ class Pay extends Api {
 
     }
 
+    /**
+     * 申请退款
+     * @desc 申请退款接口
+     */
+    public function refund(){
+        $commonDomain = new Common();
+        $openId = $commonDomain->getOpenId($this->thirdSessionKey);
 
+        $data = array(
+            'total_fee' => $this->total_fee * 100, //转换为分
+            'refund_fee' => $this->total_fee * 100, //转换为分
+            'openId' => $openId,
+            'out_trade_no' => WxPayConfig::MCHID.date("YmdHis").rand(1000,9999),
+            'out_refund_no' => WxPayConfig::MCHID.date("YmdHis").rand(1000,9999),
+            'create_time' => date("YmdHis")
+        );
+        $domainOrderRecord = new DomainOrderRecord();
+        $insertId = $domainOrderRecord->insert($data);
+        if($insertId){
+            //退款操作
+            $input = new WxPayRefund();
+            $input->SetOut_trade_no($data['out_trade_no']); //商户订单号
+            $input->SetTotal_fee($data['total_fee']); //订单金额
+            $input->SetOut_refund_no($data['out_refund_no']); //商户退款单号
+            $input->SetRefund_fee($data['refund_fee']);//退款金额
+
+            $refund = WxPayApi::refund($input);
+
+            $tools = new WxPayJsApi();
+            $jsApiParameters = $tools->GetJsApiParameters($refund);
+            $jsApiParameters['out_trade_no'] = $data['out_trade_no'];
+
+            \PhalApi\DI()->logger->info('refund:' . json_encode($refund). ' jsApiParams:' . json_encode($jsApiParameters));
+            return $jsApiParameters;
+        }else{
+            throw new Exception('申请退款失败', 500);
+        }
+    }
+
+    /**
+     * 企业付款给用户
+     * @desc 企业付款给用户
+     * @param $transaction_id
+     * @return string
+     * @throws \App\WxCore\lib\WxPayException
+     */
+    public function transfers(){
+        $commonDomain = new Common();
+        $openId = $commonDomain->getOpenId($this->thirdSessionKey);
+
+        $data = array(
+            'amount' => $this->total_fee * 100, //转换为分
+            'openid' => $openId,
+            'partner_trade_no' => WxPayConfig::MCHID.date("YmdHis").rand(1000,9999),
+            'create_time' => date("YmdHis")
+        );
+        $domainOrderRecord = new DomainOrderRecord();
+        $insertId = $domainOrderRecord->insert($data);
+        if($insertId){
+            //退款操作
+            $input = new WxPayTransfers();
+            $input->SetPartnerTradeNo($data['out_trade_no']); //商户订单号
+            $input->SetOpenid($data['openid']);
+            $input->SetCheckName("NO_CHECK");
+            $input->SetAmount($data['amount']);
+            $input->SetDesc("钱包体现");
+
+            $refund = WxPayApi::transfers($input);
+
+            $tools = new WxPayJsApi();
+            $jsApiParameters = $tools->GetJsApiParameters($refund);
+
+            \PhalApi\DI()->logger->info('transfers:' . json_encode($refund). ' jsApiParams:' . json_encode($jsApiParameters));
+            return $jsApiParameters;
+        }else{
+            throw new Exception('付款给用户失败', 500);
+        }
+    }
 
 }

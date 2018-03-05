@@ -581,5 +581,45 @@ class WxPayApi
 		$time = $time2[0];
 		return $time;
 	}
+
+	/**
+	 *
+	 * 企业付款到零钱，WxPayTransfers中partner_trade_no、openid、amount、trade_type必填必填
+	 * mch_appid、mchid、spbill_create_ip、nonce_str不需要填入
+	 * @param WxPayTransfers $inputObj
+	 * @param int $timeOut
+	 * @throws WxPayException
+	 * @return 成功时返回，其他抛异常
+	 */
+		public static function transfers($inputObj, $timeOut = 6)
+	{
+		$url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+		//检测必填参数
+		if(!$inputObj->IsPartnerTradeNoSet()){
+			throw new WxPayException("企业付款到零钱接口中，缺少必填参数out_refund_no！");
+		}else if(!$inputObj->IsOpenidSet()){
+			throw new WxPayException("企业付款到零钱接口中，缺少必填参数openid！");
+		}else if(!$inputObj->IsAmountSet()){
+			throw new WxPayException("企业付款到零钱接口中，缺少必填参数amount！");
+		}else if(!$inputObj->IsDescSet()){
+			throw new WxPayException("企业付款到零钱接口中，缺少必填参数desc！");
+		}
+
+		$inputObj->SetMchAppid(WxPayConfig::APPID);//公众账号ID
+		$inputObj->SetMchId(WxPayConfig::MCHID);//商户号
+		$inputObj->SetSpbillCreateIp($_SERVER['REMOTE_ADDR']);//终端ip
+
+		$inputObj->SetNonce_str(self::getNonceStr());//随机字符串
+
+		//签名
+		$inputObj->SetSign();
+		$xml = $inputObj->ToXml();
+
+		$startTimeStamp = self::getMillisecond();//请求开始时间
+		$response = self::postXmlCurl($xml, $url, false, $timeOut);
+		$result = WxPayResults::Init($response);
+
+		return $result;
+	}
 }
 

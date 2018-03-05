@@ -38,6 +38,10 @@ class PhpUnderControl_ApiSite_Test extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($rs);
     }
 
+    /**
+     * @test
+     * @throws \PhalApi\Exception
+     */
     public function testIndex()
     {
         //Step 1. 构建请求URL

@@ -38,6 +38,7 @@ class WxPayConfig
 	 */
 	const SSLCERT_PATH = '../cert/apiclient_cert.pem';
 	const SSLKEY_PATH = '../cert/apiclient_key.pem';
+	const SSLCA_PATH = '../cert/rootca.pem';
 	
 	//=======【curl代理设置】===================================
 	/**

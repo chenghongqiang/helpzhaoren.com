@@ -37,7 +37,7 @@ class Pay extends Api {
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
                 'out_trade_no' => array('name' => 'out_trade_no', 'type' => 'string', 'require' => true , 'desc' => '商户订单号，预支付接口返回'),
             ),
-            'refund' => array(
+            'transfers' => array(
                 'thirdSessionKey' => array('name' => 'thirdSessionKey', 'type' => 'string', 'require' => true, 'desc' => '第三方session'),
                 'total_fee' => array('name' => 'total_fee', 'type' => 'int', 'min' => '1', 'require' => true , 'desc' => '订单金额'),
             )

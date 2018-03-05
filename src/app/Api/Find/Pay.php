@@ -208,37 +208,33 @@ class Pay extends Api {
      * @return string
      * @throws \App\WxCore\lib\WxPayException
      */
-    public function transfers(){
+    public function transfers()
+    {
         $commonDomain = new Common();
         $openId = $commonDomain->getOpenId($this->thirdSessionKey);
 
         $data = array(
             'amount' => $this->total_fee * 100, //转换为分
             'openid' => $openId,
-            'partner_trade_no' => WxPayConfig::MCHID.date("YmdHis").rand(1000,9999),
+            'partner_trade_no' => WxPayConfig::MCHID . date("YmdHis") . rand(1000, 9999),
             'create_time' => date("YmdHis")
         );
-        $domainOrderRecord = new DomainOrderRecord();
-        $insertId = $domainOrderRecord->insert($data);
-        if($insertId){
-            //退款操作
-            $input = new WxPayTransfers();
-            $input->SetPartnerTradeNo($data['out_trade_no']); //商户订单号
-            $input->SetOpenid($data['openid']);
-            $input->SetCheckName("NO_CHECK");
-            $input->SetAmount($data['amount']);
-            $input->SetDesc("钱包体现");
 
-            $refund = WxPayApi::transfers($input);
+        //退款操作
+        $input = new WxPayTransfers();
+        $input->SetPartnerTradeNo($data['out_trade_no']); //商户订单号
+        $input->SetOpenid($data['openid']);
+        $input->SetCheckName("NO_CHECK");
+        $input->SetAmount($data['amount']);
+        $input->SetDesc("钱包体现");
 
-            $tools = new WxPayJsApi();
-            $jsApiParameters = $tools->GetJsApiParameters($refund);
+        $refund = WxPayApi::transfers($input);
 
-            \PhalApi\DI()->logger->info('transfers:' . json_encode($refund). ' jsApiParams:' . json_encode($jsApiParameters));
-            return $jsApiParameters;
-        }else{
-            throw new Exception('付款给用户失败', 500);
-        }
+        $tools = new WxPayJsApi();
+        $jsApiParameters = $tools->GetJsApiParameters($refund);
+
+        \PhalApi\DI()->logger->info('transfers:' . json_encode($refund) . ' jsApiParams:' . json_encode($jsApiParameters));
+        return $jsApiParameters;
+
     }
-
 }

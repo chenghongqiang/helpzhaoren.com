@@ -222,11 +222,11 @@ class Pay extends Api {
 
         //退款操作
         $input = new WxPayTransfers();
-        $input->SetPartnerTradeNo($data['out_trade_no']); //商户订单号
+        $input->SetPartnerTradeNo($data['partner_trade_no']); //商户订单号
         $input->SetOpenid($data['openid']);
         $input->SetCheckName("NO_CHECK");
         $input->SetAmount($data['amount']);
-        $input->SetDesc("钱包体现");
+        $input->SetDesc("钱包提现");
 
         $refund = WxPayApi::transfers($input);
 

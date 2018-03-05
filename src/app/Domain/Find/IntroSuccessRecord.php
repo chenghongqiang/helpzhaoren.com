@@ -57,7 +57,7 @@ class IntroSuccessRecord {
         $dataParam = array(
             'touser' => $openId,
             'template_id' => '2TyJ-pzj0k5QaYE3mlaMOC4CR-pofRwFlhJr0AEOvsE',
-            'page' => '/pages/index',
+            'page' => 'pages/index',
             'form_id' => $formId,
             'data' => array(
                 'keyword1' => array('value' => $money, 'color' => '#FF0000'),

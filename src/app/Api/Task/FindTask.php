@@ -226,11 +226,8 @@ class FindTask extends Api{
 
         $refund = WxPayApi::transfers($input);
 
-        $tools = new WxPayJsApi();
-        $jsApiParameters = $tools->GetJsApiParameters($refund);
-
-        \PhalApi\DI()->logger->info('transfers:' . json_encode($refund) . ' jsApiParams:' . json_encode($jsApiParameters));
-        return $jsApiParameters;
+        \PhalApi\DI()->logger->info('transfers:' . json_encode($refund));
+        return true;
     }
 
 }

@@ -227,7 +227,12 @@ class FindTask extends Api{
         $refund = WxPayApi::transfers($input);
 
         \PhalApi\DI()->logger->info('transfers:' . json_encode($refund));
-        return true;
+        if($refund['return_code'] == "SUCCESS" && $refund['result_code'] == "SUCCESS") {
+            return true;
+        }else {
+            \PhalApi\DI()->logger->error('error:' . $refund['return_msg']);
+            return false;
+        }
     }
 
 }

@@ -593,7 +593,7 @@ class WxPayApi
 	 * @throws WxPayException
 	 * @return 成功时返回，其他抛异常
 	 */
-		public static function transfers($inputObj, $timeOut = 6)
+	public static function transfers($inputObj, $timeOut = 6)
 	{
 		$url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
 		//检测必填参数
@@ -617,11 +617,16 @@ class WxPayApi
 		$inputObj->SetSign();
 		$xml = $inputObj->ToXml();
 
-		$startTimeStamp = self::getMillisecond();//请求开始时间
 		$response = self::postXmlCurl($xml, $url, true, $timeOut);
-		$result = WxPayResults::Init($response);
 
-		return $result;
+		$obj = new WxPayResults();
+		$results = $obj->FromXml($response);
+		if($results->values['return_code'] != 'SUCCESS'){
+			return $obj->GetValues();
+		}
+
+		return $obj->GetValues();
+
 	}
 }
 

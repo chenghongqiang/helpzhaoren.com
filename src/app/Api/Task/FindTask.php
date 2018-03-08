@@ -9,10 +9,15 @@ namespace App\Api\Task;
 
 use App\Common\Utils\Code;
 use App\Common\Utils\Time;
+use App\Domain\Common;
 use App\Domain\Find\USER as DomainUSER;
 use App\Domain\Find\RECORD as DomainRECORD;
 use App\Domain\Find\FormRecord as DomainFormRECORD;
-use App\Domain\Find\IntroSuccessRecord as DomainIntroSuccessRecord;
+use App\Domain\Find\WalletWithdrawRecord as DomainWalletWithdrawRecord;
+use App\WxCore\lib\WxPayApi;
+use App\WxCore\lib\WxPayConfig;
+use App\WxCore\lib\WxPayTransfers;
+use App\WxCore\WxPayJsApi;
 use PhalApi\Api;
 use PhalApi\Exception;
 
@@ -41,6 +46,11 @@ class FindTask extends Api{
             ),
             'addReturnMoneyCrontab' => array(
                 'recordId' => array('name' => 'recordId', 'type' => 'int', 'require' => true , 'desc' => '找人记录id'),
+            ),
+            'transfers' => array(
+                'openId' => array('name' => 'openId', 'type' => 'string', 'desc' => 'openId'),
+                'money' => array('name' => 'money', 'type' => 'int', 'min' => '1', 'desc' => '订单金额'),
+                'secret' => array('name' => 'secret', 'type' => 'string', 'min' => '1', 'desc' => '密钥'),
             )
         );
     }
@@ -161,7 +171,66 @@ class FindTask extends Api{
             }
         }
 
+    }
 
+    /**
+     * 企业付款给用户
+     * @desc 企业付款给用户
+     * @param $transaction_id
+     * @return string
+     * @throws \App\WxCore\lib\WxPayException
+     */
+    public function transfers()
+    {
+        //手动打款，输入用户openid和金额打款
+        if( isset($this->openId, $this->money) && !empty($this->openId) && !empty($this->money) ) {
+            if( $this->secret != 'kewin.cheng') {
+                throw new Exception("禁止访问!", 403);
+            }
+
+            $this->WxPayTransfer($this->openId, $this->money);
+        }else {
+            $domainWalletWithdrawRecord = new DomainWalletWithdrawRecord();
+            $records = $domainWalletWithdrawRecord->getRecordByState(1);
+
+            foreach ($records as $r => $v) {
+                $ret = $this->WxPayTransfer($v['openId'], $v['money']);
+                if($ret) {
+                    $state = $domainWalletWithdrawRecord->upate($v['id'], array('state' => 2));
+                    if(!$state) {
+                        \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "企业付款给用户成功，但更新记录状态失败 记录id:". $v['id'] . " openId:" . $v['openId']);
+                    }
+                }else {
+                    \PhalApi\DI()->logger->error(__CLASS__.__FUNCTION__, "企业付款给用户失败 记录id:". $v['id'] . " openId:" . $v['openId']);
+                }
+            }
+        }
+
+    }
+
+    private function WxPayTransfer($openId, $amount) {
+        $data = array(
+            'amount' => $amount * 100, //转换为分
+            'openid' => $openId,
+            'partner_trade_no' => WxPayConfig::MCHID . date("YmdHis") . rand(1000, 9999),
+            'create_time' => date("YmdHis")
+        );
+
+        //退款操作
+        $input = new WxPayTransfers();
+        $input->SetPartnerTradeNo($data['partner_trade_no']); //商户订单号
+        $input->SetOpenid($data['openid']);
+        $input->SetCheckName("NO_CHECK");
+        $input->SetAmount($data['amount']);
+        $input->SetDesc("钱包提现");
+
+        $refund = WxPayApi::transfers($input);
+
+        $tools = new WxPayJsApi();
+        $jsApiParameters = $tools->GetJsApiParameters($refund);
+
+        \PhalApi\DI()->logger->info('transfers:' . json_encode($refund) . ' jsApiParams:' . json_encode($jsApiParameters));
+        return $jsApiParameters;
     }
 
 }

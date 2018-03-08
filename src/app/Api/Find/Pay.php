@@ -164,6 +164,7 @@ class Pay extends Api {
 
     /**
      * 申请退款
+     * @ignore
      * @desc 申请退款接口
      */
     public function refund(){

@@ -204,6 +204,7 @@ class Pay extends Api {
 
     /**
      * 企业付款给用户
+     * @ignore
      * @desc 企业付款给用户
      * @param $transaction_id
      * @return string

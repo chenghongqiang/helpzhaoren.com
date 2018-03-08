@@ -50,7 +50,7 @@ class FindTask extends Api{
             'transfers' => array(
                 'openId' => array('name' => 'openId', 'type' => 'string', 'desc' => 'openId'),
                 'money' => array('name' => 'money', 'type' => 'int', 'min' => '1', 'desc' => '订单金额'),
-                'secret' => array('name' => 'secret', 'type' => 'string', 'min' => '1', 'desc' => '密钥'),
+                'secret' => array('name' => 'secret', 'type' => 'string', 'min' => '1', 'require' => true, 'desc' => '密钥'),
             )
         );
     }
@@ -182,12 +182,12 @@ class FindTask extends Api{
      */
     public function transfers()
     {
+        if( $this->secret != 'kewin.cheng') {
+            throw new Exception("禁止访问!", 403);
+        }
+
         //手动打款，输入用户openid和金额打款
         if( isset($this->openId, $this->money) && !empty($this->openId) && !empty($this->money) ) {
-            if( $this->secret != 'kewin.cheng') {
-                throw new Exception("禁止访问!", 403);
-            }
-
             $this->WxPayTransfer($this->openId, $this->money);
         }else {
             $domainWalletWithdrawRecord = new DomainWalletWithdrawRecord();
